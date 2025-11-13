@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:myshetribe/screens/events/view/event_details_screen.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/event_provider.dart';
+import 'package:myshetribe/models/event_model.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({Key? key}) : super(key: key);
@@ -11,92 +16,91 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
-  final Map<String, dynamic> featuredEvent = {
-    'title': 'MyHighTea',
-    'date': '13 December 2025',
-    'description':
-        'Join us for our launch High Tea at Jumeriah Al Qasr and meet your tribe. Dresscode elegant pink theme.',
-    'image': 'assets/icons/my_events_header_pic.png',
-  };
-
-  final List<Map<String, dynamic>> upcomingEvents = [
-    {
-      'title': 'MyBrunchParty',
-      'image': 'assets/icons/my_brunch_party.png',
-    },
-    {
-      'title': 'MyDinnerParty',
-      'image': 'assets/icons/my_dinner_party.png',
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<EventProvider>(context, listen: false).loadUpcomingEvents();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              // Header with Logo
-              LogoHeader(),
-              const SizedBox(height: 20),
-              // Events Title
-              Text(
-                'Events',
-                style: GoogleFonts.poppins(
-                   fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF2C2C2C),
+        child: Consumer<EventProvider>(
+          builder: (context, eventProvider, child) {
+            if (eventProvider.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: const Color(0xFF2C2C2C),
+                  strokeWidth: 2,
                 ),
-              ),
-              const SizedBox(height: 10),
-              // Featured Event Card
-            _buildFeaturedEventCard(),
-            Container(
-               margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-              child: _buildDescriptionCard()),
-                        // const SizedBox(height: 20),
-                        // Upcoming Events Section
-                        Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10),
+              );
+            }
+
+            final events = eventProvider.upcomingEvents;
+            final featuredEvent = events.isNotEmpty ? events.first : null;
+            final upcomingEvents = events.length > 1 ? events.sublist(1) : [];
+
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  // Header with Logo
+                  LogoHeader(),
+                  const SizedBox(height: 20),
+                  // Events Title
+                  Text(
+                    'Events',
+                    style: GoogleFonts.poppins(
+                       fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF2C2C2C),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Featured Event Card
+                  if (featuredEvent != null) ...[
+                    _buildFeaturedEventCard(featuredEvent),
+                    Container(
+                       margin: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                                color: const Color(0xFFFE9CB4),
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                      child: _buildDescriptionCard(featuredEvent)),
+                  ],
+                  // const SizedBox(height: 20),
+                  // Upcoming Events Section
+                  if (upcomingEvents.isNotEmpty)
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFE9CB4),
                         borderRadius: BorderRadius.circular(0),
                       ),
-                          child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          // Text(
-                                          //   'Upcoming Events',
-                                          //   style: GoogleFonts.poppins(
-                                          //     fontSize: 20,
-                                          //     fontWeight: FontWeight.w700,
-                                          //     color: const Color(0xFF2C2C2C),
-                                          //   ),
-                                          // ),
-                                          // const SizedBox(height: 15),
-                                          ...upcomingEvents.map((event) => _buildUpcomingEventCard(event)).toList(),
-                                        ],
-                                      ),
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: upcomingEvents.map((event) => _buildUpcomingEventCard(event)).toList(),
                         ),
-              const SizedBox(height: 30),
-            ],
-          ),
+                      ),
+                    ),
+                  const SizedBox(height: 30),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
   }
-  Widget _buildDescriptionCard() {
+
+  Widget _buildDescriptionCard(EventModel event) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       padding: const EdgeInsets.all(20),
@@ -105,7 +109,7 @@ class _EventsScreenState extends State<EventsScreen> {
         borderRadius: BorderRadius.circular(0),
       ),
       child: Text(
-        featuredEvent['description'],
+        event.description,
         style: GoogleFonts.poppins(
           fontSize: 16,
           fontWeight: FontWeight.w500,
@@ -116,10 +120,7 @@ class _EventsScreenState extends State<EventsScreen> {
     );
   }
 
-
- 
-
-  Widget _buildFeaturedEventCard() {
+  Widget _buildFeaturedEventCard(EventModel event) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -128,11 +129,27 @@ class _EventsScreenState extends State<EventsScreen> {
           width: double.infinity,
           height: 300,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(featuredEvent['image']),
-              fit: BoxFit.cover,
-            ),
+            color: const Color(0xFFD4A574),
           ),
+          child: event.imageUrl != null
+              ? CachedNetworkImage(
+                  imageUrl: event.imageUrl!,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      color: const Color(0xFF2C2C2C),
+                      strokeWidth: 2,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/icons/my_events_header_pic.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : Image.asset(
+                  'assets/icons/my_events_header_pic.png',
+                  fit: BoxFit.cover,
+                ),
         ),
         // Overlapping Gold Box with Title and Date
         Positioned(
@@ -141,11 +158,9 @@ class _EventsScreenState extends State<EventsScreen> {
           bottom: 0,
           child: Center(
             child: Container(
-                alignment: Alignment
-                .center,
+                alignment: Alignment.center,
                width: MediaQuery.of(context).size.width*0.7,
                height: 57,
-              // padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(
                 color: const Color(0xFFD5A472),
                 borderRadius: BorderRadius.circular(0),
@@ -154,7 +169,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    featuredEvent['title'],
+                    event.title,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -162,9 +177,8 @@ class _EventsScreenState extends State<EventsScreen> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  // const SizedBox(height: 6),
                   Text(
-                    featuredEvent['date'],
+                    DateFormat('d MMMM yyyy').format(event.eventDate),
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -180,13 +194,14 @@ class _EventsScreenState extends State<EventsScreen> {
       ],
     );
   }
- Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
+
+ Widget _buildUpcomingEventCard(EventModel event) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventDetailScreen(),
+            builder: (context) => EventDetailScreen(event: event),
           ),
         );
       },
@@ -206,11 +221,27 @@ class _EventsScreenState extends State<EventsScreen> {
                 child: Container(
                   height: 130,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(event['image']),
-                      fit: BoxFit.cover,
-                    ),
+                    color: const Color(0xFFD4A574),
                   ),
+                  child: event.imageUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: event.imageUrl!,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(
+                              color: const Color(0xFF2C2C2C),
+                              strokeWidth: 2,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Image.asset(
+                            'assets/icons/my_brunch_party.png',
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Image.asset(
+                          'assets/icons/my_brunch_party.png',
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               // Right side - Gold section with label (55% width)
@@ -228,7 +259,7 @@ class _EventsScreenState extends State<EventsScreen> {
                         borderRadius: BorderRadius.circular(0),
                       ),
                       child: Text(
-                        event['title'],
+                        event.title,
                         style: GoogleFonts.poppins(
                           fontSize: MediaQuery.of(context).size.width * 0.037,
                           fontWeight: FontWeight.w500,
