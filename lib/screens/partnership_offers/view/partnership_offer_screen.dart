@@ -2,73 +2,143 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/partnership_provider.dart';
+import 'package:myshetribe/models/partnership_offer_model.dart';
 
-class PartnershipOffersScreen extends StatelessWidget {
+class PartnershipOffersScreen extends StatefulWidget {
   const PartnershipOffersScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PartnershipOffersScreen> createState() => _PartnershipOffersScreenState();
+}
+
+class _PartnershipOffersScreenState extends State<PartnershipOffersScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<PartnershipProvider>(context, listen: false).loadActiveOffers();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
       body: SafeArea(
-        child: Column(
-          children: [
-           const SizedBox(height: 20),
-          LogoHeader(),
-            const SizedBox(height: 20),
+        child: Consumer<PartnershipProvider>(
+          builder: (context, partnershipProvider, child) {
+            return Column(
+              children: [
+               const SizedBox(height: 20),
+              LogoHeader(),
+                const SizedBox(height: 20),
 
-            // Title
-            Text(
-              'Partnership Offers',
-              style: GoogleFonts.poppins(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF2C2C2C),
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-            // Images List
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  // First Image - Grocery Shopping
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
-                      width: double.infinity,
-                      height: 280,
-                      fit: BoxFit.cover,
-                    ),
+                // Title
+                Text(
+                  'Partnership Offers',
+                  style: GoogleFonts.poppins(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF2C2C2C),
                   ),
+                ),
 
-                  const SizedBox(height: 20),
+                const SizedBox(height: 30),
 
-                  // Second Image - Clothing Store
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
-                      width: double.infinity,
-                      height: 280,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                // Images List
+                Expanded(
+                  child: partnershipProvider.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: const Color(0xFF2C2C2C),
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : partnershipProvider.activeOffers.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No offers available',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              itemCount: partnershipProvider.activeOffers.length,
+                              itemBuilder: (context, index) {
+                                final offer = partnershipProvider.activeOffers[index];
+                                return _buildOfferCard(offer);
+                              },
+                            ),
+                ),
 
-                  const SizedBox(height: 30),
-                ],
-              ),
-            ),
-
-            // Bottom Navigation
-            // _buildBottomNav(context),
-          ],
+                // Bottom Navigation
+                // _buildBottomNav(context),
+              ],
+            );
+          },
         ),
       ),
+    );
+  }
+
+  Widget _buildOfferCard(PartnershipOfferModel offer) {
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: offer.imageUrl != null
+              ? CachedNetworkImage(
+                  imageUrl: offer.imageUrl!,
+                  width: double.infinity,
+                  height: 280,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    width: double.infinity,
+                    height: 280,
+                    color: const Color(0xFFD4A574),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: const Color(0xFF2C2C2C),
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: double.infinity,
+                    height: 280,
+                    color: const Color(0xFFD4A574),
+                    child: Center(
+                      child: Icon(
+                        Icons.card_giftcard,
+                        size: 64,
+                        color: const Color(0xFF2C2C2C),
+                      ),
+                    ),
+                  ),
+                )
+              : Container(
+                  width: double.infinity,
+                  height: 280,
+                  color: const Color(0xFFD4A574),
+                  child: Center(
+                    child: Icon(
+                      Icons.card_giftcard,
+                      size: 64,
+                      color: const Color(0xFF2C2C2C),
+                    ),
+                  ),
+                ),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
   }
 
