@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:myshetribe/screens/authentication/view/forgot_password.dart';
 import 'package:myshetribe/screens/authentication/view/signup_screen.dart';
 import 'package:myshetribe/screens/verifications/view/verification_pending.dart';
 import 'package:myshetribe/screens/verifications/view/verification_screen.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -160,29 +162,51 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),),
                    const SizedBox(height: 29),
                   // Login Button
-                  SizedBox(
-                     width: MediaQuery.of(context).size.width*0.75,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>VerificationScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: const Color(0xFF3A3A3A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
+                  Consumer<AuthProvider>(
+                    builder: (context, authProvider, child) {
+                      return SizedBox(
+                         width: MediaQuery.of(context).size.width*0.75,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: authProvider.isLoading ? null : () async {
+                            if (_formKey.currentState!.validate()) {
+                              bool success = await authProvider.signIn(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text,
+                              );
+
+                              if (success) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>VerificationScreen()));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(authProvider.errorMessage ?? 'Login failed'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: const Color(0xFF3A3A3A),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                          ),
+                          child: authProvider.isLoading
+                              ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                              : Text(
+                                  'Login',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
-                      ),
-                      child: Text(
-                        'Login',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   // const SizedBox(height: 45),
                   // Don't have account

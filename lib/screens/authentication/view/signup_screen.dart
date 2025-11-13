@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:myshetribe/screens/authentication/view/login_screen.dart';
 import 'package:myshetribe/screens/terms_condition/view/terms_condition.dart';
 import 'package:myshetribe/screens/verifications/view/verification_pending.dart';
 import 'package:myshetribe/screens/verifications/view/verification_screen.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/auth_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -19,14 +21,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _locationController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureLocation = true;
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _locationController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -90,23 +95,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       keyboardType: TextInputType.phone,
                     ),
                      const SizedBox(height: 22),
-                    // Password Field
+                    // Location Field
                     _buildTextField(
-                      controller: _passwordController,
+                      controller: _locationController,
                       hintText: 'Enter Location (City/Country)',
                       icon: Icons.location_city,
-                      obscureText: _obscurePassword,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
+                      keyboardType: TextInputType.text,
                     ),
                     const SizedBox(height: 22),
                     // Password Field
@@ -215,29 +209,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),),
                    const SizedBox(height: 29),
                   // Login Button
-                  SizedBox(
-                     width: MediaQuery.of(context).size.width*0.75,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: () {
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=>VerificationScreen()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: const Color(0xFF3A3A3A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
+                  Consumer<AuthProvider>(
+                    builder: (context, authProvider, child) {
+                      return SizedBox(
+                         width: MediaQuery.of(context).size.width*0.75,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: authProvider.isLoading ? null : () async {
+                            if (_formKey.currentState!.validate()) {
+                              bool success = await authProvider.signUp(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text,
+                                fullName: _nameController.text.trim(),
+                                phoneNumber: _phoneController.text.trim(),
+                                city: _locationController.text.trim(),
+                              );
+
+                              if (success) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>VerificationScreen()));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(authProvider.errorMessage ?? 'Sign up failed'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: const Color(0xFF3A3A3A),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                          ),
+                          child: authProvider.isLoading
+                              ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                              : Text(
+                                  'Verify Identity',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
-                      ),
-                      child: Text(
-                        'Verify Identity',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   // const SizedBox(height: 15),
                   // Terms and Privacy
