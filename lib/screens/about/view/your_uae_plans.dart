@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:myshetribe/screens/about/view/thank_you_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/user_provider.dart';
+import 'package:myshetribe/providers/auth_provider.dart';
+import 'package:myshetribe/models/user_model.dart';
 
 class WhatAreYourPlansScreen extends StatefulWidget {
-  const WhatAreYourPlansScreen({Key? key}) : super(key: key);
+  final String relocatingReason;
+  final String relocatingWith;
+  final String countryFrom;
+  final String uaeEmirate;
+
+  const WhatAreYourPlansScreen({
+    Key? key,
+    required this.relocatingReason,
+    required this.relocatingWith,
+    required this.countryFrom,
+    required this.uaeEmirate,
+  }) : super(key: key);
 
   @override
   State<WhatAreYourPlansScreen> createState() => _WhatAreYourPlansScreenState();
@@ -18,6 +33,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
   String? _selectedVisaInfo;
   String? _selectedSupport;
   String? _selectedBuddy;
+  bool _isProcessing = false;
 
   final List<String> _relocatingDates = [
     'Within 1 month',
@@ -181,28 +197,105 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                       width: MediaQuery.of(context).size.width * 0.75,
                       height: 55,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ThankYouScreen(),
-                                        ),);
+                        onPressed: _isProcessing ? null : () async {
+                          // Validate that all fields are filled
+                          if (_selectedRelocatingDate == null ||
+                              _selectedVisaApplied == null ||
+                              _selectedVisaType == null ||
+                              _selectedVisaInfo == null ||
+                              _selectedSupport == null ||
+                              _selectedBuddy == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Please fill all fields'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
+                          setState(() {
+                            _isProcessing = true;
+                          });
+
+                          final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                          final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+                          if (authProvider.currentUser == null) {
+                            setState(() {
+                              _isProcessing = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Please login to continue'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Create relocation info object
+                          final relocationInfo = RelocationInfo(
+                            relocatingReason: widget.relocatingReason,
+                            relocatingWith: widget.relocatingWith,
+                            countryFrom: widget.countryFrom,
+                            uaeEmirate: widget.uaeEmirate,
+                            relocatingDate: _selectedRelocatingDate,
+                            visaApplied: _selectedVisaApplied,
+                            visaType: _selectedVisaType,
+                            visaInfo: _selectedVisaInfo,
+                            support: _selectedSupport,
+                            buddy: _selectedBuddy,
+                          );
+
+                          // Save to Firebase
+                          bool success = await userProvider.updateRelocationInfo(relocationInfo);
+
+                          setState(() {
+                            _isProcessing = false;
+                          });
+
+                          if (success && mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ThankYouScreen(),
+                              ),
+                            );
+                          } else if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to save relocation information'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
-                          backgroundColor:  Colors.black,
+                          backgroundColor: Colors.black,
+                          disabledBackgroundColor: Colors.grey,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(0),
                           ),
                         ),
-                        child: Text(
-                          'Submit',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: _isProcessing
+                            ? SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Text(
+                                'Submit',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     ),
             ],

@@ -222,11 +222,30 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                 height: 55,
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    // Validate that all fields are filled
+                                    if (_selectedRelocatingReason == null ||
+                                        _selectedRelocatingWith == null ||
+                                        _selectedCountryFrom == null ||
+                                        _selectedUAEEmirate == null) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Please fill all fields'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                      return;
+                                    }
+
                                     _controller.pause();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => WhatAreYourPlansScreen(),
+                                        builder: (context) => WhatAreYourPlansScreen(
+                                          relocatingReason: _selectedRelocatingReason!,
+                                          relocatingWith: _selectedRelocatingWith!,
+                                          countryFrom: _selectedCountryFrom!,
+                                          uaeEmirate: _selectedUAEEmirate!,
+                                        ),
                                       ),
                                     ).then((_) {
                                       // Resume video when coming back

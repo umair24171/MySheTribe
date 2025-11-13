@@ -144,6 +144,35 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  // Update relocation information
+  Future<bool> updateRelocationInfo(RelocationInfo relocationInfo) async {
+    if (_user == null) return false;
+
+    try {
+      _isLoading = true;
+      notifyListeners();
+
+      await _firestoreService.updateUser(_user!.uid, {
+        'relocationInfo': relocationInfo.toMap(),
+      });
+
+      // Reload user data
+      await loadUser(_user!.uid);
+
+      await _analyticsService.logProfileUpdate();
+
+      _isLoading = false;
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
   // Clear error message
   void clearError() {
     _errorMessage = null;

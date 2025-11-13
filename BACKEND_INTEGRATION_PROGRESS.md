@@ -66,23 +66,52 @@
    - Shows confirmation after successful RSVP
    - Navigation to Events and My Events screens
 
+9. **Relocating Signup Flow** (Multi-step registration for relocating users)
+   - **RelocatingSignUpScreen** (`lib/screens/relocating_signup_screen/view/relocating_signup_screen.dart`)
+     - Collects: relocating reason, relocating with, country from, UAE emirate
+     - Form validation before navigation
+     - Data passed to next screen via constructor parameters
+
+   - **WhatAreYourPlansScreen** (`lib/screens/about/view/your_uae_plans.dart`)
+     - Receives data from previous screen
+     - Collects: relocation date, visa status, visa type, visa info, support needs, buddy preference
+     - Saves complete relocation profile to Firebase via UserProvider
+     - Loading states and error handling with SnackBar
+     - Navigation to thank you screen on success
+
+   - **RelocationInfo Model** (`lib/models/user_model.dart`)
+     - New data model for relocation information
+     - 10 fields capturing complete relocation profile
+     - Stored in user document under `relocationInfo` field
+     - Visible in admin panel for support team to assist relocating users
+
 ### Backend Enhancements
 
 **AuthProvider** (`lib/providers/auth_provider.dart`)
 - Added `updatePassword()` method
 - Added `deleteAccount()` method
 
+**UserProvider** (`lib/providers/user_provider.dart`)
+- Added `updateRelocationInfo()` method for saving relocation data to Firestore
+- Analytics tracking for relocation profile updates
+
+**UserModel** (`lib/models/user_model.dart`)
+- Added `RelocationInfo` class with 10 optional fields
+- Added `relocationInfo` field to UserModel
+- Updated all serialization methods (fromFirestore, toFirestore, copyWith)
+
 ### Integration Summary
 
-**Total Screens Integrated:** 8/8
+**Total Screens Integrated:** 9/9 (includes relocating signup flow)
 **Design Preservation:** 100% - All original colors, fonts, spacing, and layouts maintained
 **Backend Features Added:**
 - Firebase Authentication (login, logout, password update, account deletion)
-- Firestore data loading and updates (events, users, tribes, partnerships)
+- Firestore data loading and updates (events, users, tribes, partnerships, relocation data)
 - Firebase Storage integration (profile images, verification documents)
 - Real-time data synchronization with Provider pattern
 - AI tribe matching algorithm results display
 - Event RSVP/booking system
+- Relocating user onboarding with comprehensive data collection
 
 ### Technical Approach
 

@@ -1,5 +1,62 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Relocation Information model
+class RelocationInfo {
+  final String? relocatingReason;
+  final String? relocatingWith;
+  final String? countryFrom;
+  final String? uaeEmirate;
+  final String? relocatingDate;
+  final String? visaApplied;
+  final String? visaType;
+  final String? visaInfo;
+  final String? support;
+  final String? buddy;
+
+  RelocationInfo({
+    this.relocatingReason,
+    this.relocatingWith,
+    this.countryFrom,
+    this.uaeEmirate,
+    this.relocatingDate,
+    this.visaApplied,
+    this.visaType,
+    this.visaInfo,
+    this.support,
+    this.buddy,
+  });
+
+  factory RelocationInfo.fromMap(Map<String, dynamic> map) {
+    return RelocationInfo(
+      relocatingReason: map['relocatingReason'],
+      relocatingWith: map['relocatingWith'],
+      countryFrom: map['countryFrom'],
+      uaeEmirate: map['uaeEmirate'],
+      relocatingDate: map['relocatingDate'],
+      visaApplied: map['visaApplied'],
+      visaType: map['visaType'],
+      visaInfo: map['visaInfo'],
+      support: map['support'],
+      buddy: map['buddy'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'relocatingReason': relocatingReason,
+      'relocatingWith': relocatingWith,
+      'countryFrom': countryFrom,
+      'uaeEmirate': uaeEmirate,
+      'relocatingDate': relocatingDate,
+      'visaApplied': visaApplied,
+      'visaType': visaType,
+      'visaInfo': visaInfo,
+      'support': support,
+      'buddy': buddy,
+    };
+  }
+}
+
 class UserModel {
   final String uid;
   final String email;
@@ -17,6 +74,7 @@ class UserModel {
   final String? bio;
   final List<double>? embedding; // For AI matching
   final List<TribeRecommendation> recommendations;
+  final RelocationInfo? relocationInfo; // Relocation information
   final VerificationStatus verificationStatus;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -39,6 +97,7 @@ class UserModel {
     this.bio,
     this.embedding,
     this.recommendations = const [],
+    this.relocationInfo,
     this.verificationStatus = VerificationStatus.pending,
     required this.createdAt,
     required this.updatedAt,
@@ -71,6 +130,9 @@ class UserModel {
               ?.map((e) => TribeRecommendation.fromMap(e))
               .toList() ??
           [],
+      relocationInfo: data['relocationInfo'] != null
+          ? RelocationInfo.fromMap(data['relocationInfo'])
+          : null,
       verificationStatus: VerificationStatus.values.firstWhere(
         (e) => e.toString() == 'VerificationStatus.${data['verificationStatus']}',
         orElse: () => VerificationStatus.pending,
@@ -99,6 +161,7 @@ class UserModel {
       'bio': bio,
       'embedding': embedding,
       'recommendations': recommendations.map((e) => e.toMap()).toList(),
+      'relocationInfo': relocationInfo?.toMap(),
       'verificationStatus': verificationStatus.toString().split('.').last,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
@@ -124,6 +187,7 @@ class UserModel {
     String? bio,
     List<double>? embedding,
     List<TribeRecommendation>? recommendations,
+    RelocationInfo? relocationInfo,
     VerificationStatus? verificationStatus,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -146,6 +210,7 @@ class UserModel {
       bio: bio ?? this.bio,
       embedding: embedding ?? this.embedding,
       recommendations: recommendations ?? this.recommendations,
+      relocationInfo: relocationInfo ?? this.relocationInfo,
       verificationStatus: verificationStatus ?? this.verificationStatus,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
