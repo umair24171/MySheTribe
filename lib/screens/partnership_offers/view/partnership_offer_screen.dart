@@ -1,0 +1,150 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:myshetribe/widgets/logo_header.dart';
+
+class PartnershipOffersScreen extends StatelessWidget {
+  const PartnershipOffersScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFB6C8),
+      body: SafeArea(
+        child: Column(
+          children: [
+           const SizedBox(height: 20),
+          LogoHeader(),
+            const SizedBox(height: 20),
+
+            // Title
+            Text(
+              'Partnership Offers',
+              style: GoogleFonts.poppins(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF2C2C2C),
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // Images List
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  // First Image - Grocery Shopping
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
+                      width: double.infinity,
+                      height: 280,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Second Image - Clothing Store
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
+                      width: double.infinity,
+                      height: 280,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+                ],
+              ),
+            ),
+
+            // Bottom Navigation
+            // _buildBottomNav(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNav(BuildContext context) {
+    return Container(
+      height: 70,
+      decoration: const BoxDecoration(
+        color: Color(0xFF3D3D3D),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(Icons.people, false),
+          _buildNavItem(Icons.calendar_month, false),
+          _buildNavItem(null, true),
+          _buildNavItem(Icons.chat_bubble, false),
+          _buildNavItem(Icons.person, false),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData? icon, bool isHome) {
+    if (isHome) {
+      return Container(
+        width: 56,
+        height: 56,
+        decoration: const BoxDecoration(
+          color: Color(0xFFFFB6C8),
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.home, color: Color(0xFF3D3D3D), size: 28),
+      );
+    }
+    return Icon(icon, color: const Color(0xFFFFB6C8), size: 28);
+  }
+}
+
+class DottedHeartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withOpacity(0.9)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+
+    final path = Path();
+    path.moveTo(size.width * 0.5, size.height * 0.3);
+    path.cubicTo(
+      size.width * 0.2, size.height * 0.1,
+      size.width * 0.1, size.height * 0.4,
+      size.width * 0.5, size.height * 0.8,
+    );
+    path.cubicTo(
+      size.width * 0.9, size.height * 0.4,
+      size.width * 0.8, size.height * 0.1,
+      size.width * 0.5, size.height * 0.3,
+    );
+
+    final dashWidth = 5.0;
+    final dashSpace = 3.0;
+    double distance = 0.0;
+
+    for (PathMetric pathMetric in path.computeMetrics()) {
+      while (distance < pathMetric.length) {
+        final segment = pathMetric.extractPath(distance, distance + dashWidth);
+        canvas.drawPath(segment, paint);
+        distance += dashWidth + dashSpace;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
