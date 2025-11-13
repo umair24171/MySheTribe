@@ -1,13 +1,84 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:myshetribe/main.dart';
 import 'package:myshetribe/screens/verifications/view/verification_complete.dart';
 import 'package:myshetribe/screens/verifications/view/verification_pending.dart';
 import 'package:myshetribe/screens/verifications/view/welcome_screen.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/user_provider.dart';
+import 'package:myshetribe/providers/auth_provider.dart';
 
-class VerificationScreen extends StatelessWidget {
+class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);
+
+  @override
+  State<VerificationScreen> createState() => _VerificationScreenState();
+}
+
+class _VerificationScreenState extends State<VerificationScreen> {
+  final ImagePicker _picker = ImagePicker();
+  File? _verificationImage;
+
+  Future<void> _takeSelfie() async {
+    try {
+      final XFile? photo = await _picker.pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.front,
+        imageQuality: 85,
+      );
+
+      if (photo != null) {
+        setState(() {
+          _verificationImage = File(photo.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to capture image: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _uploadVerification() async {
+    if (_verificationImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please take a selfie first'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    bool success = await userProvider.uploadVerificationDocument(_verificationImage!);
+
+    if (success) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VerificationCompleteScreen(
+            userName: authProvider.currentUser?.fullName ?? 'User',
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(userProvider.errorMessage ?? 'Failed to upload verification'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,30 +183,40 @@ class VerificationScreen extends StatelessWidget {
               ),
                    const SizedBox(height: 29),
               // Submit Button
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.75,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>VerificationCompleteScreen(userName: 'Umair',)));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: const Color(0xFF3A3A3A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          'Login',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
+              Consumer<UserProvider>(
+                builder: (context, userProvider, child) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width*0.75,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: userProvider.isLoading ? null : () async {
+                        if (_verificationImage != null) {
+                          await _uploadVerification();
+                        } else {
+                          await _takeSelfie();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: const Color(0xFF3A3A3A),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
                         ),
                       ),
+                      child: userProvider.isLoading
+                          ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                          : Text(
+                              _verificationImage != null ? 'Submit Verification' : 'Take Selfie',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
+                  );
+                },
+              ),
                       // const SizedBox(height: 30),
             
             ],
