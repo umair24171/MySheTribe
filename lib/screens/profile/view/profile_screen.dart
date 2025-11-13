@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:myshetribe/screens/profile/view/profile_setup_two.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/providers/user_provider.dart';
+import 'package:myshetribe/providers/auth_provider.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({Key? key}) : super(key: key);
@@ -144,34 +147,58 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     ),
                   ),
                   const SizedBox(height: 29),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfileSetupTwo(),
+                  Consumer2<UserProvider, AuthProvider>(
+                    builder: (context, userProvider, authProvider, child) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: userProvider.isLoading ? null : () async {
+                            if (_formKey.currentState!.validate()) {
+                              bool success = await userProvider.updateProfile(
+                                nationality: _countryController.text.trim(),
+                                ageRange: _selectedAge,
+                                language: _selectedLanguage,
+                                profession: _selectedProfession,
+                              );
+
+                              if (success) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProfileSetupTwo(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(userProvider.errorMessage ?? 'Failed to save profile'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: const Color(0xFF3A3A3A),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                            ),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: const Color(0xFF3A3A3A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
+                          child: userProvider.isLoading
+                              ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                              : Text(
+                                  'Save',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
-                      ),
-                      child: Text(
-                        'Save',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
                 ],
