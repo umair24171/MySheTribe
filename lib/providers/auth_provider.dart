@@ -169,6 +169,49 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  // Update password
+  Future<bool> updatePassword(String newPassword) async {
+    try {
+      _isLoading = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      await _authService.updatePassword(newPassword);
+
+      _isLoading = false;
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Delete account
+  Future<bool> deleteAccount() async {
+    try {
+      _isLoading = true;
+      _errorMessage = null;
+      notifyListeners();
+
+      await _authService.deleteAccount();
+
+      _currentUser = null;
+      _isLoading = false;
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
   // Clear error message
   void clearError() {
     _errorMessage = null;

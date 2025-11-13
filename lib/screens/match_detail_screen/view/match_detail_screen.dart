@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
@@ -82,7 +83,32 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                                   // Profile Photo - Smaller
                                   CircleAvatar(
                                     radius: 28,
-                                    backgroundImage: NetworkImage(widget.imageUrl),
+                                    backgroundColor: const Color(0xFFD4A574),
+                                    child: ClipOval(
+                                      child: widget.imageUrl.isNotEmpty
+                                          ? CachedNetworkImage(
+                                              imageUrl: widget.imageUrl,
+                                              width: 56,
+                                              height: 56,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) => Center(
+                                                child: CircularProgressIndicator(
+                                                  color: const Color(0xFF2C2C2C),
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                              errorWidget: (context, url, error) => Icon(
+                                                Icons.groups,
+                                                size: 28,
+                                                color: const Color(0xFF2C2C2C),
+                                              ),
+                                            )
+                                          : Icon(
+                                              Icons.groups,
+                                              size: 28,
+                                              color: const Color(0xFF2C2C2C),
+                                            ),
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                   
