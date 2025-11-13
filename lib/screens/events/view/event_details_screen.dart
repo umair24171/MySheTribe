@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:myshetribe/screens/booking_confirmation/view/booking_confirmation_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:myshetribe/models/event_model.dart';
+import 'package:myshetribe/providers/event_provider.dart';
+import 'package:myshetribe/providers/auth_provider.dart';
 
 class EventDetailScreen extends StatefulWidget {
-  const EventDetailScreen({Key? key}) : super(key: key);
+  final EventModel? event;
+
+  const EventDetailScreen({Key? key, this.event}) : super(key: key);
 
   @override
   State<EventDetailScreen> createState() => _EventDetailScreenState();
@@ -16,14 +24,19 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   final _emailController = TextEditingController();
   String _selectedPaymentMethod = 'credit_card';
   bool _agreedToTerms = false;
+  bool _isProcessing = false;
 
-  // Dummy data
-  final String eventTitle = 'MyHighTea';
-  final String eventImage = 'assets/icons/my_events_header_pic.png';
-  final String date = 'Sat 22 Nov . 3:PM';
-  final String location = 'Jumeriah AL Qasr';
-  final String dresscode = 'Elegant Pink';
-  final double price = 250;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      if (authProvider.currentUser != null) {
+        _nameController.text = authProvider.currentUser!.fullName;
+        _emailController.text = authProvider.currentUser!.email;
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -34,10 +47,28 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
  @override
 Widget build(BuildContext context) {
+  // Use dummy event if no event passed (fallback for existing navigation)
+  final event = widget.event ?? EventModel(
+    id: 'dummy',
+    title: 'MyHighTea',
+    description: 'Join us for our launch High Tea',
+    location: 'Jumeriah AL Qasr',
+    city: 'Dubai',
+    eventDate: DateTime.now().add(Duration(days: 30)),
+    price: 250,
+    maxAttendees: 50,
+    attendeeIds: [],
+    organizerId: 'admin',
+    category: 'social',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    isActive: true,
+  );
+
   return Scaffold(
     backgroundColor: const Color(0xFFFFB6C8),
      bottomNavigationBar: CustomBottomNavBar(selectedIndex:1 ,onItemTapped: (p0) {
-        
+
       },),
     body: SafeArea(
       child: SingleChildScrollView(
@@ -49,7 +80,7 @@ Widget build(BuildContext context) {
             const SizedBox(height: 25),
             // Event Title
             Text(
-              eventTitle,
+              event.title,
               style: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -62,11 +93,27 @@ Widget build(BuildContext context) {
               width: double.infinity,
               height: 250,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(eventImage),
-                  fit: BoxFit.cover,
-                ),
+                color: const Color(0xFFD4A574),
               ),
+              child: event.imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: event.imageUrl!,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          color: const Color(0xFF2C2C2C),
+                          strokeWidth: 2,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/icons/my_events_header_pic.png',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      'assets/icons/my_events_header_pic.png',
+                      fit: BoxFit.cover,
+                    ),
             ),
             // Overlapping Gold Container (using Transform to move it up)
             Transform.translate(
@@ -83,11 +130,11 @@ Widget build(BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Event Details
-                      _buildDetailRow(Icons.calendar_today, date),
+                      _buildDetailRow(Icons.calendar_today, DateFormat('EEE dd MMM . h:mm a').format(event.eventDate)),
                       const SizedBox(height: 6),
-                      _buildDetailRow(Icons.location_on, location),
+                      _buildDetailRow(Icons.location_on, event.location),
                       const SizedBox(height: 6),
-                      _buildDetailRow(Icons.checkroom, dresscode),
+                      _buildDetailRow(Icons.people, '${event.attendeeIds.length}/${event.maxAttendees} attending'),
                       const SizedBox(height: 20),
                       // Name Field
                       _buildTextField('Name', _nameController),
@@ -127,7 +174,7 @@ Widget build(BuildContext context) {
                             ),
                           ),
                           Text(
-                            'AED ${price.toInt()}',
+                            event.isPaid ? 'AED ${event.price!.toInt()}' : 'Free',
                             style: GoogleFonts.poppins(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -175,19 +222,67 @@ Widget build(BuildContext context) {
                         ],
                       ),
                       const SizedBox(height: 18),
-                      // Pay Button
+                      // Pay/RSVP Button
                       SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BookingConfirmationScreen(),
-                              ),
-                            );
-                          },
+                          onPressed: (_agreedToTerms && !_isProcessing && !event.isFull) ? () async {
+                            final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                            final eventProvider = Provider.of<EventProvider>(context, listen: false);
+
+                            if (authProvider.currentUser == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please login to book this event'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            setState(() {
+                              _isProcessing = true;
+                            });
+
+                            try {
+                              // Add attendee to event
+                              bool success = await eventProvider.addEventAttendee(
+                                event.id,
+                                authProvider.currentUser!.uid,
+                              );
+
+                              setState(() {
+                                _isProcessing = false;
+                              });
+
+                              if (success) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookingConfirmationScreen(eventName: event.title),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Failed to book event'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              setState(() {
+                                _isProcessing = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Error: $e'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          } : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF000000),
                             disabledBackgroundColor: Colors.grey,
@@ -195,14 +290,25 @@ Widget build(BuildContext context) {
                               borderRadius: BorderRadius.circular(6),
                             ),
                           ),
-                          child: Text(
-                            'Pay AED ${price.toInt()}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
+                          child: _isProcessing
+                              ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Text(
+                                  event.isFull
+                                      ? 'Event Full'
+                                      : (event.isPaid ? 'Pay AED ${event.price!.toInt()}' : 'RSVP Free'),
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
