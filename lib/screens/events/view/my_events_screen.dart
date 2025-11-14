@@ -57,6 +57,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 children: [
                 const SizedBox(height: 20),
                   LogoHeader(),
+
                   const SizedBox(height: 20),
 
                   // MyEvents Title
