@@ -121,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 22),
                       // Terms and Privacy
                 Padding(
   padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -129,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     textAlign: TextAlign.center,
     text: TextSpan(
       style: GoogleFonts.poppins(
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: const Color(0xFF2C2C2C),
       ),
@@ -140,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w400,
-            fontSize: 12,
+            fontSize: 14,
           ),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
@@ -158,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w400,
-            fontSize: 12,
+            fontSize: 14,
           ),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
