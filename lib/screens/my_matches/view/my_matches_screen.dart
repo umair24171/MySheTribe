@@ -75,10 +75,10 @@ Widget build(BuildContext context) {
                         color: const Color(0xFFFFB6C8), // Keep this darker pink
                         child: Column(
                           children: [
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 10),
                             // Logo and Branding Header
                             LogoHeader(),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 29),
                             // MyMatches Title
                             Text(
                               'MyTribe Matches',
@@ -88,7 +88,7 @@ Widget build(BuildContext context) {
                                  color: Color(0xFF3A3A3A),
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 29),
                               // Welcome Video
                 SizedBox(
                   height: 246,
@@ -116,9 +116,12 @@ Widget build(BuildContext context) {
                       ),
                       // Cards Section (Lighter Pink Background)
                       Container(
-                        width: MediaQuery.of(context).size.width*0.93,
-                        color: Color(0xffFe9cb4),
-                        padding: const EdgeInsets.only(bottom: 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 19),
+                        padding: const EdgeInsets.all(22),
+                        decoration: BoxDecoration(
+                          color: Color(0xffFe9cb4),
+                          borderRadius: BorderRadius.circular(0),
+                        ),
                         child: userProvider.isLoading
                             ? Padding(
                                 padding: const EdgeInsets.all(40.0),
@@ -166,7 +169,7 @@ Widget _buildMatchCard(dynamic recommendation, TribeProvider tribeProvider) {
   final tribeId = recommendation.tribeId;
 
   return Container(
-    margin: const EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 15),
+    margin: const EdgeInsets.only(left: 0, right: 0, bottom: 22, top: 0),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: Colors.white,
