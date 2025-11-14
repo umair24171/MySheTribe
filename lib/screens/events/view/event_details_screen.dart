@@ -74,10 +74,10 @@ Widget build(BuildContext context) {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             // Header Logo
             LogoHeader(),
-            const SizedBox(height: 25),
+            const SizedBox(height: 29),
             // Event Title
             Text(
               event.title,
@@ -87,7 +87,7 @@ Widget build(BuildContext context) {
                 color: const Color(0xFF2C2C2C),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
             // Event Image
             Container(
               width: double.infinity,
@@ -119,12 +119,17 @@ Widget build(BuildContext context) {
             Transform.translate(
               offset: const Offset(0, -80), // Moves it up by 80px to overlap
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 19),
                 child: Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    left: 22,
+                    right: 22,
+                    bottom: 47.5,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFD4A574),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(0),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
