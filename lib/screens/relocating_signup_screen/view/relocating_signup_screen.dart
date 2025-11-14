@@ -87,13 +87,13 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     backgroundColor: const Color(0xFFFFB6C8),
+      backgroundColor: const Color(0xFFFFB6C8),
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             LogoHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
@@ -101,11 +101,11 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
               style: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF2C2C2C),
+                color: const Color(0xFF3A3A3A),
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 29),
 
             // Main Content Container
             Expanded(
@@ -113,7 +113,6 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 0),
                 padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                  // color: const Color(0xFFFE9CB4),
                   borderRadius: BorderRadius.circular(0),
                 ),
                 child: SingleChildScrollView(
@@ -121,7 +120,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                     children: [
                       // Video Section
                       SizedBox(
-                        height: 300,
+                        height: 248,
                         width: double.infinity,
                         child: _isVideoInitialized
                             ? FittedBox(
@@ -147,27 +146,25 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                               ),
                       ),
 
-                      const SizedBox(height: 30),
-
                       // Form Fields Container
-                     Container(
-                      height: 400,
-                      margin: const EdgeInsets.symmetric(horizontal: 25),
-                      padding: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Container(
-                        // color: Colors.white,
-                       margin: const EdgeInsets.symmetric(horizontal: 0),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0).copyWith(top: 15),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 19),
+                        padding: const EdgeInsets.all(0),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFE9CB4),
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 0),
+                          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 0),
                           child: Column(
                             children: [
+                              const SizedBox(height: 22),
                               // Why are you relocating?
-                              _buildDropdownField(
-                                hint: 'Why are you relocating?',
-                                value: _selectedRelocatingReason,
+                              _buildSingleSelectField(
+                                selectedItem: _selectedRelocatingReason,
+                                hintText: 'Why are you relocating?',
+                                title: 'Why are you relocating?',
                                 items: _relocatingReasons,
                                 onChanged: (value) {
                                   setState(() {
@@ -175,25 +172,13 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 15),
-                        
-                              // Who are you relocating with?
-                              _buildDropdownField(
-                                hint: 'Who are you relocating with?',
-                                value: _selectedRelocatingWith,
-                                items: _relocatingWith,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedRelocatingWith = value;
-                                  });
-                                },
-                              ),
-                              const SizedBox(height: 15),
-                        
+                              const SizedBox(height: 22),
+
                               // Which country are relocating from?
-                              _buildDropdownField(
-                                hint: 'Which country are relocating from?',
-                                value: _selectedCountryFrom,
+                              _buildSingleSelectField(
+                                selectedItem: _selectedCountryFrom,
+                                hintText: 'Which country are relocating from?',
+                                title: 'Which country are relocating from?',
                                 items: _countriesFrom,
                                 onChanged: (value) {
                                   setState(() {
@@ -201,62 +186,50 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 15),
-                        
-                              // Which UAE Emirate are you relocating to?
-                              _buildDropdownField(
-                                hint: 'Which UAE Emirate are you relocating to?',
-                                value: _selectedUAEEmirate,
-                                items: _uaeEmirates,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedUAEEmirate = value;
-                                  });
-                                },
-                              ),
-                              const SizedBox(height: 40),
-                        
-                              // Next Button
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                height: 55,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    _controller.pause();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => WhatAreYourPlansScreen(),
-                                      ),
-                                    ).then((_) {
-                                      // Resume video when coming back
-                                      if (_isVideoInitialized) {
-                                        _controller.play();
-                                      }
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    backgroundColor:  Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(0),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Next',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              const SizedBox(height: 22),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 29),
+
+                      // Next Button
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        height: 55,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _controller.pause();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WhatAreYourPlansScreen(),
+                              ),
+                            ).then((_) {
+                              // Resume video when coming back
+                              if (_isVideoInitialized) {
+                                _controller.play();
+                              }
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Color(0xff3A3A3A),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0),
+                            ),
+                          ),
+                          child: Text(
+                            'Submit',
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -265,59 +238,225 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(selectedIndex:2 ,onItemTapped: (p0) {
-        
-      },),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: 2,
+        onItemTapped: (p0) {},
+      ),
     );
   }
 
-  Widget _buildDropdownField({
-    required String hint,
-    required String? value,
+  Widget _buildSingleSelectField({
+    required String? selectedItem,
+    required String hintText,
+    required String title,
     required List<String> items,
-    required ValueChanged<String?> onChanged,
+    required Function(String?) onChanged,
   }) {
     return Container(
+      height: 55,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(0),
       ),
-      child: DropdownButtonFormField<String>(
-        
-        value: value,
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: GoogleFonts.poppins(
-            fontSize: MediaQuery.of(context).size.width*0.03,
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF2C2C2C),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(0),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 0,
-          ),
-        ),
-        style: GoogleFonts.poppins(
-          fontSize:  MediaQuery.of(context).size.width*0.03,
-          fontWeight: FontWeight.w600,
-          color: const Color(0xFF2C2C2C),
-        ),
-        icon: const Icon(
-          Icons.keyboard_arrow_down,
-          color: Color(0xFF2C2C2C),
-        ),
-        dropdownColor: Colors.white,
-        items: items.map((String item) {
-          return DropdownMenuItem<String>(
-            value: item,
-            child: Text(item),
+      child: InkWell(
+        onTap: () {
+          _showSingleSelectDialog(
+            context: context,
+            title: title,
+            items: items,
+            selectedItem: selectedItem,
+            onChanged: onChanged,
           );
-        }).toList(),
-        onChanged: onChanged,
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  selectedItem ?? hintText,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF2C2C2C),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: const Color(0xFF2C2C2C),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showSingleSelectDialog({
+    required BuildContext context,
+    required String title,
+    required List<String> items,
+    required String? selectedItem,
+    required Function(String?) onChanged,
+  }) {
+    String? tempSelected = selectedItem;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF2C2C2C),
+                        ),
+                      ),
+                    ),
+                    
+                    // Items List
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: items.map((item) {
+                            return _buildDialogCheckboxItem(
+                              item: item,
+                              isSelected: tempSelected == item,
+                              onTap: () {
+                                setState(() {
+                                  tempSelected = item;
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    
+                    // Buttons
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                onChanged(tempSelected);
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2C2C2C),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              child: Text(
+                                'Done',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildDialogCheckboxItem({
+    required String item,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                item,
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF2C2C2C),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: const Color(0xFF2C2C2C),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      size: 14,
+                      color: const Color(0xFF2C2C2C),
+                    )
+                  : null,
+            ),
+          ],
+        ),
       ),
     );
   }

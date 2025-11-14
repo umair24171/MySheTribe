@@ -25,7 +25,7 @@ class BookingConfirmationScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
             LogoHeader(),
             // // Header
             // Padding(
@@ -94,7 +94,7 @@ class BookingConfirmationScreen extends StatelessWidget {
             //     ],
             //   ),
             // ),
-//  const SizedBox(height: 20),
+ const SizedBox(height: 29),
             // Content Area
             Expanded(
               child: Container(
@@ -103,7 +103,7 @@ class BookingConfirmationScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 29),
                       // Booking Confirmation Title
                       Text(
                         'Booking Confirmation',
@@ -113,7 +113,7 @@ class BookingConfirmationScreen extends StatelessWidget {
                           color: const Color(0xFF2C2C2C),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 29),
                       
                    Container(
                     // height: 400,

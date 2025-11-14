@@ -15,21 +15,12 @@ class MyProfileScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-             const SizedBox(height: 20),
+             const SizedBox(height: 10),
           LogoHeader(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 29),
 
-              // Title
-              Text(
-                'My Profile',
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF2C2C2C),
-                ),
-              ),
-
-              const SizedBox(height: 30),
+             
+              // const SizedBox(height: 29),
 
               // Profile Picture
               Stack(
@@ -70,31 +61,42 @@ class MyProfileScreen extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 29),
 
               // Form Fields
               Container(
-                  height: 400,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                  height: 470,
+                      margin: const EdgeInsets.symmetric(horizontal: 19),
+                      padding: const EdgeInsets.all( 22),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFE9CB4),
                         borderRadius: BorderRadius.circular(0),
                       ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: Column(
                     children: [
+                       // Title
+              Text(
+                'My Profile',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF2C2C2C),
+                ),
+              ),
+               const SizedBox(height: 22),
+
                       _buildTextField('Change Name'),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 22),
                       _buildTextField('Enter New Password', isPassword: true),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 22),
                       _buildTextField('Change Phone Number', keyboardType: TextInputType.phone),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 22),
                       _buildButton('Log Out', () {
                         // Log out action
                       }),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 22),
                       _buildButton('Delete Account', () {
                         // Delete account action
                       }),
@@ -103,7 +105,7 @@ class MyProfileScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 29),
 
               // Save Button
               Padding(
@@ -116,7 +118,8 @@ class MyProfileScreen extends StatelessWidget {
                       // Save action
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      backgroundColor: Color(0xff3A3A3A),
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0),
                       ),
@@ -143,6 +146,7 @@ class MyProfileScreen extends StatelessWidget {
 
   Widget _buildTextField(String label, {bool isPassword = false, TextInputType keyboardType = TextInputType.text}) {
     return Container(
+      height: 55,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(0),
@@ -166,10 +170,10 @@ class MyProfileScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(0),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 14,
-          ),
+          // contentPadding: const EdgeInsets.symmetric(
+          //   horizontal: 20,
+          //   vertical: 14,
+          // ),
         ),
       ),
     );

@@ -1,136 +1,228 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myshetribe/screens/custom_bottom_bar.dart';
+import 'package:myshetribe/screens/authentication/view/login_screen.dart';
+import 'package:myshetribe/screens/authentication/view/signup_screen.dart';
+import 'package:myshetribe/screens/profile/view/profile_screen.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
+import 'package:video_player/video_player.dart';
 
-class AITribeMatchingScreen extends StatefulWidget {
-  const AITribeMatchingScreen({Key? key}) : super(key: key);
+class AiTribeMatching extends StatefulWidget {
+  const AiTribeMatching({Key? key}) : super(key: key);
 
   @override
-  State<AITribeMatchingScreen> createState() => _AITribeMatchingScreenState();
+  State<AiTribeMatching> createState() => _AiTribeMatchingState();
 }
 
-class _AITribeMatchingScreenState extends State<AITribeMatchingScreen> {
+class _AiTribeMatchingState extends State<AiTribeMatching> {
+  late VideoPlayerController _controller;
+  bool _isVideoInitialized = false;
+  bool _isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVideo();
+  }
+
+  void _initializeVideo() {
+    _controller = VideoPlayerController.asset('assets/video/ai_tribe.mp4')
+      ..initialize().then((_) {
+        setState(() {
+          _isVideoInitialized = true;
+          _controller.setLooping(true);
+        });
+      });
+    
+    // Listen to video state changes
+    _controller.addListener(() {
+      if (_controller.value.isPlaying != _isPlaying) {
+        setState(() {
+          _isPlaying = _controller.value.isPlaying;
+        });
+      }
+    });
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        _isPlaying = false;
+      } else {
+        _controller.play();
+        _isPlaying = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              // Logo Header
-              LogoHeader(),
-              const SizedBox(height: 29),
-              
-              // AI Tribe Matching Title
-              Text(
-                'AI Tribe Matching',
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF2C2C2C),
+        child: Stack(
+          children: [
+             Padding(
+               padding: const EdgeInsets.only(top: 10),
+               child: Image.asset(
+                    'assets/icons/Welcome_logo.png',
+                    height: 230,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                  ),
+             ),
+            Column(
+              children: [
+                const SizedBox(height: 205),
+                // Header Logo
+               
+            
+                // Welcome Title
+                Text(
+                  'AI Tribe Matching',
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF2C2C2C),
+                  ),
                 ),
-              ),
-              
-              const SizedBox(height: 29),
-              
-              // Main Content Container - SAME STRUCTURE AS VERIFICATION SCREEN
-              Container(
-                    height: 400,
-                margin: const EdgeInsets.symmetric(horizontal: 19),
-                // padding: const EdgeInsets.symmetric(horizontal: 24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFE9CB4),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                child: Container(
-                  color: Colors.white,
-                  margin: EdgeInsets.symmetric(horizontal: 22,vertical: 22),
-                 padding: const EdgeInsets.symmetric(horizontal: 22,vertical: 10),
-                  child: Column(
-                    children: [
-                      // Top Message
-                      Text(
-                        'We are working on matching you with your Tribe based on the profile.',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                       fontSize: MediaQuery.of(context).size.width*0.034,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF2C2C2C),
-                          height: 1.5,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 22),
-                      
-                      // Image
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(0),
-                        child: Image.asset(
-                          'assets/icons/tribe_matching.png',
-                          fit: BoxFit.cover,
+            
+                const SizedBox(height: 29),
+            
+                // Welcome Video with Play/Pause Button
+                SizedBox(
+                  height: 246,
+                  width: double.infinity,
+                  child: _isVideoInitialized
+                      ? GestureDetector(
+                          onTap: _togglePlayPause,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ClipRect(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 246,
+                                  child: FittedBox(
+                                    fit: BoxFit.cover,
+                                    child: SizedBox(
+                                      width: _controller.value.size.width,
+                                      height: _controller.value.size.height,
+                                      child: VideoPlayer(_controller),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Play/Pause Button Overlay
+                              AnimatedOpacity(
+                                opacity: !_isPlaying ? 1.0 : 0.0,
+                                duration: const Duration(milliseconds: 300),
+                                child: Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    _isPlaying ? Icons.pause : Icons.play_arrow,
+                                    color: Colors.white,
+                                    size: 40,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(
                           width: double.infinity,
-                          height: 200,
+                          height: 246,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFCCD9),
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                      
-                      const SizedBox(height: 22),
-                      
-                      // Bottom Message
-                      Text(
-                        'We will notify you when we have a match. Please go ahead and explore the app.',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                         fontSize: MediaQuery.of(context).size.width*0.034,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF2C2C2C),
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-              
-              const SizedBox(height: 29),
-              
-              // Main Menu Button
-              SizedBox(
-               width: MediaQuery.of(context).size.width*0.75,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainNavigationScreen(),
+                SizedBox(height: 29),
+                // Get Started Button
+                // SizedBox(
+                //   width: MediaQuery.of(context).size.width * 0.75,
+                //   height: 55,
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       _controller.pause();
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //               builder: (context) => SignUpScreen())).then((_) {
+                //         // Don't resume video when coming back
+                //       });
+                //     },
+                //     style: ElevatedButton.styleFrom(
+                //       elevation: 0,
+                //       backgroundColor: const Color(0xFFFB6F92),
+                //       shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(0),
+                //       ),
+                //     ),
+                //     child: Text(
+                //       'Get Started',
+                //       style: GoogleFonts.poppins(
+                //         fontSize: 18,
+                //         fontWeight: FontWeight.w600,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+            
+                // SizedBox(height: 29),
+            
+                // Login Button
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _controller.pause();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileSetupScreen())).then((_) {
+                        // Don't resume video when coming back
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: const Color(0xFF3A3A3A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: const Color(0xFF3A3A3A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: Text(
+                      'Continue',
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  child: Text(
-                    'Main Menu',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
                 ),
-              ),
-              
-              const SizedBox(height: 20),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );

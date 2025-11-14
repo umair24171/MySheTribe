@@ -16,9 +16,9 @@ class AccommodationArticleScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             LogoHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
@@ -30,13 +30,13 @@ class AccommodationArticleScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 29),
 
             // Content
             Expanded(
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(horizontal: 19),
+                padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(0),

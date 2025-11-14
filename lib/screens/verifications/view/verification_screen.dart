@@ -11,7 +11,7 @@ class VerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size=MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
       body: SafeArea(
@@ -36,125 +36,146 @@ class VerificationScreen extends StatelessWidget {
               
               // Main Content Container
               Container(
-                   height: 400,
+                height: 400,
+                alignment: Alignment.center,
                 margin: const EdgeInsets.symmetric(horizontal: 19),
-                // padding: const EdgeInsets.symmetric(horizontal: 24),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFE9CB4),
                   borderRadius: BorderRadius.circular(0),
                 ),
                 child: Container(
                   color: Colors.white,
-                  margin: EdgeInsets.symmetric(horizontal: 22,vertical: 22),
-                 padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 10),
+                  margin: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Safety Message
-                      Text(
-                        'To keep MySheTribe Safe, all\n members must complete identity verification by taking a selfie.\n Thank you.',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: size.width*0.032,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF2C2C2C),
-                          height: 1.5,
+                      // Circular Image with Camera Overlay
+                        //  const SizedBox(height: 44),
+                         const SizedBox(height: 66),
+                      Center(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // Background circular image
+                            Container(
+                              width: 180,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image:AssetImage('assets/icons/verification_Pic.png') , // Replace with your image
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            // CircleAvatar(radius: 90,backgroundColor: Colors.transparent ,child:Image.asset('assets/icons/verification_Pic.png',fit: BoxFit.contain,) ,),
+                            // Pink camera overlay
+                            Positioned(
+                              bottom: 40,
+                             
+                              child: Container(
+                                width: 92,
+                                height: 115,
+                                // decoration: BoxDecoration(
+                                //   color: const Color(0xFFFF9AB4),
+                                //   borderRadius: BorderRadius.circular(12),
+                                // ),
+                                child:
+                                Image.asset('assets/icons/ver_camera.png',fit: BoxFit.contain,)
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                         const SizedBox(height: 16),
-                  
-                      Image.asset('assets/icons/verification_camera.png',width: 77,height: 94,),
+                      const SizedBox(height: 4),
                       
-                      // // Camera Icon
-                      // Container(
-                      //   padding: const EdgeInsets.all(20),
-                      //   decoration: BoxDecoration(
-                      //     color: const Color(0xFF3A3A3A),
-                      //     borderRadius: BorderRadius.circular(12),
-                      //   ),
-                      //   child: const Icon(
-                      //     Icons.camera_alt,
-                      //     size: 50,
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
-                         const SizedBox(height: 16),
-                      
-                      // Instructions
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Instructions:',
-                          style: GoogleFonts.poppins(
-                          fontSize: size.width*0.032,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF2C2C2C),
+                      // Text with styled parts
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF2C2C2C),
+                              height: 1.5,
+                            ),
+                            children: [
+                              TextSpan(text: 'To ensure MySheTribe ',  style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF2C2C2C),
+                              height: 1.5,
+                            ),),
+                              TextSpan(
+                                text: 'is a women only',
+                                 style: GoogleFonts.poppins(
+                                  color: const Color(0xFFFF9AB4),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              TextSpan(text: ' platform, all members must '),
+                              TextSpan(
+                                text: 'complete identity verification',
+                                 style: GoogleFonts.poppins(
+                                  color: const Color(0xFFFF9AB4),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              TextSpan(text: ' by taking a selfie. Thank you.', style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF2C2C2C),
+                              height: 1.5,
+                            )),
+                            ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      
-                      // Instruction Items
-                      _buildInstruction('1. Find a place with good light'),
-                      const SizedBox(height: 10),
-                      _buildInstruction('2. Clear background'),
-                      const SizedBox(height: 10),
-                      _buildInstruction('3. Facing the camera press'),
-                      const SizedBox(height: 10),
-                      _buildInstruction('4. Hold until you get a green tick'),
-                      const SizedBox(height: 10),
-                      _buildInstruction('5. Red tick try again'),
-                      const SizedBox(height: 0),
-                      
-                      
+                   
+                   
                     ],
                   ),
                 ),
               ),
-                   const SizedBox(height: 29),
+              const SizedBox(height: 29),
+              
               // Submit Button
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.75,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>VerificationCompleteScreen(userName: 'Umair',)));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: const Color(0xFF3A3A3A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          'Login',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.75,
+                height: 55,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VerificationCompleteScreen(
+                          userName: 'Umair',
                         ),
                       ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: const Color(0xFF3A3A3A),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
                     ),
-                      // const SizedBox(height: 30),
-            
+                  ),
+                  child: Text(
+                    'Login',
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInstruction(String text,) {
-    //  var size=MediaQuery.of(context).size;
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: GoogleFonts.poppins(
-        fontSize:MediaQuery.of(navigatorKey!.currentContext!).size.width*0.032,
-          fontWeight: FontWeight.w700,
-          color: const Color(0xFF2C2C2C),
         ),
       ),
     );

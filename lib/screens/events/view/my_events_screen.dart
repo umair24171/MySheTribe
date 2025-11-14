@@ -48,7 +48,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
               LogoHeader(),
               // // Header
               // Padding(
@@ -118,7 +118,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               //   ),
               // ),
           
-              const SizedBox(height: 20),
+              const SizedBox(height: 29),
           
               // MyEvents Title
               Text(
@@ -130,12 +130,12 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 ),
               ),
           
-              const SizedBox(height: 25),
+              const SizedBox(height: 29),
           
               // Events List
              Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                        padding: const EdgeInsets.all(15),
+                                  margin: const EdgeInsets.symmetric(horizontal: 19),
+                        padding: const EdgeInsets.all(22),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFE9CB4),
                           borderRadius: BorderRadius.circular(0),
@@ -168,7 +168,8 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       ),
     );
   }
-Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
+
+ Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -179,8 +180,8 @@ Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        height: 90,
+        margin: const EdgeInsets.only(bottom: 22),
+        height: 55,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(0),
         ),
@@ -189,42 +190,54 @@ Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
           child: Row(
             children: [
               // Left side - Image (45% width)
-              Expanded(
-                flex: 45,
-                child: Container(
-                  height: 130,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(event['image']),
-                      fit: BoxFit.cover,
-                    ),
+              Container(
+                height: 55,
+                width: 98,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(event['image']),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
               // Right side - Gold section with label (55% width)
-              Expanded(
-                flex: 55,
-                child: Container(
-                  height: 130,
-                  color: const Color(0xFFD4A574),
-                  child: Align(
-                    alignment: Alignment(0, -0.99),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF000000),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Text(
-                        event['title'],
-                        style: GoogleFonts.poppins(
-                          fontSize: MediaQuery.of(context).size.width * 0.037,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFFD5A472),
+              Container(
+                height: 98,
+                width: MediaQuery.of(context).size.width*0.5,
+                color: const Color(0xFFD4A574),
+                child: Align(
+                  alignment: Alignment(0.7, -0.99),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 28,
+                        width: 154,
+                        // padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF000000),
+                          borderRadius: BorderRadius.circular(0),
                         ),
-                        textAlign: TextAlign.center,
+                        child: Text(
+                          event['title'],
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xFFD5A472),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
+                      Text(
+                     '14 February 2026',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF3A3A3A),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
+                    ],
                   ),
                 ),
               ),
@@ -234,7 +247,6 @@ Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
       ),
     );
   }
-
 }
 
 class DottedHeartPainter extends CustomPainter {

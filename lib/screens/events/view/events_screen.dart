@@ -38,10 +38,10 @@ class _EventsScreenState extends State<EventsScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               // Header with Logo
               LogoHeader(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 29),
               // Events Title
               Text(
                 'Events',
@@ -51,23 +51,24 @@ class _EventsScreenState extends State<EventsScreen> {
                       color: const Color(0xFF2C2C2C),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 29),
               // Featured Event Card
             _buildFeaturedEventCard(),
+            const SizedBox(height: 30),
             Container(
-               margin: const EdgeInsets.symmetric(horizontal: 10),
+               margin: const EdgeInsets.symmetric(horizontal: 19),
                 decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
+                        // color: const Color(0xFFFE9CB4),
                         borderRadius: BorderRadius.circular(0),
                       ),
               child: _buildDescriptionCard()),
                         // const SizedBox(height: 20),
                         // Upcoming Events Section
                         Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10),
-                      padding: const EdgeInsets.all(15),
+                                margin: const EdgeInsets.symmetric(horizontal: 19),
+                      padding: const EdgeInsets.all(22),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
+                        // color: const Color(0xFFFE9CB4),
                         borderRadius: BorderRadius.circular(0),
                       ),
                           child: Padding(
@@ -98,8 +99,8 @@ class _EventsScreenState extends State<EventsScreen> {
   }
   Widget _buildDescriptionCard() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: 22),
+      padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
         color: const Color(0xFFD5A472),
         borderRadius: BorderRadius.circular(0),
@@ -138,16 +139,17 @@ class _EventsScreenState extends State<EventsScreen> {
         Positioned(
            left: 0,
         right: 0,
-          bottom: 0,
+          bottom: -30,
+          // top: 10,
           child: Center(
             child: Container(
                 alignment: Alignment
                 .center,
-               width: MediaQuery.of(context).size.width*0.7,
+               width:191,
                height: 57,
               // padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(
-                color: const Color(0xFFD5A472),
+                color: const Color(0xFF000000),
                 borderRadius: BorderRadius.circular(0),
               ),
               child: Column(
@@ -158,7 +160,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2C2C2C),
+                      color: const Color(0xFFD5A472),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -168,7 +170,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2C2C2C),
+                  color: const Color(0xFFD5A472),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -180,6 +182,7 @@ class _EventsScreenState extends State<EventsScreen> {
       ],
     );
   }
+  
  Widget _buildUpcomingEventCard(Map<String, dynamic> event) {
     return GestureDetector(
       onTap: () {
@@ -191,8 +194,8 @@ class _EventsScreenState extends State<EventsScreen> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        height: 90,
+        margin: const EdgeInsets.only(bottom: 22),
+        height: 55,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(0),
         ),
@@ -201,42 +204,54 @@ class _EventsScreenState extends State<EventsScreen> {
           child: Row(
             children: [
               // Left side - Image (45% width)
-              Expanded(
-                flex: 45,
-                child: Container(
-                  height: 130,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(event['image']),
-                      fit: BoxFit.cover,
-                    ),
+              Container(
+                height: 55,
+                width: 98,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(event['image']),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
               // Right side - Gold section with label (55% width)
-              Expanded(
-                flex: 55,
-                child: Container(
-                  height: 130,
-                  color: const Color(0xFFD4A574),
-                  child: Align(
-                    alignment: Alignment(0, -0.99),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF000000),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Text(
-                        event['title'],
-                        style: GoogleFonts.poppins(
-                          fontSize: MediaQuery.of(context).size.width * 0.037,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFFD5A472),
+              Container(
+                height: 98,
+                width: MediaQuery.of(context).size.width*0.5,
+                color: const Color(0xFFD4A574),
+                child: Align(
+                  alignment: Alignment(0.7, -0.99),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 28,
+                        width: 154,
+                        // padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF000000),
+                          borderRadius: BorderRadius.circular(0),
                         ),
-                        textAlign: TextAlign.center,
+                        child: Text(
+                          event['title'],
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xFFD5A472),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
+                      Text(
+                     '14 February 2026',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF3A3A3A),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
+                    ],
                   ),
                 ),
               ),

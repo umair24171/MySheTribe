@@ -17,7 +17,7 @@ class ThankYouScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
- const SizedBox(height: 20),
+ const SizedBox(height: 10),
             LogoHeader(),
             // Header
             // Padding(
@@ -81,7 +81,7 @@ class ThankYouScreen extends StatelessWidget {
             //   ),
             // ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
@@ -94,7 +94,7 @@ class ThankYouScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 29),
 
             // Buttons
             Container(
@@ -110,7 +110,7 @@ class ThankYouScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
                     _buildButton(
                       'View Suggested resources',
                       () {
@@ -120,7 +120,7 @@ class ThankYouScreen extends StatelessWidget {
                       );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
                     _buildButton(
                       'Explore Support Hub',
                       () {
@@ -130,7 +130,7 @@ class ThankYouScreen extends StatelessWidget {
                       );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
                     _buildButton(
                       'Upcoming Events',
                       () {
@@ -140,6 +140,17 @@ class ThankYouScreen extends StatelessWidget {
                       );
                       },
                     ),
+                     const SizedBox(height: 22),
+                       _buildButton(
+                      'Useful Links',
+                      () {
+                          Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainNavigationScreen()),
+                      );
+                      },
+                    ),
+                     const SizedBox(height: 22),
                   ],
                 ),
               ),
@@ -159,7 +170,7 @@ class ThankYouScreen extends StatelessWidget {
   Widget _buildButton(String text, VoidCallback onPressed) {
     return SizedBox(
       width: double.infinity,
-      height: 73,
+      height: 55,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

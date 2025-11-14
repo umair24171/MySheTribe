@@ -32,9 +32,10 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
-       bottomNavigationBar: CustomBottomNavBar(selectedIndex:0 ,onItemTapped: (p0) {
-        
-      },),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: 0,
+        onItemTapped: (p0) {},
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -42,10 +43,10 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     // Logo Header
                     LogoHeader(),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 29),
                     
                     // Matched Tribe Title
                     Text(
@@ -57,208 +58,283 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 29),
                     
-                    // Main Content Container - FIXED HEIGHT 360
+                    // Main Content Container
                     Container(
-                      height: 400,
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      padding: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Container(
-                        color: Colors.white,
-                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        margin: const EdgeInsets.symmetric(horizontal: 19),
+                    padding: const EdgeInsets.all(22),
+                    // decoration: BoxDecoration(
+                    //   color: const Color(0xFFFE9CB4),
+                    //   borderRadius: BorderRadius.circular(0),
+                    // ),
+                      color: Colors.white,
+                      // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Profile Row - Photo, Name, Badge
+                          Row(
                             children: [
-                              // Profile Row - Photo, Name, Badge
-                              Row(
-                                children: [
-                                  // Profile Photo - Smaller
-                                  CircleAvatar(
-                                    radius: 28,
-                                    backgroundImage: NetworkImage(widget.imageUrl),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  
-                                  // Name
-                                  Expanded(
-                                    child: Text(
-                                      widget.name,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF2C2C2C),
-                                      ),
-                                    ),
-                                  ),
-                                  
-                                  // Percentage Badge
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFFD5A472),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      '${widget.matchPercentage}%',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF2C2C2C),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              // Profile Photo
+                              CircleAvatar(
+                                radius: 28,
+                                backgroundImage: NetworkImage(widget.imageUrl),
                               ),
+                              const SizedBox(width: 10),
                               
-                              const SizedBox(height: 10),
-                              
-                              // Bio
-                              Text(
-                                widget.bio,
-                                style: GoogleFonts.poppins(
-                                   fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF2C2C2C),
-                                  height: 1.3,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              
-                              const SizedBox(height: 12),
-                              
-                              // Shared Interests
-                              Text(
-                                'Shared Interests',
-                                style: GoogleFonts.poppins(
-                                   fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF2C2C2C),
+                              // Name
+                              Expanded(
+                                child: Text(
+                                  widget.name,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF2C2C2C),
+                                  ),
                                 ),
                               ),
                               
-                              const SizedBox(height: 8),
-                              
-                              // Interest Chips in 2 Column Grid
-                              Column(
-                                children: List.generate(
-                                  (widget.interests.length / 2).ceil(),
-                                  (rowIndex) {
-                                    final startIndex = rowIndex * 2;
-                                    final endIndex = (startIndex + 2) > widget.interests.length
-                                        ? widget.interests.length
-                                        : startIndex + 2;
-                                    final rowItems = widget.interests.sublist(startIndex, endIndex);
-
-                                    return Padding(
-                                      padding: const EdgeInsets.only(bottom: 6),
-                                      child: Row(
-                                        children: [
-                                          ...rowItems.map((interest) {
-                                            return Expanded(
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                  right: rowItems.indexOf(interest) == 0 ? 6 : 0,
-                                                ),
-                                                padding: const EdgeInsets.symmetric(
-                                                  horizontal: 0,
-                                                  vertical: 8,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: const Color(0xFF3A3A3A),
-                                                  borderRadius: BorderRadius.circular(0),
-                                                ),
-                                                child: Text(
-                                                  interest,
-                                                  textAlign: TextAlign.center,
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          if (rowItems.length == 1)
-                                            Expanded(child: SizedBox()),
-                                        ],
-                                      ),
-                                    );
-                                  },
+                              // Percentage Badge
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
                                 ),
-                              ),
-                              
-                              const SizedBox(height: 12),
-                              
-                              // Events She's Interested In
-                              Text(
-                                'Events She\'s Interested In',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF2C2C2C),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFD5A472),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                              
-                              const SizedBox(height: 6),
-                              
-                              // Events List
-                              ...widget.events.map((event) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 4.0),
-                                  child: Text(
-                                    '${event['name']} - ${event['date']}',
-                                    style: GoogleFonts.poppins(
-                                     fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                      color: const Color(0xFF2C2C2C),
-                                      height: 1.3,
-                                    ),
+                                child: Text(
+                                  '${widget.matchPercentage}%',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF2C2C2C),
                                   ),
-                                );
-                              }).toList(),
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 30),
-                    
-                    // Continue Button
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: const Color(0xFF3A3A3A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
+                          
+                          const SizedBox(height: 10),
+                          
+                          // Bio - No maxLines, full text
+                          Text(
+                            widget.bio,
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF2C2C2C),
+                              height: 1.3,
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Continue',
-                          style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                          
+                          const SizedBox(height: 12),
+                          
+                          // Shared Interests
+                          Text(
+                            'Shared Interests',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF2C2C2C),
+                            ),
                           ),
-                        ),
+                          
+                          const SizedBox(height: 4),
+                          
+                          // Interests as pink comma-separated text
+                          Text(
+                            widget.interests.join(', '),
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFFF9AB4),
+                              height: 1.3,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 12),
+                          
+                          // Events She's Interested In
+                          Text(
+                            'Events She\'s Interested In',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF2C2C2C),
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 4),
+                          
+                          // Events as pink comma-separated text
+                          Text(
+                            widget.events.map((e) => e['name']).join(', '),
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFFF9AB4),
+                              height: 1.3,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 12),
+                          
+                          // Available for meet ups
+                          Text(
+                            'Available for meet ups:',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF2C2C2C),
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 4),
+                          
+                          Text(
+                            'Weekends - Saturday & Sunday',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFFF9AB4),
+                              height: 1.3,
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 12),
+                          
+                          // Is this a match?
+                          Text(
+                            'Is this a match?',
+                            style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFF2C2C2C),
+                            ),
+                          ),
+                          
+                          const SizedBox(height: 8),
+                          
+                          // Three buttons row
+                          Row(
+                            children: [
+                              // Yes Button
+                              Expanded(
+                                child: SizedBox(
+                                  height: 25,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: const Color(0xFF3A3A3A),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Yes',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              
+                              // Pass Button
+                              Expanded(
+                                child: SizedBox(
+                                  height: 25,
+                                  child: OutlinedButton(
+                                    onPressed: () {},
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      side: const BorderSide(
+                                        color: Color(0xFF3A3A3A),
+                                        width: 1,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Pass',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xFF3A3A3A),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              
+                              // Chat Button
+                              Expanded(
+                                child: SizedBox(
+                                  height: 25,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(
+                                        color: Color(0xFF3A3A3A),
+                                        width: 1,
+                                      ),
+                                      elevation: 0,
+                                      backgroundColor: const Color(0xFFFF9AB4),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Chat',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          
+                          const SizedBox(height: 22),
+                          
+                          // Next Button
+                          SizedBox(
+                            width: double.infinity,
+                            height: 55  ,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                backgroundColor: const Color(0xFF3A3A3A),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
+                              ),
+                              child: Text(
+                                'Next',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     
@@ -269,64 +345,6 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
             ),
           ],
         ),
-      ),
-      // bottomNavigationBar: _buildBottomNavBar(),
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF3A3A3A),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      child: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        backgroundColor: Colors.transparent,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFFFFB6C8),
-        unselectedItemColor: const Color(0xFFFFB6C8),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        elevation: 0,
-        selectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-        unselectedLabelStyle: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'My Match',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            label: 'Events',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }

@@ -14,53 +14,60 @@ class PartnershipOffersScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-           const SizedBox(height: 20),
+           const SizedBox(height: 10),
           LogoHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
               'Partnership Offers',
               style: GoogleFonts.poppins(
-                fontSize: 30,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF2C2C2C),
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 29),
 
             // Images List
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: [
-                  // First Image - Grocery Shopping
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
-                      width: double.infinity,
-                      height: 280,
-                      fit: BoxFit.cover,
+              // height: 400,
+              child: Container(
+                 decoration: BoxDecoration(
+                        color: const Color(0xFFFE9CB4),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 19,vertical: 22),
+                  children: [
+                    // First Image - Grocery Shopping
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(0),
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
+                        width: double.infinity,
+                        height: 280,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Second Image - Clothing Store
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
-                      width: double.infinity,
-                      height: 280,
-                      fit: BoxFit.cover,
+                
+                    const SizedBox(height: 20),
+                
+                    // Second Image - Clothing Store
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(0),
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
+                        width: double.infinity,
+                        height: 280,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-
-                  const SizedBox(height: 30),
-                ],
+                
+                    const SizedBox(height: 30),
+                  ],
+                ),
               ),
             ),
 

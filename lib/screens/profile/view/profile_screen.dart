@@ -15,8 +15,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final _countryController = TextEditingController();
 
   String? _selectedAge;
-  String? _selectedLanguage;
-  String? _selectedProfession;
+  List<String> _selectedLanguages = [];
+  List<String> _selectedProfessions = [];
 
   final List<String> _ageRanges = [
     '18 - 28 years',
@@ -81,7 +81,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   LogoHeader(),
                   const SizedBox(height: 29),
                   Text(
-                    'Profile Set Up AI Tribe Matching',
+                    'Profile AI Tribe Matching',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -115,26 +115,28 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             hintText: 'Nationality',
                           ),
                           const SizedBox(height: 22),
-                          _buildSingleSelectField(
-                            selectedItem: _selectedLanguage,
+                          _buildMultiSelectField(
+                            selectedItems: _selectedLanguages,
                             hintText: 'Language',
+                            title: 'Select Languages',
                             items: _languages,
                             columns: 2,
-                            onChanged: (value) {
+                            onChanged: (values) {
                               setState(() {
-                                _selectedLanguage = value;
+                                _selectedLanguages = values;
                               });
                             },
                           ),
                           const SizedBox(height: 22),
-                          _buildSingleSelectField(
-                            selectedItem: _selectedProfession,
+                          _buildMultiSelectField(
+                            selectedItems: _selectedProfessions,
                             hintText: 'Profession',
+                            title: 'Select Professions',
                             items: _professions,
                             columns: 2,
-                            onChanged: (value) {
+                            onChanged: (values) {
                               setState(() {
-                                _selectedProfession = value;
+                                _selectedProfessions = values;
                               });
                             },
                           ),
@@ -233,10 +235,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     required int columns,
     required Function(String?) onChanged,
   }) {
-    final fieldKey = GlobalKey();
-
     return Container(
-      key: fieldKey,
       height: 55,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -244,9 +243,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       ),
       child: InkWell(
         onTap: () {
-          _showSingleSelectDropdown(
+          _showSingleSelectDialog(
             context: context,
-            fieldKey: fieldKey,
+            title: 'Select $hintText',
             items: items,
             selectedItem: selectedItem,
             columns: columns,
@@ -280,99 +279,183 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
   }
 
-  void _showSingleSelectDropdown({
+  Widget _buildMultiSelectField({
+    required List<String> selectedItems,
+    required String hintText,
+    required String title,
+    required List<String> items,
+    required int columns,
+    required Function(List<String>) onChanged,
+  }) {
+    return Container(
+      height: 55,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: InkWell(
+        onTap: () {
+          _showMultiSelectDialog(
+            context: context,
+            title: title,
+            items: items,
+            selectedItems: selectedItems,
+            columns: columns,
+            onChanged: onChanged,
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  selectedItems.isEmpty
+                      ? hintText
+                      : selectedItems.join(', '),
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF2C2C2C),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: const Color(0xFF2C2C2C),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showSingleSelectDialog({
     required BuildContext context,
-    required GlobalKey fieldKey,
+    required String title,
     required List<String> items,
     required String? selectedItem,
     required int columns,
     required Function(String?) onChanged,
   }) {
-    final RenderBox? renderBox =
-        fieldKey.currentContext?.findRenderObject() as RenderBox?;
-    if (renderBox == null) return;
+    String? tempSelected = selectedItem;
 
-    final position = renderBox.localToGlobal(Offset.zero);
-    final size = renderBox.size;
-    final screenHeight = MediaQuery.of(context).size.height;
-    
-    // Calculate available space below and above the field
-    final spaceBelow = screenHeight - (position.dy + size.height);
-    final spaceAbove = position.dy;
-    
-    // Determine if dropdown should appear above or below
-    final showAbove = spaceBelow < 150;
-    
-    // Calculate max height based on available space
-    final maxHeight = showAbove 
-        ? (spaceAbove - 10).clamp(150.0, 300.0)
-        : (spaceBelow - 20).clamp(150.0, 300.0);
-
-    showGeneralDialog(
+    showDialog(
       context: context,
-      barrierDismissible: true,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black26,
-      pageBuilder: (BuildContext buildContext, Animation animation,
-          Animation secondaryAnimation) {
+      builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return Stack(
-              children: [
-                Positioned(
-                  left: position.dx,
-                  top: showAbove 
-                      ? position.dy - maxHeight - 4
-                      : position.dy + size.height + 4,
-                  width: size.width,
-                  child: Material(
-                    elevation: 8,
-                    borderRadius: BorderRadius.circular(0),
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxHeight: maxHeight,
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF2C2C2C),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFCCD7),
-                        borderRadius: BorderRadius.circular(0),
+                    ),
+                    
+                    // Items List
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: columns == 1
+                            ? Column(
+                                children: items.map((item) {
+                                  return _buildDialogCheckboxItem(
+                                    item: item,
+                                    isSelected: tempSelected == item,
+                                    onTap: () {
+                                      setState(() {
+                                        tempSelected = item;
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              )
+                            : _buildDialogTwoColumnLayout(
+                                items: items,
+                                selectedItem: tempSelected,
+                                onTap: (item) {
+                                  setState(() {
+                                    tempSelected = item;
+                                  });
+                                },
+                              ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                    ),
+                    
+                    // Buttons
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
                         children: [
-                          Flexible(
-                            child: SingleChildScrollView(
-                              padding: const EdgeInsets.all(16),
-                              child: columns == 1
-                                  ? Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: items.map((item) {
-                                        return _buildCheckboxItem(
-                                          item: item,
-                                          isSelected: selectedItem == item,
-                                          onTap: () {
-                                            onChanged(item);
-                                            Navigator.of(context).pop();
-                                          },
-                                        );
-                                      }).toList(),
-                                    )
-                                  : _buildTwoColumnLayout(
-                                      items: items,
-                                      selectedItem: selectedItem,
-                                      onTap: (item) {
-                                        onChanged(item);
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                onChanged(tempSelected);
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2C2C2C),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              child: Text(
+                                'Done',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             );
           },
         );
@@ -380,7 +463,145 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
   }
 
-  Widget _buildTwoColumnLayout({
+  void _showMultiSelectDialog({
+    required BuildContext context,
+    required String title,
+    required List<String> items,
+    required List<String> selectedItems,
+    required int columns,
+    required Function(List<String>) onChanged,
+  }) {
+    List<String> tempSelected = List.from(selectedItems);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF2C2C2C),
+                        ),
+                      ),
+                    ),
+                    
+                    // Items List
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: columns == 1
+                            ? Column(
+                                children: items.map((item) {
+                                  return _buildDialogCheckboxItem(
+                                    item: item,
+                                    isSelected: tempSelected.contains(item),
+                                    onTap: () {
+                                      setState(() {
+                                        if (tempSelected.contains(item)) {
+                                          tempSelected.remove(item);
+                                        } else {
+                                          tempSelected.add(item);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              )
+                            : _buildDialogTwoColumnLayoutMulti(
+                                items: items,
+                                selectedItems: tempSelected,
+                                onTap: (item) {
+                                  setState(() {
+                                    if (tempSelected.contains(item)) {
+                                      tempSelected.remove(item);
+                                    } else {
+                                      tempSelected.add(item);
+                                    }
+                                  });
+                                },
+                              ),
+                      ),
+                    ),
+                    
+                    // Buttons
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                onChanged(tempSelected);
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2C2C2C),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              child: Text(
+                                'Done',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildDialogTwoColumnLayout({
     required List<String> items,
     required String? selectedItem,
     required Function(String) onTap,
@@ -390,7 +611,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
     for (int i = 0; i < items.length; i++) {
       final item = items[i];
-      final checkbox = _buildCheckboxItem(
+      final checkbox = _buildDialogCheckboxItem(
         item: item,
         isSelected: selectedItem == item,
         onTap: () => onTap(item),
@@ -412,6 +633,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             children: leftColumn,
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -422,7 +644,50 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
   }
 
-  Widget _buildCheckboxItem({
+  Widget _buildDialogTwoColumnLayoutMulti({
+    required List<String> items,
+    required List<String> selectedItems,
+    required Function(String) onTap,
+  }) {
+    List<Widget> leftColumn = [];
+    List<Widget> rightColumn = [];
+
+    for (int i = 0; i < items.length; i++) {
+      final item = items[i];
+      final checkbox = _buildDialogCheckboxItem(
+        item: item,
+        isSelected: selectedItems.contains(item),
+        onTap: () => onTap(item),
+      );
+
+      if (i % 2 == 0) {
+        leftColumn.add(checkbox);
+      } else {
+        rightColumn.add(checkbox);
+      }
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: leftColumn,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: rightColumn,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDialogCheckboxItem({
     required String item,
     required bool isSelected,
     required VoidCallback onTap,
@@ -433,35 +698,35 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.black : Colors.white,
-                border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(2),
-              ),
-              child: isSelected
-                  ? Icon(
-                      Icons.check,
-                      size: 12,
-                      color: Colors.white,
-                    )
-                  : null,
-            ),
-            const SizedBox(width: 12),
             Expanded(
               child: Text(
                 item,
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize: 15,
                   fontWeight: FontWeight.w400,
-                  color: Colors.black,
+                  color: const Color(0xFF2C2C2C),
                 ),
               ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: const Color(0xFF2C2C2C),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      size: 14,
+                      color: const Color(0xFF2C2C2C),
+                    )
+                  : null,
             ),
           ],
         ),

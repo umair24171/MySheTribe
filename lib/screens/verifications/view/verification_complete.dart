@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/screens/profile/view/profile_screen.dart';
+import 'package:myshetribe/screens/verifications/view/ai_tribe_matching.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
 class VerificationCompleteScreen extends StatelessWidget {
@@ -52,6 +53,7 @@ class VerificationCompleteScreen extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 22,vertical: 22),
                  padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 10),
                   child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Thank you message
                       Text(
@@ -60,47 +62,48 @@ class VerificationCompleteScreen extends StatelessWidget {
                         style: GoogleFonts.poppins(
                         fontSize:14,
                           fontWeight: FontWeight.w700,
-                          color: const Color(0xFF2C2C2C),
+                          color:  Colors.white,
                           height: 1.5,
                         ),
                       ),
                       const SizedBox(height: 22),
                       
                       // Profile Image Circle 
-                      Container(
-                        width: size.width*0.45,
-                        height: 181,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey[300],
-                          image: DecorationImage(
-                                  image: AssetImage('assets/icons/verification_Pic.png'!),
-                                  fit: BoxFit.cover,
-                                  
-                                )
-                              // : null,
-                        ),
-                        // child: profileImageUrl == null
-                        //     ? Icon(
-                        //         Icons.person,
-                        //         size: 80,
-                        //         color: Colors.grey[600],
-                        //       )
-                        //     : null,
-                      ),
-                      const SizedBox(height: 22),
+                     Container(
+                            width: 180,
+                            height: 180,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image:AssetImage('assets/icons/verification_Pic.png') , // Replace with your image
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                     
                       
                       // Continue message
-                      Text(
-                        'Please continue and complete you the AI Tribe Matching Profile so we can match you with your Tribe.',
+                        Text(
+                        'Thank you for verifying your identity.',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
-                         fontSize: 14,
+                        fontSize:16,
                           fontWeight: FontWeight.w700,
                           color: const Color(0xFF2C2C2C),
                           height: 1.5,
                         ),
-                      ),
+                                              ),
+                                               const SizedBox(height: 22),
+                      // Text(
+                      //   'Please continue and complete you the AI Tribe Matching Profile so we can match you with your Tribe.',
+                      //   textAlign: TextAlign.center,
+                      //   style: GoogleFonts.poppins(
+                      //    fontSize: 14,
+                      //     fontWeight: FontWeight.w700,
+                      //     color: const Color(0xFF2C2C2C),
+                      //     height: 1.5,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -115,7 +118,7 @@ class VerificationCompleteScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ProfileSetupScreen()),
+                      MaterialPageRoute(builder: (context) => AiTribeMatching()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

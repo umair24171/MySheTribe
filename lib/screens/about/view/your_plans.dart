@@ -1,45 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/screens/about/view/thank_you_screen.dart';
-import 'package:myshetribe/screens/about/view/your_plans.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
-class WhatAreYourPlansScreen extends StatefulWidget {
-  const WhatAreYourPlansScreen({Key? key}) : super(key: key);
+class YourPlans extends StatefulWidget {
+  const YourPlans({Key? key}) : super(key: key);
 
   @override
-  State<WhatAreYourPlansScreen> createState() => _WhatAreYourPlansScreenState();
+  State<YourPlans> createState() => _YourPlansState();
 }
 
-class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
-  String? _selectedRelocatingDate;
-  String? _selectedVisaApplied;
+class _YourPlansState extends State<YourPlans> {
   String? _selectedVisaType;
   String? _selectedVisaInfo;
   String? _selectedSupport;
   String? _selectedBuddy;
-  String? _selectedRelocatingWith;
-  String? _selectedUAEEmirate;
-  
-  final List<String> _relocatingDates = [
-    'Within 1 month',
-    '1-3 months',
-    '3-6 months',
-    '6-12 months',
-    'More than 1 year',
-    'Not sure yet',
-  ];
-  
-  final List<String> _uaeEmirates = [
-    'Abu Dhabi',
-    'Dubai',
-    'Sharjah',
-    'Ajman',
-    'Umm Al Quwain',
-    'Ras Al Khaimah',
-    'Fujairah',
-  ];
 
   final List<String> _yesNoOptions = [
     'Yes',
@@ -63,13 +39,6 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
     'Legal/Documentation',
     'Community/Networking',
     'All of the above',
-  ];
-
-  final List<String> _relocatingWith = [
-    'Alone',
-    'Partner',
-    'Family',
-    'Friends',
   ];
 
   @override
@@ -102,73 +71,70 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
 
               // Main Content Container
               Container(
-                height: 400,
                 margin: const EdgeInsets.symmetric(horizontal: 19),
-                padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFE9CB4),
                   borderRadius: BorderRadius.circular(0),
                 ),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 22),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 22),
-                      // Who are you relocating with?
+                      // If Yes which visa do you hold?
                       _buildSingleSelectField(
-                        selectedItem: _selectedRelocatingWith,
-                        hintText: 'Who are you relocating with?',
-                        title: 'Who are you relocating with?',
-                        items: _relocatingWith,
+                        selectedItem: _selectedVisaType,
+                        hintText: 'If Yes which visa do you hold?',
+                        title: 'If Yes which visa do you hold?',
+                        items: _visaTypes,
                         onChanged: (value) {
                           setState(() {
-                            _selectedRelocatingWith = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 22),
-                      
-                      // Which UAE Emirate are you relocating to?
-                      _buildSingleSelectField(
-                        selectedItem: _selectedUAEEmirate,
-                        hintText: 'Which UAE Emirate are you relocating to?',
-                        title: 'Which UAE Emirate are you relocating to?',
-                        items: _uaeEmirates,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedUAEEmirate = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 22),
-                      
-                      // Date when are you planning to relocating?
-                      _buildSingleSelectField(
-                        selectedItem: _selectedRelocatingDate,
-                        hintText: 'Date when are you planning to relocating?',
-                        title: 'Date when are you planning to relocating?',
-                        items: _relocatingDates,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedRelocatingDate = value;
+                            _selectedVisaType = value;
                           });
                         },
                       ),
                       const SizedBox(height: 22),
 
-                      // Have you applied for your visa?
+                      // If No do you require info about visa options
                       _buildSingleSelectField(
-                        selectedItem: _selectedVisaApplied,
-                        hintText: 'Have you applied for your visa?',
-                        title: 'Have you applied for your visa?',
+                        selectedItem: _selectedVisaInfo,
+                        hintText: 'If No do you require info about visa options',
+                        title: 'If No do you require info about visa options',
                         items: _yesNoOptions,
                         onChanged: (value) {
                           setState(() {
-                            _selectedVisaApplied = value;
+                            _selectedVisaInfo = value;
                           });
                         },
                       ),
                       const SizedBox(height: 22),
+
+                      // What support do you require?
+                      _buildSingleSelectField(
+                        selectedItem: _selectedSupport,
+                        hintText: 'What support do you require?',
+                        title: 'What support do you require?',
+                        items: _supportOptions,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedSupport = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 22),
+
+                      // Would you like to be paired with a buddy?
+                      _buildSingleSelectField(
+                        selectedItem: _selectedBuddy,
+                        hintText: 'Would you like to be paired with a buddy?',
+                        title: 'Would you like to be paired with a buddy?',
+                        items: _yesNoOptions,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedBuddy = value;
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -184,7 +150,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => YourPlans(),
+                        builder: (context) => ThankYouScreen(),
                       ),
                     );
                   },
@@ -205,6 +171,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

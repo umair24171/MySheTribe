@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/screens/accomodation/view/accomodation_screen.dart';
 import 'package:myshetribe/screens/accomodation/view/public_services.dart';
+import 'package:myshetribe/screens/accomodation_guide/view/accomodation_guide_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/screens/employment/view/employment_screen.dart';
 import 'package:myshetribe/screens/health/view/health_screen.dart';
@@ -66,10 +67,10 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     // Logo and Branding Header
                     LogoHeader(),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 29),
                     
                     // Support Hub Title
                     Text(
@@ -81,12 +82,12 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 29),
                     
                     // Main Content Container - FIXED HEIGHT 360
                     Container(
                       height: 500,
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(horizontal: 19),
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFE9CB4),
@@ -94,8 +95,8 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                       ),
                       child: Container(
                         // color: Colors.white,
-                        // margin: EdgeInsets.only(top: 10),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0).copyWith(top: 15),
+                       margin: const EdgeInsets.symmetric(horizontal: 22),
+                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0).copyWith(top: 22,bottom: 2),
                         child: Column(
                           children: [
                             // Grid of Menu Items
@@ -107,7 +108,7 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
-                                    mainAxisExtent: 115,
+                                    mainAxisExtent: 110,
                                 ),
                                 itemCount: _menuItems.length,
                                 itemBuilder: (context, index) {
@@ -120,7 +121,7 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                               ),
                             ),
                             
-                            // const SizedBox(height: 15),
+                            const SizedBox(height: 22),
                             
                             // Partnership Banner
                             Container(
@@ -223,7 +224,7 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
       case 'accommodation':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AccommodationScreen()),
+          MaterialPageRoute(builder: (context) => AccommodationGuideScreen()),
         );
         break;
       case 'employment':
@@ -241,7 +242,7 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
       case 'immigration':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ImmigrationScreen()),
+          MaterialPageRoute(builder: (context) => LegalScreen()),
         );
         break;
       case 'legal':

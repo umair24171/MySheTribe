@@ -80,10 +80,10 @@ Widget build(BuildContext context) {
                     color: const Color(0xFFFFB6C8), // Keep this darker pink
                     child: Column(
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         // Logo and Branding Header
                         LogoHeader(),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 29),
                         // MyMatches Title
                         Text(
                           'MyTribe Matches',
@@ -93,7 +93,7 @@ Widget build(BuildContext context) {
                              color: Color(0xFF3A3A3A),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 29),
                           // Welcome Video
             SizedBox(
               height: 246,
@@ -127,9 +127,11 @@ Widget build(BuildContext context) {
                   ),
                   // Cards Section (Lighter Pink Background)
                   Container(
-                    width: MediaQuery.of(context).size.width*0.93,
-                    color: Color(0xffFe9cb4),
-                    padding: const EdgeInsets.only(bottom: 20),
+                     margin: const EdgeInsets.symmetric(horizontal: 19),
+                      padding: const EdgeInsets.all(22),
+                    // width: MediaQuery.of(context).size.width*0.93,
+                    // color: Color(0xffFe9cb4),
+                    // padding: const EdgeInsets.only(bottom: 20),
                     child: Column(
                       children: _matches.map((match) => _buildMatchCard(match)).toList(),
                     ),
@@ -145,172 +147,214 @@ Widget build(BuildContext context) {
   );
 }
 Widget _buildMatchCard(Map<String, dynamic> match) {
-  return Container(
-    margin: const EdgeInsets.only(left: 10, right: 10, bottom: 15, top: 15),
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(0),
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Profile Photo
-        CircleAvatar(
-          radius: 35,
-          backgroundImage: NetworkImage(match['image']),
-        ),
-        const SizedBox(width: 12),
-        
-        // Match Info
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Category Title
-              Text(
-                match['category'],
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2C2C2C),
-                ),
-              ),
-              const SizedBox(height: 2),
-              
-              // Name
-              Text(
-                match['name'],
-                style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF2C2C2C),
-                ),
-              ),
-              const SizedBox(height: 4),
-              
-              // Bio
-              Text(
-                match['bio'],
-                style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF2C2C2C),
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 12),
-              
-              // Buttons Row
-              Row(
-                children: [
-                  // Yes Button
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {
-                           _controller.pause();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MatchDetailScreen(
-                                name: 'Sarah M.',
-                                imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                                matchPercentage: 82,
-                                bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
-                                interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
-                                events: [
-                                  {'name': 'MyShe Brunch', 'date': 'Nov 20'},
-                                  {'name': 'Yoga in the Park', 'date': 'Nov 26'},
-                                  {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
-                                ],
+  return GestureDetector(
+    onTap: () {
+          _controller.pause();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MatchDetailScreen(
+                                  name: 'Sarah M.',
+                                  imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                                  matchPercentage: 82,
+                                  bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
+                                  interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
+                                  events: [
+                                    {'name': 'MyShe Brunch', 'date': 'Nov 20'},
+                                    {'name': 'Yoga in the Park', 'date': 'Nov 26'},
+                                    {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
+                                  ],
+                                ),
                               ),
-                            ),
-                          ).then((_) {
-                    // Resume video when coming back
-                    if (_isVideoInitialized) {
-                      _controller.play();
-                    }
-                  });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: const Color(0xFF3A3A3A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          'Yes',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  
-                  // Pass Button
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      child: OutlinedButton(
-                        onPressed: () {
-                           _controller.pause();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MatchDetailScreen(
-                                name: 'Sarah M.',
-                                imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                                matchPercentage: 82,
-                                bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
-                                interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
-                                events: [
-                                  {'name': 'MyShe Brunch', 'date': 'Nov 20'},
-                                  {'name': 'Yoga in the Park', 'date': 'Nov 26'},
-                                  {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
-                                ],
-                              ),
-                            ),
-                          ).then((_) {
-                    // Resume video when coming back
-                    if (_isVideoInitialized) {
-                      _controller.play();
-                    }
-                  });
-                        },
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          side: const BorderSide(
-                            color: Color(0xFF3A3A3A),
-                            width: 2,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          'Pass',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xFF2C2C2C),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                            ).then((_) {
+                      // Resume video when coming back
+                      if (_isVideoInitialized) {
+                        _controller.play();
+                      }
+                    });
+    },
+    child: Container(
+      height: 55,
+      margin: const EdgeInsets.only(left: 0, right: 0, bottom: 22, top: 0),
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Profile Photo
+          CircleAvatar(
+            radius: 35,
+            backgroundImage: NetworkImage(match['image']),
           ),
-        ),
-      ],
+          const SizedBox(width: 12),
+          
+          // Match Info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Category Title
+                Row(
+                  children: [
+                    Text(
+                      'Culture Match',
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF2C2C2C),
+                      ),
+                    ),
+                     Text(
+                    '- Julia',
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF3A3A3A),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                
+                // Name
+                Text(
+                  match['name'],
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF2C2C2C),
+                  ),
+                ),
+                // const SizedBox(height: 4),
+                
+                // // Bio
+                // Text(
+                //   match['bio'],
+                //   style: GoogleFonts.poppins(
+                //     fontSize: 10,
+                //     fontWeight: FontWeight.w400,
+                //     color: const Color(0xFF2C2C2C),
+                //     height: 1.4,
+                //   ),
+                // ),
+                // const SizedBox(height: 12),
+                
+                // // Buttons Row
+                // Row(
+                //   children: [
+                //     // Yes Button
+                //     Expanded(
+                //       child: SizedBox(
+                //         height: 40,
+                //         child: ElevatedButton(
+                //           onPressed: () {
+                    //          _controller.pause();
+                    //         Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) => MatchDetailScreen(
+                    //               name: 'Sarah M.',
+                    //               imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                    //               matchPercentage: 82,
+                    //               bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
+                    //               interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
+                    //               events: [
+                    //                 {'name': 'MyShe Brunch', 'date': 'Nov 20'},
+                    //                 {'name': 'Yoga in the Park', 'date': 'Nov 26'},
+                    //                 {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ).then((_) {
+                    //   // Resume video when coming back
+                    //   if (_isVideoInitialized) {
+                    //     _controller.play();
+                    //   }
+                    // });
+                //           },
+                //           style: ElevatedButton.styleFrom(
+                //             elevation: 0,
+                //             backgroundColor: const Color(0xFF3A3A3A),
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(0),
+                //             ),
+                //           ),
+                //           child: Text(
+                //             'Yes',
+                //             style: GoogleFonts.poppins(
+                //               fontSize: 14,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.white,
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(width: 10),
+                    
+                //     // Pass Button
+                //     Expanded(
+                //       child: SizedBox(
+                //         height: 40,
+                //         child: OutlinedButton(
+                //           onPressed: () {
+                //              _controller.pause();
+                //             Navigator.push(
+                //               context,
+                //               MaterialPageRoute(
+                //                 builder: (context) => MatchDetailScreen(
+                //                   name: 'Sarah M.',
+                //                   imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                //                   matchPercentage: 82,
+                //                   bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
+                //                   interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
+                //                   events: [
+                //                     {'name': 'MyShe Brunch', 'date': 'Nov 20'},
+                //                     {'name': 'Yoga in the Park', 'date': 'Nov 26'},
+                //                     {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
+                //                   ],
+                //                 ),
+                //               ),
+                //             ).then((_) {
+                //       // Resume video when coming back
+                //       if (_isVideoInitialized) {
+                //         _controller.play();
+                //       }
+                //     });
+                //           },
+                //           style: OutlinedButton.styleFrom(
+                //             backgroundColor: Colors.white,
+                //             side: const BorderSide(
+                //               color: Color(0xFF3A3A3A),
+                //               width: 2,
+                //             ),
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(0),
+                //             ),
+                //           ),
+                //           child: Text(
+                //             'Pass',
+                //             style: GoogleFonts.poppins(
+                //               fontSize: 14,
+                //               fontWeight: FontWeight.w500,
+                //               color: const Color(0xFF2C2C2C),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+             
+             
+              ],
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

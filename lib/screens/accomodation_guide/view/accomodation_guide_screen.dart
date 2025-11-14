@@ -27,9 +27,9 @@ class AccommodationGuideScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             LogoHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
@@ -41,7 +41,7 @@ class AccommodationGuideScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 29),
 
             // Content
             Expanded(
@@ -51,14 +51,14 @@ class AccommodationGuideScreen extends StatelessWidget {
                     // Hero Image
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 0),
-                      height: 280,
+                      height: 246,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(0),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(0),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800',
+                        child: Image.asset(
+                          'assets/icons/legal_image.png',
                           width: double.infinity,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
@@ -73,8 +73,8 @@ class AccommodationGuideScreen extends StatelessWidget {
 
                     // Description Section
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.all(15),
+                     margin: const EdgeInsets.symmetric(horizontal: 19),
+                      padding: const EdgeInsets.all(22),
                       decoration: BoxDecoration(
                        color: const Color(0xFFFE9CB4),
                         borderRadius: BorderRadius.circular(0),
@@ -125,7 +125,7 @@ class AccommodationGuideScreen extends StatelessWidget {
                           crossAxisCount: 2,
                           crossAxisSpacing: 15,
                           mainAxisSpacing: 15,
-                          mainAxisExtent: 60,
+                          mainAxisExtent: 47,
                         ),
                         itemCount: _buttonTitles.length,
                         itemBuilder: (context, index) {
@@ -165,7 +165,7 @@ class AccommodationGuideScreen extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               color: Colors.white,
               height: 1.3,

@@ -63,10 +63,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     // Logo and Branding Header
                     LogoHeader(),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 29),
                     
                     // Main Menu Title
                     Text(
@@ -78,12 +78,12 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 29),
                     
                     // Main Content Container - FIXED HEIGHT 360
                     Container(
                       height: 400,
-                      margin: const EdgeInsets.symmetric(horizontal: 0),
+                      margin: const EdgeInsets.symmetric(horizontal: 19),
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFE9CB4),
@@ -91,8 +91,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                       ),
                       child: Container(
                         // color: Colors.white,
-                       margin: const EdgeInsets.symmetric(horizontal: 15),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0).copyWith(top: 15),
+                       margin: const EdgeInsets.symmetric(horizontal: 22),
+                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0).copyWith(top: 22,bottom: 2),
                         child: GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -100,7 +100,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                             crossAxisCount: 2,
                             crossAxisSpacing: 15,
                             mainAxisSpacing: 15,
-                            mainAxisExtent: 115,
+                            mainAxisExtent: 110,
                           ),
                           itemCount: _menuItems.length,
                           itemBuilder: (context, index) {

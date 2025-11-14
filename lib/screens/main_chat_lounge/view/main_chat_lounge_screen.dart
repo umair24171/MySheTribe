@@ -39,11 +39,11 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     // Logo and Branding Header
                     LogoHeader(),
                     
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 29),
                     // Main Chat Lounge Title
                     Text(
                       'Access Tribe Chat Lounges',
@@ -53,7 +53,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                         color: const Color(0xFF2C2C2C),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 29),
                     // Background Image Section
                     Container(
                       width: double.infinity,
@@ -69,12 +69,12 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    // const SizedBox(height: 22),
                     // Access Chats Here Section with Pink Background
                     Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      padding: const EdgeInsets.all(15),
+                      margin: const EdgeInsets.symmetric(horizontal: 19),
+                      padding: const EdgeInsets.all(22),
                       // decoration: BoxDecoration(
                       //   color: const Color(0xFFFe9cb4),
                       //   borderRadius: BorderRadius.circular(0),
@@ -95,7 +95,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -109,8 +109,9 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
 
  Widget _buildChatItem(Map<String, dynamic> chat) {
   return Container(
-    margin: const EdgeInsets.only(bottom: 15),
+    margin: const EdgeInsets.only(bottom: 22),
     padding: const EdgeInsets.all(0),
+    height: 55,
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(0),
@@ -134,7 +135,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
             borderRadius: BorderRadius.circular(0),
             child: Image.network(
               chat['image'],
-              width: 134,
+              width: 105,
               height: 80,
               fit: BoxFit.cover,
             ),
@@ -146,7 +147,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
               child: Text(
                 chat['name'],
                 style: GoogleFonts.poppins(
-                  fontSize: MediaQuery.of(context).size.width*0.03,
+                  fontSize: MediaQuery.of(context).size.width*0.026,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF2C2C2C),
                 ),

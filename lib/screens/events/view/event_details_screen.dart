@@ -43,10 +43,10 @@ Widget build(BuildContext context) {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             // Header Logo
             LogoHeader(),
-            const SizedBox(height: 25),
+            const SizedBox(height: 29),
             // Event Title
             Text(
               eventTitle,
@@ -56,7 +56,7 @@ Widget build(BuildContext context) {
                 color: const Color(0xFF2C2C2C),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
             // Event Image
             Container(
               width: double.infinity,
@@ -68,117 +68,133 @@ Widget build(BuildContext context) {
                 ),
               ),
             ),
-            // Overlapping Gold Container (using Transform to move it up)
+            // Overlapping Gold Container with Button
             Transform.translate(
               offset: const Offset(0, -80), // Moves it up by 80px to overlap
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFD4A574),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Event Details
-                      _buildDetailRow(Icons.calendar_today, date),
-                      const SizedBox(height: 6),
-                      _buildDetailRow(Icons.location_on, location),
-                      const SizedBox(height: 6),
-                      _buildDetailRow(Icons.checkroom, dresscode),
-                      const SizedBox(height: 20),
-                      // Name Field
-                      _buildTextField('Name', _nameController),
-                      const SizedBox(height: 12),
-                      // Email Field
-                      _buildTextField('Email', _emailController),
-                      const SizedBox(height: 18),
-                      // Payment Method
-                      Text(
-                        'Payment Method',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF2C2C2C),
-                        ),
+                padding: const EdgeInsets.symmetric(horizontal: 19),
+              
+                child: Stack(
+                  clipBehavior: Clip.none, // Allow button to overflow
+                  children: [
+                    // Golden Container
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        left: 22,
+                        right: 22,
+                        bottom: 47.5, // Add extra bottom padding to account for half button height
                       ),
-                      const SizedBox(height: 10),
-                      // Payment Options
-                      Row(
-                        children: [
-                          _buildRadioOption('Credit Card', 'credit_card'),
-                          const SizedBox(width: 30),
-                          _buildRadioOption('Apple Pay', 'apple_pay'),
-                        ],
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFD4A574),
+                        borderRadius: BorderRadius.circular(0),
                       ),
-                      const SizedBox(height: 18),
-                      // Total
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Event Details
+                          _buildDetailRow(Icons.calendar_today, date),
+                          const SizedBox(height: 6),
+                          _buildDetailRow(Icons.location_on, location),
+                          const SizedBox(height: 6),
+                          _buildDetailRow(Icons.checkroom, dresscode),
+                          const SizedBox(height: 22),
+                          // Name Field
+                          _buildTextField('Name', _nameController),
+                          const SizedBox(height: 22),
+                          // Email Field
+                          _buildTextField('Email', _emailController),
+                          const SizedBox(height: 22),
+                          // Payment Method
                           Text(
-                            'Total',
+                            'Payment Method',
                             style: GoogleFonts.poppins(
                               fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: const Color(0xFF2C2C2C),
                             ),
                           ),
-                          Text(
-                            'AED ${price.toInt()}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xFF2C2C2C),
-                            ),
+                          const SizedBox(height: 22),
+                          // Payment Options
+                          Row(
+                            children: [
+                              _buildRadioOption('Credit Card', 'credit_card'),
+                              const SizedBox(width: 30),
+                              _buildRadioOption('Apple Pay', 'apple_pay'),
+                            ],
+                          ),
+                          const SizedBox(height: 22),
+                          // Total
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                              Text(
+                                'AED ${price.toInt()}',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 22),
+                          // Terms Checkbox
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: Checkbox(
+                                  value: _agreedToTerms,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _agreedToTerms = value ?? false;
+                                    });
+                                  },
+                                  side: const BorderSide(
+                                     color: const Color(0xFF000000),
+                                    width: 2,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(3),
+                                  ),
+                                  activeColor: Colors.transparent,
+                                  checkColor: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'I agree to terms & conditions',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFF000000),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(height: 15),
-                      // Terms Checkbox
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: Checkbox(
-                              value: _agreedToTerms,
-                              onChanged: (value) {
-                                setState(() {
-                                  _agreedToTerms = value ?? false;
-                                });
-                              },
-                              side: const BorderSide(
-                                color: Color(0xFF2C2C2C),
-                                width: 2,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                              activeColor: Colors.transparent,
-                              checkColor: const Color(0xFF2C2C2C),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'I agree to terms & conditions',
-                              style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xFF2C2C2C),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 18),
-                      // Pay Button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
+                    ),
+                    // Positioned Pay Button - Half in, Half out
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: -27.5, // Half of the button height (55 / 2)
+                      child: Container(
+                        height: 55,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -192,7 +208,7 @@ Widget build(BuildContext context) {
                             backgroundColor: const Color(0xFF000000),
                             disabledBackgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(0),
                             ),
                           ),
                           child: Text(
@@ -205,11 +221,12 @@ Widget build(BuildContext context) {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
+            // Add some bottom spacing to account for the button overflow
             const SizedBox(height: 20),
           ],
         ),
@@ -240,57 +257,44 @@ Widget build(BuildContext context) {
   }
 
   Widget _buildTextField(String label, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Text(
-        //   label,
-        //   style: GoogleFonts.poppins(
-        //     fontSize: 16,
-        //     fontWeight: FontWeight.w600,
-        //     color: const Color(0xFF2C2C2C),
-        //   ),
-        // ),
-        // const SizedBox(height: 6),
-        Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFFD4A574),
-            border: Border.all(
-              color: const Color(0xFF2C2C2C),
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: TextField(
-            controller: controller,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFF2C2C2C),
-            ),
-            decoration:  InputDecoration(
-              hint:  Text(
-          label,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xFF2C2C2C),
+    return Container(
+      height: 55,
+      decoration: BoxDecoration(
+        color: const Color(0xFFD4A574),
+        border: Border.all(
+          color: const Color(0xFF2C2C2C),
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: TextField(
+        controller: controller,
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xFF2C2C2C),
+        ),
+        decoration:  InputDecoration(
+          hint:  Text(
+      label,
+      style: GoogleFonts.poppins(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: const Color(0xFF2C2C2C),
+      ),
+    ),
+          hintStyle:  GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xFF2C2C2C),
+        ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 12,
+            // vertical: 10,
           ),
         ),
-              hintStyle:  GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFF2C2C2C),
-            ),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 

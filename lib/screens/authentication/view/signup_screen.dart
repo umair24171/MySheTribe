@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                     const SizedBox(height: 29),
                 Container(
-                  height: 450,
+                  height: 400,
                    margin: const EdgeInsets.symmetric(horizontal: 19),
                       color: Color(0xffFe9cb4),
                   child: Padding(
@@ -89,25 +89,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       icon: Icons.phone,
                       keyboardType: TextInputType.phone,
                     ),
-                     const SizedBox(height: 22),
-                    // Password Field
-                    _buildTextField(
-                      controller: _passwordController,
-                      hintText: 'Enter Location (City/Country)',
-                      icon: Icons.location_city,
-                      obscureText: _obscurePassword,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
-                    ),
+                    //  const SizedBox(height: 22),
+                    // // Password Field
+                    // _buildTextField(
+                    //   controller: _passwordController,
+                    //   hintText: 'Enter Location (City/Country)',
+                    //   icon: Icons.location_city,
+                    //   obscureText: _obscurePassword,
+                    //   suffixIcon: IconButton(
+                    //     icon: Icon(
+                    //       _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    //       color: Colors.black,
+                    //     ),
+                    //     onPressed: () {
+                    //       setState(() {
+                    //         _obscurePassword = !_obscurePassword;
+                    //       });
+                    //     },
+                    //   ),
+                    // ),
                     const SizedBox(height: 22),
                     // Password Field
                     _buildTextField(
@@ -127,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 3),
+                      const SizedBox(height: 22),
                       // Terms and Privacy
                 Padding(
   padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     textAlign: TextAlign.center,
     text: TextSpan(
       style: GoogleFonts.poppins(
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: const Color(0xFF2C2C2C),
       ),
@@ -146,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w400,
-            fontSize: 12,
+            fontSize: 14,
           ),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
@@ -164,7 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontWeight: FontWeight.w400,
-            fontSize: 12,
+            fontSize: 14,
           ),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
@@ -181,7 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ),
   ),
 ),
-                  // const SizedBox(height:12),
+                  // const SizedBox(height:14),
                    const SizedBox(height: 6),
                   // Already have account
                   Row(
@@ -190,7 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Text(
                         'Already have an account? ',
                         style: GoogleFonts.poppins(
-                           fontSize: 12,
+                           fontSize: 14,
                             fontWeight: FontWeight.w400,
                           color: const Color(0xFF2C2C2C),
                         ),
@@ -202,7 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Text(
                           'Login',
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Colors.white,
                            fontWeight: FontWeight.w400,
                           ),
