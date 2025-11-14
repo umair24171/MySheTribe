@@ -66,11 +66,11 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     // Logo and Branding Header
                     LogoHeader(),
-                    const SizedBox(height: 20),
-                    
+                    const SizedBox(height: 29),
+
                     // Support Hub Title
                     Text(
                       'Support Hub',
@@ -80,8 +80,8 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                         color: const Color(0xFF2C2C2C),
                       ),
                     ),
-                    
-                    const SizedBox(height: 10),
+
+                    const SizedBox(height: 29),
                     
                     // Main Content Container - FIXED HEIGHT 360
                     Container(
@@ -119,9 +119,9 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                                 },
                               ),
                             ),
-                            
-                            // const SizedBox(height: 15),
-                            
+
+                            const SizedBox(height: 22),
+
                             // Partnership Banner
                             Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
