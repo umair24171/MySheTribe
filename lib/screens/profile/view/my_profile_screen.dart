@@ -256,9 +256,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                 const SizedBox(height: 20),
+                 const SizedBox(height: 10),
               LogoHeader(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 29),
 
                   // Title
                   Text(
@@ -270,7 +270,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 29),
 
                   // Profile Picture
                   Stack(
@@ -344,36 +344,36 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 29),
 
                   // Form Fields
                   Container(
                       height: 400,
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          margin: const EdgeInsets.symmetric(horizontal: 19),
+                          padding: const EdgeInsets.all(22),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFE9CB4),
                             borderRadius: BorderRadius.circular(0),
                           ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
                       child: Column(
                         children: [
                           _buildTextField('Change Name', controller: _nameController),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 22),
                           _buildTextField('Enter New Password', isPassword: true, controller: _passwordController),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 22),
                           _buildTextField('Change Phone Number', keyboardType: TextInputType.phone, controller: _phoneController),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 22),
                           _buildButton('Log Out', _isProcessing ? null : _logout),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 22),
                           _buildButton('Delete Account', _isProcessing ? null : _deleteAccount),
                         ],
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 29),
 
                   // Save Button
                   Padding(
