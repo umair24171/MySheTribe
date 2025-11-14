@@ -79,10 +79,10 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               LogoHeader(),
-              const SizedBox(height: 20),
-        
+              const SizedBox(height: 29),
+
               // Title
               Text(
                 'What are your plans',
@@ -92,20 +92,20 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                   color: const Color(0xFF2C2C2C),
                 ),
               ),
-        
-              const SizedBox(height: 10),
-        
+
+              const SizedBox(height: 29),
+
               // Main Content Container
               Container(
                 height: 400,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 19),
                 padding: const EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFE9CB4),
                   borderRadius: BorderRadius.circular(0),
                 ),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 0),
                   child: Column(
                     children: [
                     // Date when are you planning to relocating?
@@ -119,7 +119,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 22),
               
                     // Have you applied for your visa?
                     _buildDropdownField(
@@ -132,7 +132,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 22),
               
                     // If Yes which visa do you hold if YES?
                     _buildDropdownField(
@@ -145,7 +145,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 22),
               
                     // If No do you require info about visa options
                     _buildDropdownField(
@@ -158,7 +158,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 22),
               
                     // What support do you require?
                     _buildDropdownField(
@@ -171,7 +171,7 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                         });
                       },
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 22),
               
                     // Would you like to paired with a buddy?
                     _buildDropdownField(
