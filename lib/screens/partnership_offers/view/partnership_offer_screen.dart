@@ -33,50 +33,56 @@ class _PartnershipOffersScreenState extends State<PartnershipOffersScreen> {
           builder: (context, partnershipProvider, child) {
             return Column(
               children: [
-               const SizedBox(height: 20),
+               const SizedBox(height: 10),
               LogoHeader(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 29),
 
                 // Title
                 Text(
                   'Partnership Offers',
                   style: GoogleFonts.poppins(
-                    fontSize: 30,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFF2C2C2C),
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 29),
 
                 // Images List
                 Expanded(
-                  child: partnershipProvider.isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: const Color(0xFF2C2C2C),
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : partnershipProvider.activeOffers.isEmpty
-                          ? Center(
-                              child: Text(
-                                'No offers available',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF2C2C2C),
-                                ),
-                              ),
-                            )
-                          : ListView.builder(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              itemCount: partnershipProvider.activeOffers.length,
-                              itemBuilder: (context, index) {
-                                final offer = partnershipProvider.activeOffers[index];
-                                return _buildOfferCard(offer);
-                              },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFE9CB4),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    child: partnershipProvider.isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: const Color(0xFF2C2C2C),
+                              strokeWidth: 2,
                             ),
+                          )
+                        : partnershipProvider.activeOffers.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No offers available',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF2C2C2C),
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 22),
+                                itemCount: partnershipProvider.activeOffers.length,
+                                itemBuilder: (context, index) {
+                                  final offer = partnershipProvider.activeOffers[index];
+                                  return _buildOfferCard(offer);
+                                },
+                              ),
+                  ),
                 ),
 
                 // Bottom Navigation
@@ -93,7 +99,7 @@ class _PartnershipOffersScreenState extends State<PartnershipOffersScreen> {
     return Column(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(0),
           child: offer.imageUrl != null
               ? CachedNetworkImage(
                   imageUrl: offer.imageUrl!,
