@@ -91,9 +91,9 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             LogoHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
@@ -105,7 +105,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 29),
 
             // Main Content Container
             Expanded(
@@ -152,7 +152,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                       // Form Fields Container
                      Container(
                       height: 400,
-                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      margin: const EdgeInsets.symmetric(horizontal: 19),
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFE9CB4),
@@ -161,7 +161,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                       child: Container(
                         // color: Colors.white,
                        margin: const EdgeInsets.symmetric(horizontal: 0),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0).copyWith(top: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 0),
                           child: Column(
                             children: [
                               // Why are you relocating?
@@ -175,8 +175,8 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 15),
-                        
+                              const SizedBox(height: 22),
+
                               // Who are you relocating with?
                               _buildDropdownField(
                                 hint: 'Who are you relocating with?',
@@ -188,8 +188,8 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 15),
-                        
+                              const SizedBox(height: 22),
+
                               // Which country are relocating from?
                               _buildDropdownField(
                                 hint: 'Which country are relocating from?',
@@ -201,7 +201,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                   });
                                 },
                               ),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 22),
                         
                               // Which UAE Emirate are you relocating to?
                               _buildDropdownField(
