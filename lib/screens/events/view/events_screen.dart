@@ -47,10 +47,10 @@ class _EventsScreenState extends State<EventsScreen> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   // Header with Logo
                   LogoHeader(),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 29),
                   // Events Title
                   Text(
                     'Events',
@@ -60,12 +60,13 @@ class _EventsScreenState extends State<EventsScreen> {
                           color: const Color(0xFF2C2C2C),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 29),
                   // Featured Event Card
                   if (featuredEvent != null) ...[
                     _buildFeaturedEventCard(featuredEvent),
+                    const SizedBox(height: 30),
                     Container(
-                       margin: const EdgeInsets.symmetric(horizontal: 10),
+                       margin: const EdgeInsets.symmetric(horizontal: 19),
                         decoration: BoxDecoration(
                                 color: const Color(0xFFFE9CB4),
                                 borderRadius: BorderRadius.circular(0),
