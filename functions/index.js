@@ -272,3 +272,10 @@ exports.triggerTribeMatching = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('internal', error.message);
   }
 });
+
+// Export Stripe payment functions
+const stripePayments = require('./stripePayments');
+exports.createPaymentIntent = stripePayments.createPaymentIntent;
+exports.confirmPaymentStatus = stripePayments.confirmPaymentStatus;
+exports.refundPayment = stripePayments.refundPayment;
+exports.stripeWebhook = stripePayments.stripeWebhook;

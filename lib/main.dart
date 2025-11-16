@@ -11,6 +11,8 @@ import 'package:myshetribe/providers/tribe_provider.dart';
 import 'package:myshetribe/providers/event_provider.dart';
 import 'package:myshetribe/providers/partnership_provider.dart';
 import 'package:myshetribe/services/fcm_service.dart';
+import 'package:myshetribe/services/stripe_service.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 GlobalKey<NavigatorState>? navigatorKey=GlobalKey<NavigatorState>();
 
@@ -26,6 +28,13 @@ void main() async {
 
   // Initialize Firebase
   await Firebase.initializeApp();
+
+  // Initialize Stripe
+  // TODO: Replace with your Stripe publishable key
+  // Get from: https://dashboard.stripe.com/apikeys
+  await StripeService().initialize(
+    'pk_test_YOUR_PUBLISHABLE_KEY_HERE', // Replace with actual key
+  );
 
   // Set up background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

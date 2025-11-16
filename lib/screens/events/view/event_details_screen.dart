@@ -9,6 +9,7 @@ import 'package:myshetribe/widgets/logo_header.dart';
 import 'package:myshetribe/models/event_model.dart';
 import 'package:myshetribe/providers/event_provider.dart';
 import 'package:myshetribe/providers/auth_provider.dart';
+import 'package:myshetribe/services/stripe_service.dart';
 
 class EventDetailScreen extends StatefulWidget {
   final EventModel? event;
@@ -264,10 +265,49 @@ Widget build(BuildContext context) {
                             });
 
                             try {
-                              // Add attendee to event
-                              bool success = await eventProvider.addEventAttendee(
-                                event.id,
-                                authProvider.currentUser!.uid,
+                              String? paymentIntentId;
+
+                              // Process payment if event is paid
+                              if (event.isPaid && event.price! > 0) {
+                                try {
+                                  paymentIntentId = await StripeService().processPayment(
+                                    amount: event.price!,
+                                    currency: 'AED',
+                                    eventId: event.id,
+                                    userId: authProvider.currentUser!.uid,
+                                    eventName: event.title,
+                                  );
+
+                                  if (paymentIntentId == null) {
+                                    throw Exception('Payment failed');
+                                  }
+                                } catch (e) {
+                                  setState(() {
+                                    _isProcessing = false;
+                                  });
+
+                                  if (mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.toString().contains('cancelled')
+                                          ? 'Payment cancelled'
+                                          : 'Payment failed: ${e.toString()}'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                  return;
+                                }
+                              }
+
+                              // Create booking with payment details
+                              bool success = await eventProvider.createBooking(
+                                userId: authProvider.currentUser!.uid,
+                                eventId: event.id,
+                                eventTitle: event.title,
+                                eventDate: event.eventDate,
+                                amount: event.price,
+                                stripePaymentIntentId: paymentIntentId,
                               );
 
                               setState(() {
@@ -275,30 +315,39 @@ Widget build(BuildContext context) {
                               });
 
                               if (success) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BookingConfirmationScreen(eventName: event.title),
-                                  ),
-                                );
+                                if (mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookingConfirmationScreen(
+                                        eventName: event.title,
+                                      ),
+                                    ),
+                                  );
+                                }
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Failed to book event'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Failed to create booking'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
                               }
                             } catch (e) {
                               setState(() {
                                 _isProcessing = false;
                               });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Error: $e'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
+
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Error: $e'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
                             }
                           } : null,
                           style: ElevatedButton.styleFrom(
