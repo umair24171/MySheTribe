@@ -19,13 +19,14 @@ class MyMatchesScreen extends StatefulWidget {
 class _MyMatchesScreenState extends State<MyMatchesScreen> {
   int _selectedIndex = 0; // My Match is selected
 
-  late VideoPlayerController _controller;
-  bool _isVideoInitialized = false;
+  // Video player commented out - now using static image
+  // late VideoPlayerController _controller;
+  // bool _isVideoInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeVideo();
+    // _initializeVideo(); // Commented out - using static image now
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -35,21 +36,21 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
     });
   }
 
-  void _initializeVideo() {
-    _controller = VideoPlayerController.asset('assets/video/tribe_matching.mp4')
-      ..initialize().then((_) {
-        setState(() {
-          _isVideoInitialized = true;
-          _controller.play();
-          // _controller.setVolume(0);
-          _controller.setLooping(true);
-        });
-      });
-  }
+  // void _initializeVideo() {
+  //   _controller = VideoPlayerController.asset('assets/video/tribe_matching.mp4')
+  //     ..initialize().then((_) {
+  //       setState(() {
+  //         _isVideoInitialized = true;
+  //         _controller.play();
+  //         // _controller.setVolume(0);
+  //         _controller.setLooping(true);
+  //       });
+  //     });
+  // }
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose(); // Commented out - not using video anymore
     super.dispose();
   }
 
@@ -89,28 +90,29 @@ Widget build(BuildContext context) {
                               ),
                             ),
                             const SizedBox(height: 29),
-                              // Welcome Video
-                SizedBox(
-                  height: 246,
-                  width: double.infinity,
-                  child: _isVideoInitialized
-                      ? FittedBox(
-                          fit: BoxFit.cover,
-                          child: SizedBox(
-                            width: _controller.value.size.width,
-                            height: _controller.value.size.height,
-                            child: VideoPlayer(_controller),
-                          ),
-                        )
-                      : Container(
-                          width: double.infinity,
-                          height: 246,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFCCD9),
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                ),
+                              // Welcome Video - Now using static image
+                          Image.asset('assets/icons/match_pic.png',height: 246,fit: BoxFit.cover,)
+            // SizedBox(
+            //   height: 246,
+            //   width: double.infinity,
+            //   child: _isVideoInitialized
+            //       ? FittedBox(
+            //           fit: BoxFit.cover,
+            //           child: SizedBox(
+            //             width: _controller.value.size.width,
+            //             height: _controller.value.size.height,
+            //             child: VideoPlayer(_controller),
+            //           ),
+            //         )
+            //       : Container(
+            //           width: double.infinity,
+            //           height: 246,
+            //           decoration: BoxDecoration(
+            //             color: const Color(0xFFFFCCD9),
+            //             borderRadius: BorderRadius.circular(0),
+            //           ),
+            //         ),
+            // ),
                           ],
                         ),
                       ),
