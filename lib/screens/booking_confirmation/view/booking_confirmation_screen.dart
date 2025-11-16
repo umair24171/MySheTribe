@@ -117,27 +117,27 @@ class BookingConfirmationScreen extends StatelessWidget {
 
                    Container(
                     // height: 400,
-                      margin: const EdgeInsets.symmetric(horizontal: 0),
-                      padding: const EdgeInsets.all(15),
+                    margin: const EdgeInsets.symmetric(horizontal: 19),
+                    padding: const EdgeInsets.all(22),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD5A472),
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  child: Column(children: [
+                     // Checkmark Circle
+                    Container(
+                      width: 70,
+                      height: 62,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
+                        color: const Color(0xFFFF8FA3),
+                        shape: BoxShape.circle,
                       ),
-                    child: Column(children: [
-                       // Checkmark Circle
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFF8FA3),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 50,
-                        ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 50,
                       ),
+                    ),
                       const SizedBox(height: 30),
                       
                       // Confirmation Text
