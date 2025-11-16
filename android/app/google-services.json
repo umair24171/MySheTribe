@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "630387150504",
+    "project_id": "myshetribe",
+    "storage_bucket": "myshetribe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630387150504:android:cfc70cb2b6416a0821fc9d",
+        "android_client_info": {
+          "package_name": "com.app.myshetribe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdY59Gxi21PkwsmboOgu8UruVXbtlmiUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
