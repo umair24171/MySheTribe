@@ -49,6 +49,11 @@ class TribeProvider with ChangeNotifier {
     }
   }
 
+  // Alias method for compatibility
+  Future<TribeModel?> getTribeById(String id) async {
+    return await getTribe(id);
+  }
+
   // Load recommended tribes for user
   void loadRecommendedTribes(List<String> tribeIds) async {
     try {

@@ -17,6 +17,9 @@ class PartnershipProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // Alias getter for compatibility
+  List<PartnershipOfferModel> get activeOffers => _offers;
+
   // Load all active offers
   Future<void> loadOffers({String? city}) async {
     try {
@@ -32,6 +35,11 @@ class PartnershipProvider with ChangeNotifier {
       _errorMessage = e.toString();
       notifyListeners();
     }
+  }
+
+  // Alias method for compatibility
+  Future<void> loadActiveOffers({String? city}) async {
+    await loadOffers(city: city);
   }
 
   // Load featured offers

@@ -20,6 +20,10 @@ class EventProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
+  // Alias getters for compatibility
+  List<EventModel> get upcomingEvents => _events;
+  EventModel? get featuredEvent => _events.isNotEmpty ? _events.first : null;
+
   // Load upcoming events
   Future<void> loadUpcomingEvents({String? city}) async {
     try {
@@ -37,6 +41,11 @@ class EventProvider with ChangeNotifier {
     }
   }
 
+  // Alias method for compatibility
+  Future<void> loadEvents({String? city}) async {
+    await loadUpcomingEvents(city: city);
+  }
+
   // Load user events
   Future<void> loadMyEvents(String userId) async {
     try {
@@ -52,6 +61,11 @@ class EventProvider with ChangeNotifier {
       _errorMessage = e.toString();
       notifyListeners();
     }
+  }
+
+  // Alias method for compatibility
+  Future<void> loadUserEvents(String userId) async {
+    await loadMyEvents(userId);
   }
 
   // Load user bookings
@@ -79,6 +93,19 @@ class EventProvider with ChangeNotifier {
       _errorMessage = e.toString();
       notifyListeners();
       return null;
+    }
+  }
+
+  // Add event attendee (direct method for compatibility)
+  Future<bool> addEventAttendee(String eventId, String userId) async {
+    try {
+      await _firestoreService.addEventAttendee(eventId, userId);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
     }
   }
 
