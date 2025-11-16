@@ -27,10 +27,11 @@ android {
         applicationId = "com.app.myshetribe"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 21  // Required for Stripe SDK
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true  // Required for Stripe SDK
     }
 
     buildTypes {
