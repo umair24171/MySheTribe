@@ -20,11 +20,12 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
   @override
   void initState() {
     super.initState();
+    _initializeVideo();
    
   }
 
   void _initializeVideo() {
-    _controller = VideoPlayerController.asset('assets/video/tribe_matching.mp4')
+    _controller = VideoPlayerController.asset('assets/video/new_tribe_matches.mp4')
       ..initialize().then((_) {
         setState(() {
           _isVideoInitialized = true;
@@ -45,20 +46,32 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
   final List<Map<String, dynamic>> _matches = [
     {
       'category': 'Culture Match',
-      'name': 'Ashwini',
-      'bio': 'Ambitious marketing professional seeking leadership opportunity',
+      'name': ' - Julia',
+      'bio': 'loves museums, gallaries',
       'image': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
     },
     {
       'category': 'Entertainment Match',
-      'name': 'Ashwini',
-      'bio': 'Ambitious marketing professional seeking leadership opportunity',
+      'name': ' - Jane',
+      'bio': 'enjoys clubbing',
       'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
     },
     {
       'category': 'Entrepreneurship Match',
-      'name': 'Ashwini',
-      'bio': 'Ambitious marketing professional seeking leadership opportunity',
+      'name': '',
+      'bio': '- Sue started her own biz',
+      'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    },
+     {
+      'category': 'Fitness Match',
+      'name': ' - Jane',
+      'bio': 'started her own biz',
+      'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    },
+     {
+      'category': 'Lifestyle Match',
+      'name': ' - Jane',
+      'bio': 'started her own biz',
       'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
     },
   ];
@@ -96,33 +109,33 @@ Widget build(BuildContext context) {
                         const SizedBox(height: 29),
                           // Welcome Video
 
-                          Image.asset('assets/icons/match_pic.png',height: 246,fit: BoxFit.cover,)
-            // SizedBox(
-            //   height: 246,
-            //   width: double.infinity,
-            //   child: _isVideoInitialized
-            //       ? FittedBox(
-            //           fit: BoxFit.cover,
-            //           child: SizedBox(
-            //             width: _controller.value.size.width,
-            //             height: _controller.value.size.height,
-            //             child: VideoPlayer(_controller),
-            //           ),
-            //         )
-            //       : Container(
-            //           width: double.infinity,
-            //           height: 246,
-            //           decoration: BoxDecoration(
-            //             color: const Color(0xFFFFCCD9),
-            //             borderRadius: BorderRadius.circular(0),
-            //           ),
-            //           // child: const Center(
-            //           //   child: CircularProgressIndicator(
-            //           //     color: Colors.white,
-            //           //   ),
-            //           // ),
-            //         ),
-            // ),
+                          // Image.asset('assets/icons/match_pic.png',height: 246,fit: BoxFit.cover,)
+            SizedBox(
+              height: 246,
+              width: double.infinity,
+              child: _isVideoInitialized
+                  ? FittedBox(
+                      fit: BoxFit.cover,
+                      child: SizedBox(
+                        width: _controller.value.size.width,
+                        height: _controller.value.size.height,
+                        child: VideoPlayer(_controller),
+                      ),
+                    )
+                  : Container(
+                      width: double.infinity,
+                      height: 246,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFCCD9),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      // child: const Center(
+                      //   child: CircularProgressIndicator(
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                    ),
+            ),
             // SizedBox(height: MediaQuery.of(context).size.width * 0.25),
                       ],
                     ),
@@ -130,7 +143,7 @@ Widget build(BuildContext context) {
                   // Cards Section (Lighter Pink Background)
                   Container(
                      margin: const EdgeInsets.symmetric(horizontal: 19),
-                      padding: const EdgeInsets.all(22),
+                      padding: const EdgeInsets.symmetric(vertical: 22,horizontal: 22),
                     // width: MediaQuery.of(context).size.width*0.93,
                     // color: Color(0xffFe9cb4),
                     // padding: const EdgeInsets.only(bottom: 20),
@@ -151,7 +164,7 @@ Widget build(BuildContext context) {
 Widget _buildMatchCard(Map<String, dynamic> match) {
   return GestureDetector(
     onTap: () {
-          // _controller.pause();
+          _controller.pause();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -168,13 +181,13 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                                   ],
                                 ),
                               ),
-                            );
-                    //         .then((_) {
-                    //   // Resume video when coming back
-                    //   if (_isVideoInitialized) {
-                    //     _controller.play();
-                    //   }
-                    // });
+                            )
+                            .then((_) {
+                      // Resume video when coming back
+                      if (_isVideoInitialized) {
+                        _controller.play();
+                      }
+                    });
     },
     child: Container(
       height: 55,
@@ -203,7 +216,7 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                 Row(
                   children: [
                     Text(
-                      'Culture Match',
+                      match['category'],
                       style: GoogleFonts.poppins(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -211,7 +224,7 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                       ),
                     ),
                      Text(
-                    '- Julia',
+                  match['name'],
                       style: GoogleFonts.poppins(
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
@@ -224,7 +237,7 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                 
                 // Name
                 Text(
-                  match['name'],
+                  match['bio'],
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,

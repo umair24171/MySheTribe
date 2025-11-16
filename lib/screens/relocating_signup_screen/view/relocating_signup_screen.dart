@@ -22,6 +22,8 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   String? _selectedRelocatingWith;
   String? _selectedCountryFrom;
   String? _selectedUAEEmirate;
+  
+  final TextEditingController _otherCountryController = TextEditingController();
 
   final List<String> _relocatingReasons = [
     'Work/Career',
@@ -40,14 +42,12 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   ];
 
   final List<String> _countriesFrom = [
-    'United States',
-    'United Kingdom',
-    'Canada',
-    'Australia',
-    'India',
-    'Pakistan',
-    'Philippines',
-    'South Africa',
+    'Africa',
+    'Americas',
+    'Asia',
+    'Australia & New Zealand',
+    'Europe',
+    'Middle East',
     'Other',
   ];
 
@@ -68,7 +68,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   }
 
   void _initializeVideo() {
-    _controller = VideoPlayerController.asset('assets/video/relocating_video.mp4')
+    _controller = VideoPlayerController.asset('assets/video/new_relocating.mp4')
       ..initialize().then((_) {
         setState(() {
           _isVideoInitialized = true;
@@ -101,6 +101,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _otherCountryController.dispose();
     super.dispose();
   }
 
@@ -225,15 +226,29 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                               // Which country are relocating from?
                               _buildSingleSelectField(
                                 selectedItem: _selectedCountryFrom,
-                                hintText: 'Which country are relocating from?',
-                                title: 'Which country are relocating from?',
+                                hintText: 'What continent are you relocating from?',
+                                title: 'What continent are you relocating from?',
                                 items: _countriesFrom,
                                 onChanged: (value) {
                                   setState(() {
                                     _selectedCountryFrom = value;
+                                    // Clear the text field when switching from "Other"
+                                    if (value != 'Other') {
+                                      _otherCountryController.clear();
+                                    }
                                   });
                                 },
                               ),
+                              
+                              // Show text field if "Other" is selected
+                              if (_selectedCountryFrom == 'Other') ...[
+                                const SizedBox(height: 22),
+                                _buildTextField(
+                                  controller: _otherCountryController,
+                                  hintText: 'Enter your country',
+                                ),
+                              ],
+                              
                               const SizedBox(height: 22),
                             ],
                           ),
@@ -296,6 +311,43 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
       bottomNavigationBar: CustomBottomNavBar(
         selectedIndex: 2,
         onItemTapped: (p0) {},
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    TextInputType? keyboardType,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        style: GoogleFonts.poppins(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: const Color(0xFF2C2C2C),
+        ),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF2C2C2C),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          constraints: BoxConstraints(maxHeight: 55, minHeight: 55),
+        ),
       ),
     );
   }

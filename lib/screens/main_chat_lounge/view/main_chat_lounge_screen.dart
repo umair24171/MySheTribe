@@ -15,16 +15,32 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
 
   final List<Map<String, dynamic>> _groupChats = [
     {
-      'name': 'MyMatch Chat',
+      'name': 'Main Lounge Chat',
       'image': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+      'hasDropdown': false,
     },
     {
-      'name': 'Culture & Heritage Chat',
+      'name': 'MyMatch Chats',
       'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
+      'hasDropdown': true,
+      'subChats': [
+       'Sue Culture',
+      'Julie Travel',
+      'Rosemary Fitness',
+      'Jane Entertainment Match',
+      ],
     },
     {
-      'name': 'Entertainment Chat',
+      'name': 'MyGroup Chats',
       'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+      'hasDropdown': true,
+      'subChats': [
+        'MyCareer Chat',
+        'MyEntertainment Chat',
+        'MyEnterpreneur Chat',
+        'MyFitness Chat',
+        'MyLifeStyle Chat',
+      ],
     },
   ];
 
@@ -106,15 +122,26 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ChatLoungeScreen(
-                chatName: chat['name'],
-                profileImage: chat['image'],
+          if (chat['hasDropdown'] == true) {
+            // Show dropdown dialog
+            _showSubChatsDialog(
+              context: context,
+              title: chat['name'],
+              subChats: chat['subChats'] ?? [],
+              profileImage: chat['image'],
+            );
+          } else {
+            // Navigate directly
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ChatLoungeScreen(
+                  chatName: chat['name'],
+                  profileImage: chat['image'],
+                ),
               ),
-            ),
-          );
+            );
+          }
         },
         child: Row(
           children: [
@@ -135,15 +162,15 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                 child: Text(
                   chat['name'],
                   style: GoogleFonts.poppins(
-                    fontSize: MediaQuery.of(context).size.width * 0.026,
+                    fontSize:16,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF2C2C2C),
                   ),
                 ),
               ),
             ),
-            // Dropdown Icon - Only show if NOT first item
-            if (index != 0)
+            // Dropdown Icon
+            if (chat['hasDropdown'] == true)
               Padding(
                 padding: const EdgeInsets.only(right: 15),
                 child: Icon(
@@ -152,6 +179,184 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                   size: 30,
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showSubChatsDialog({
+    required BuildContext context,
+    required String title,
+    required List<String> subChats,
+    required String profileImage,
+  }) {
+    String? selectedChat;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        title,
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF2C2C2C),
+                        ),
+                      ),
+                    ),
+                    
+                    // Sub Chats List
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: subChats.map((chat) {
+                            return _buildSubChatItem(
+                              chat: chat,
+                              isSelected: selectedChat == chat,
+                              onTap: () {
+                                setState(() {
+                                  selectedChat = chat;
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    
+                    // Buttons
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: selectedChat != null
+                                  ? () {
+                                      Navigator.of(context).pop();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => ChatLoungeScreen(
+                                            chatName: selectedChat!,
+                                            profileImage: profileImage,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF2C2C2C),
+                                disabledBackgroundColor: Colors.grey[300],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              child: Text(
+                                'Done',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: selectedChat != null 
+                                      ? Colors.white 
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSubChatItem({
+    required String chat,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                chat,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF2C2C2C),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: const Color(0xFF2C2C2C),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      size: 14,
+                      color: const Color(0xFF2C2C2C),
+                    )
+                  : null,
+            ),
           ],
         ),
       ),

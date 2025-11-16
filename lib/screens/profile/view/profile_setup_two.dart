@@ -51,7 +51,7 @@ class _ProfileSetupTwoState extends State<ProfileSetupTwo> {
     'Weekends',
     'Evenings',
     'Mornings',
-    'Weekdays, Mon, Tues, Wed',
+    'Weekdays',
   ];
 
   @override

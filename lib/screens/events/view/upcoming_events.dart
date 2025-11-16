@@ -31,11 +31,23 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
       'image': 'assets/icons/my_brunch_party.png',
     },
     {
-      'title': 'MyDinnerParty',
+      'title': 'MyBusinessForum',
       'image': 'assets/icons/my_dinner_party.png',
     },
      {
       'title': 'MyDinnerParty',
+      'image': 'assets/icons/my_dinner_party.png',
+    },
+     {
+      'title': 'MyHighTea',
+      'image': 'assets/icons/my_dinner_party.png',
+    },
+     {
+      'title': 'MyLadiesLunch',
+      'image': 'assets/icons/my_dinner_party.png',
+    },
+     {
+      'title': 'MyWealthSummit',
       'image': 'assets/icons/my_dinner_party.png',
     },
   ];
@@ -47,7 +59,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
   }
 
   void _initializeVideo() {
-    _controller = VideoPlayerController.asset('assets/video/Events_video.mp4')
+    _controller = VideoPlayerController.asset('assets/video/new_upcoming_events.mp4')
       ..initialize().then((_) {
         setState(() {
           _isVideoInitialized = true;
@@ -225,7 +237,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
               // Right side - Gold section with label (55% width)
               Container(
                 height: 98,
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.55,
                 color: const Color(0xFFD4A574),
                 child: Align(
                   alignment: Alignment(0.7, -0.99),

@@ -13,6 +13,8 @@ class ProfileSetupScreen extends StatefulWidget {
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _countryController = TextEditingController();
+  final _otherLanguageController = TextEditingController();
+  final _otherProfessionController = TextEditingController();
 
   String? _selectedAge;
   List<String> _selectedLanguages = [];
@@ -59,9 +61,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     'Other',
   ];
 
+  double _getContainerHeight() {
+    double baseHeight = 400;
+    if (_selectedLanguages.contains('Other...')) {
+      baseHeight += 45; // 55 + 22
+    }
+    if (_selectedProfessions.contains('Other')) {
+      baseHeight += 45; // 55 + 22
+    }
+    return baseHeight;
+  }
+
   @override
   void dispose() {
     _countryController.dispose();
+    _otherLanguageController.dispose();
+    _otherProfessionController.dispose();
     super.dispose();
   }
 
@@ -90,11 +105,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ),
                   const SizedBox(height: 29),
                   Container(
-                    height: 400,
+                    height: _getContainerHeight(),
                     margin: const EdgeInsets.symmetric(horizontal: 19),
                     color: Color(0xffFe9cb4),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 23.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0),
                       child: Column(
                         children: [
                           const SizedBox(height: 22),
@@ -124,9 +139,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             onChanged: (values) {
                               setState(() {
                                 _selectedLanguages = values;
+                                if (!values.contains('Other...')) {
+                                  _otherLanguageController.clear();
+                                }
                               });
                             },
                           ),
+                          if (_selectedLanguages.contains('Other...')) ...[
+                            const SizedBox(height: 22),
+                            _buildTextField(
+                              controller: _otherLanguageController,
+                              hintText: 'Enter your language',
+                            ),
+                          ],
                           const SizedBox(height: 22),
                           _buildMultiSelectField(
                             selectedItems: _selectedProfessions,
@@ -137,9 +162,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             onChanged: (values) {
                               setState(() {
                                 _selectedProfessions = values;
+                                if (!values.contains('Other')) {
+                                  _otherProfessionController.clear();
+                                }
                               });
                             },
                           ),
+                          if (_selectedProfessions.contains('Other')) ...[
+                            const SizedBox(height: 22),
+                            _buildTextField(
+                              controller: _otherProfessionController,
+                              hintText: 'Enter your profession',
+                            ),
+                          ],
                           const SizedBox(height: 22),
                         ],
                       ),
