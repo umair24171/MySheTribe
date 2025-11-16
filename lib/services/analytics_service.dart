@@ -55,7 +55,7 @@ class AnalyticsService {
     try {
       await _analytics.logEvent(
         name: 'event_rsvp',
-        parameters: {
+        parameters: <String, Object>{
           'event_id': eventId,
           'event_name': eventName,
         },
@@ -70,7 +70,7 @@ class AnalyticsService {
     try {
       await _analytics.logEvent(
         name: 'tribe_join',
-        parameters: {
+        parameters: <String, Object>{
           'tribe_id': tribeId,
           'tribe_name': tribeName,
         },
@@ -85,7 +85,7 @@ class AnalyticsService {
     try {
       await _analytics.logEvent(
         name: 'partnership_view',
-        parameters: {
+        parameters: <String, Object>{
           'offer_id': offerId,
           'offer_name': offerName,
         },
@@ -100,7 +100,7 @@ class AnalyticsService {
     try {
       await _analytics.logEvent(
         name: 'partnership_redeem',
-        parameters: {
+        parameters: <String, Object>{
           'offer_id': offerId,
           'offer_name': offerName,
         },
@@ -124,7 +124,7 @@ class AnalyticsService {
     try {
       await _analytics.logSearch(
         searchTerm: searchTerm,
-        parameters: {
+        parameters: <String, Object>{
           'search_type': searchType,
         },
       );
@@ -147,7 +147,7 @@ class AnalyticsService {
   }
 
   // Log custom event
-  Future<void> logCustomEvent(String eventName, Map<String, dynamic> parameters) async {
+  Future<void> logCustomEvent(String eventName, Map<String, Object> parameters) async {
     try {
       await _analytics.logEvent(
         name: eventName,
@@ -170,7 +170,7 @@ class AnalyticsService {
         currency: currency,
         value: value,
         transactionId: transactionId,
-        parameters: {
+        parameters: <String, Object>{
           if (eventName != null) 'event_name': eventName,
         },
       );
