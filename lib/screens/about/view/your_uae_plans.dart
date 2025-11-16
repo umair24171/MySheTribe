@@ -13,7 +13,7 @@ class WhatAreYourPlansScreen extends StatefulWidget {
 }
 
 class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
-  String? _selectedRelocatingDate;
+  DateTime? _selectedRelocatingDate;
   String? _selectedVisaApplied;
   String? _selectedVisaType;
   String? _selectedVisaInfo;
@@ -21,15 +21,6 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
   String? _selectedBuddy;
   String? _selectedRelocatingWith;
   String? _selectedUAEEmirate;
-  
-  final List<String> _relocatingDates = [
-    'Within 1 month',
-    '1-3 months',
-    '3-6 months',
-    '6-12 months',
-    'More than 1 year',
-    'Not sure yet',
-  ];
   
   final List<String> _uaeEmirates = [
     'Abu Dhabi',
@@ -71,6 +62,40 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
     'Family',
     'Friends',
   ];
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedRelocatingDate ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: const Color(0xFFFF9AB4),
+              onPrimary: Colors.white,
+              onSurface: const Color(0xFF2C2C2C),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedRelocatingDate) {
+      setState(() {
+        _selectedRelocatingDate = picked;
+      });
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    final months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,18 +167,8 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
                       ),
                       const SizedBox(height: 22),
                       
-                      // Date when are you planning to relocating?
-                      _buildSingleSelectField(
-                        selectedItem: _selectedRelocatingDate,
-                        hintText: 'Date when are you planning to relocating?',
-                        title: 'Date when are you planning to relocating?',
-                        items: _relocatingDates,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedRelocatingDate = value;
-                          });
-                        },
-                      ),
+                      // Date when are you planning to relocating? - CALENDAR
+                      _buildDatePickerField(),
                       const SizedBox(height: 22),
 
                       // Have you applied for your visa?
@@ -176,34 +191,81 @@ class _WhatAreYourPlansScreenState extends State<WhatAreYourPlansScreen> {
               const SizedBox(height: 29),
 
               // Submit Button
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.75,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => YourPlans(),
+              Padding(
+                padding: const EdgeInsets.only(right: 22),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: SizedBox(
+                    width: 61,
+                    height: 23,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => YourPlans(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(0),
+                        elevation: 0,
+                        backgroundColor: Color(0xff3A3A3A),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Color(0xff3A3A3A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  child: Text(
-                    'Submit',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      child: Text(
+                        'Next',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: 22),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDatePickerField() {
+    return Container(
+      height: 55,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: InkWell(
+        onTap: () => _selectDate(context),
+        child: Container(
+          padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  _selectedRelocatingDate != null
+                      ? _formatDate(_selectedRelocatingDate!)
+                      : 'Date when are you planning to relocating?',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF2C2C2C),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(
+                Icons.calendar_today,
+                color: const Color(0xFF2C2C2C),
+                size: 20,
               ),
             ],
           ),

@@ -14,108 +14,46 @@ class AboutMySheTribeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-             const SizedBox(height: 20),
-            LogoHeader(),
-            // // Header
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 20),
-            //   child: Column(
-            //     children: [
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           CustomPaint(
-            //             size: const Size(40, 40),
-            //             painter: DottedHeartPainter(),
-            //           ),
-            //           const SizedBox(width: 8),
-            //           Icon(
-            //             Icons.eco,
-            //             color: Colors.white.withOpacity(0.9),
-            //             size: 30,
-            //           ),
-            //         ],
-            //       ),
-            //       const SizedBox(height: 8),
-            //       Text(
-            //         'UAE',
-            //         style: GoogleFonts.poppins(
-            //           fontSize: 16,
-            //           fontWeight: FontWeight.w600,
-            //           color: Colors.white,
-            //           letterSpacing: 2,
-            //         ),
-            //       ),
-            //       Text(
-            //         'MySheTribe',
-            //         style: GoogleFonts.poppins(
-            //           fontSize: 32,
-            //           fontWeight: FontWeight.w700,
-            //           color: Colors.white,
-            //           letterSpacing: 1,
-            //         ),
-            //       ),
-            //       const SizedBox(height: 5),
-            //       Text(
-            //         'CONNECTING WOMEN,',
-            //         style: GoogleFonts.poppins(
-            //           fontSize: 12,
-            //           fontWeight: FontWeight.w400,
-            //           color: Colors.white,
-            //           letterSpacing: 2,
-            //         ),
-            //       ),
-            //       Text(
-            //         'CREATING COMMUNITY',
-            //         style: GoogleFonts.poppins(
-            //           fontSize: 12,
-            //           fontWeight: FontWeight.w400,
-            //           color: Colors.white,
-            //           letterSpacing: 2,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
+          LogoHeader(),
+            const SizedBox(height: 29),
 
             // Title
             Text(
               'About MySheTribe',
               style: GoogleFonts.poppins(
-                fontSize: 30,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF2C2C2C),
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 29),
 
             // Content Box
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFB6C8).withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: SingleChildScrollView(
-                  child: Text(
-                    'MySheTribe is a women only community which was created by Founder Rita Ellis after moving to UAE 3 years ago.',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2C2C2C),
-                      height: 1.6,
-                    ),
+            Container(
+              height: 400,
+              margin: const EdgeInsets.symmetric(horizontal: 19),
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                color:  Colors.white,
+                borderRadius: BorderRadius.circular(0),
+              ),
+              child: SingleChildScrollView(
+                child: Text(
+                  'MySheTribe is a women only community which was created by Founder Rita Ellis after moving to UAE 3 years ago.',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF2C2C2C),
+                    height: 1.6,
                   ),
                 ),
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 29),
+            // Spacer(),
 
             // Bottom Tagline
             Padding(
@@ -124,7 +62,7 @@ class AboutMySheTribeScreen extends StatelessWidget {
                 'Connecting Women,\nCreating Community',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  fontSize: 28,
+                  fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF2C2C2C),
                   height: 1.3,
@@ -132,7 +70,7 @@ class AboutMySheTribeScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
           ],
         ),
       ),

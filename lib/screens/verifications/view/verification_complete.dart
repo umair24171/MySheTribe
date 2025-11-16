@@ -66,7 +66,7 @@ class VerificationCompleteScreen extends StatelessWidget {
                           height: 1.5,
                         ),
                       ),
-                      const SizedBox(height: 22),
+                      const SizedBox(height: 12),
                       
                       // Profile Image Circle 
                      Container(

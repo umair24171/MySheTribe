@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/screens/events/view/events_screen.dart';
 import 'package:myshetribe/screens/events/view/my_events_screen.dart';
+import 'package:myshetribe/screens/events/view/upcoming_events.dart';
 import 'package:myshetribe/screens/main_chat_lounge/view/main_chat_lounge_screen.dart';
 import 'package:myshetribe/screens/main_menu/view/main_menu_screen.dart';
 import 'package:myshetribe/screens/my_matches/view/my_matches_screen.dart';
@@ -22,7 +23,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // All screens for bottom navigation
   final List<Widget> _screens = [
     const MyMatchesScreen(),
-    const EventsScreen(),
+    const UpcomingEvents(),
     const MainMenuScreen(),
     const MainChatLoungeScreen(),
     const MyProfileScreen(),

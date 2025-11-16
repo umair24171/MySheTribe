@@ -62,8 +62,8 @@ class AccommodationArticleScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800',
-                          width: double.infinity,
-                          height: 140,
+                          width: 222,
+                          height: 124,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Container(

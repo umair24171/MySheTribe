@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 22),
+                    const SizedBox(height: 15),
                     // Forgot Password
                     Align(
                       alignment: Alignment.centerLeft,
@@ -104,6 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                     const SizedBox(height: 12),
+                    Image.asset("assets/icons/login_image.png",height: 164,),
+                     const SizedBox(height: 12),
                     // const SizedBox(height: 30),
                     // // Partnership Banner
                     // Container(
@@ -127,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //   ),
                     // ),
                     //  const SizedBox(height: 20),
-                    Spacer(),
+                    // Spacer(),
                        Row(
                                            mainAxisAlignment: MainAxisAlignment.center,
                                            crossAxisAlignment: CrossAxisAlignment.end,
@@ -154,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                              ),
                                            ],
                                          ),
-                                         const SizedBox(height: 22),
+                                         const SizedBox(height: 4),
                                  ],),
                                  
                 ),),

@@ -434,36 +434,43 @@ class _ProfileSetupTwoState extends State<ProfileSetupTwo> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(
-                item,
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF2C2C2C),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: Text(
+                  item,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF2C2C2C),
+                  ),
                 ),
               ),
             ),
             const SizedBox(width: 8),
-            Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: const Color(0xFF2C2C2C),
-                  width: 2,
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: const Color(0xFF2C2C2C),
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
                 ),
-                borderRadius: BorderRadius.circular(4),
+                child: isSelected
+                    ? Icon(
+                        Icons.check,
+                        size: 14,
+                        color: const Color(0xFF2C2C2C),
+                      )
+                    : null,
               ),
-              child: isSelected
-                  ? Icon(
-                      Icons.check,
-                      size: 14,
-                      color: const Color(0xFF2C2C2C),
-                    )
-                  : null,
             ),
           ],
         ),

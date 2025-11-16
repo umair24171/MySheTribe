@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/screens/main_chat_lounge/view/chats_screen.dart';
-import 'package:myshetribe/screens/match_detail_screen/view/match_detail_two.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
-class MatchDetailScreen extends StatefulWidget {
+class MatchDetailTwo extends StatefulWidget {
   final String name;
   final String imageUrl;
   final int matchPercentage;
@@ -13,7 +12,7 @@ class MatchDetailScreen extends StatefulWidget {
   final List<String> interests;
   final List<Map<String, String>> events;
 
-  const MatchDetailScreen({
+  const MatchDetailTwo({
     Key? key,
     required this.name,
     required this.imageUrl,
@@ -24,10 +23,10 @@ class MatchDetailScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MatchDetailScreen> createState() => _MatchDetailScreenState();
+  State<MatchDetailTwo> createState() => _MatchDetailTwoState();
 }
 
-class _MatchDetailScreenState extends State<MatchDetailScreen> {
+class _MatchDetailTwoState extends State<MatchDetailTwo> {
   int _selectedIndex = 2;
 
   @override
@@ -230,7 +229,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                                   height: 25,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                    Navigator.push(
+                                        Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MatchDetailTwo(
@@ -305,7 +304,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                                   height: 25,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatLoungeScreen(chatName: 'Sarah', profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400')));
+                                       Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatLoungeScreen(chatName: 'Sarah', profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400')));
                                    
                                     },
                                     style: ElevatedButton.styleFrom(

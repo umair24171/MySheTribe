@@ -71,53 +71,10 @@ class EmploymentScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Description Section
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 19),
-                      padding: const EdgeInsets.all(22),
-                      decoration: BoxDecoration(
-                       color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Accommodation Rules UAE',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: const Color(0xFF2C2C2C),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Explore the best neighbourhood for expert women in UAE, considering factor like safety, amenities, and community.',
-                            style: GoogleFonts.poppins(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: const Color(0xFF2C2C2C),
-                              height: 1.4,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              'Read more...',
-                              style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xFF2C2C2C),
-                              ),
-                            ),
-                          ),
-                            const SizedBox(height: 15),
-
-                    // Grid Buttons
+                   // Grid Buttons
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 0),
-                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 15),
                       child: GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -133,17 +90,14 @@ class EmploymentScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                        ],
-                      ),
-                    ),
-
-                  
 
                     const SizedBox(height: 40),
                   ],
                 ),
               ),
             ),
+         
+         
           ],
         ),
       ),

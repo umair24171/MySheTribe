@@ -16,6 +16,7 @@ class RelocatingSignUpScreen extends StatefulWidget {
 class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   late VideoPlayerController _controller;
   bool _isVideoInitialized = false;
+  bool _isPlaying = false;
 
   String? _selectedRelocatingReason;
   String? _selectedRelocatingWith;
@@ -71,11 +72,30 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
       ..initialize().then((_) {
         setState(() {
           _isVideoInitialized = true;
-          _controller.play();
-          // _controller.setVolume(0);
           _controller.setLooping(true);
         });
       });
+    
+    // Listen to video state changes
+    _controller.addListener(() {
+      if (_controller.value.isPlaying != _isPlaying) {
+        setState(() {
+          _isPlaying = _controller.value.isPlaying;
+        });
+      }
+    });
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        _isPlaying = false;
+      } else {
+        _controller.play();
+        _isPlaying = true;
+      }
+    });
   }
 
   @override
@@ -118,31 +138,59 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // Video Section
+                      // Video Section with Play/Pause
                       SizedBox(
                         height: 248,
                         width: double.infinity,
                         child: _isVideoInitialized
-                            ? FittedBox(
-                                fit: BoxFit.cover,
-                                child: SizedBox(
-                                  width: _controller.value.size.width,
-                                  height: _controller.value.size.height,
-                                  child: VideoPlayer(_controller),
+                            ? GestureDetector(
+                                onTap: _togglePlayPause,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    ClipRect(
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 248,
+                                        child: FittedBox(
+                                          fit: BoxFit.cover,
+                                          child: SizedBox(
+                                            width: _controller.value.size.width,
+                                            height: _controller.value.size.height,
+                                            child: VideoPlayer(_controller),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // Play/Pause Button Overlay
+                                    AnimatedOpacity(
+                                      opacity: !_isPlaying ? 1.0 : 0.0,
+                                      duration: const Duration(milliseconds: 300),
+                                      child: Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.6),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          _isPlaying ? Icons.pause : Icons.play_arrow,
+                                          color: Colors.white,
+                                          size: 40,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               )
                             : Container(
                                 width: double.infinity,
-                                height: 300,
+                                height: 248,
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFFFCCD9),
                                   borderRadius: BorderRadius.circular(0),
                                 ),
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                
                               ),
                       ),
 
@@ -194,37 +242,44 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                       const SizedBox(height: 29),
 
                       // Next Button
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.75,
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _controller.pause();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WhatAreYourPlansScreen(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 22),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: SizedBox(
+                            width: 61,
+                            height: 23,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _controller.pause();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WhatAreYourPlansScreen(),
+                                  ),
+                                ).then((_) {
+                                  // Resume video when coming back
+                                  if (_isVideoInitialized) {
+                                    _controller.play();
+                                  }
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(0),
+                                elevation: 0,
+                                backgroundColor: Color(0xff3A3A3A),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
                               ),
-                            ).then((_) {
-                              // Resume video when coming back
-                              if (_isVideoInitialized) {
-                                _controller.play();
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: Color(0xff3A3A3A),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0),
-                            ),
-                          ),
-                          child: Text(
-                            'Submit',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              child: Text(
+                                'Next',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ),
                         ),

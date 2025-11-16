@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/screens/events/view/events_screen.dart';
 import 'package:myshetribe/screens/events/view/my_events_screen.dart';
+import 'package:myshetribe/screens/events/view/upcoming_events.dart';
 import 'package:myshetribe/screens/main_chat_lounge/view/main_chat_lounge_screen.dart';
 import 'package:myshetribe/screens/my_matches/view/my_matches_screen.dart';
 import 'package:myshetribe/screens/partnership_offers/view/partnership_offer_screen.dart';
@@ -201,7 +202,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       case 'events':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EventsScreen()),
+          MaterialPageRoute(builder: (context) => UpcomingEvents()),
         );
         break;
       case 'support_hub':

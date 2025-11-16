@@ -14,27 +14,27 @@ class TermsConditionsScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
           LogoHeader(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 29),
 
             // Title
             Text(
               'Terms & Conditions',
               style: GoogleFonts.poppins(
-                fontSize: 30,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFF2C2C2C),
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 29),
 
             // Content Box
             Container(
               height: 400,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.all(30),
+              margin: const EdgeInsets.symmetric(horizontal: 19),
+              padding: const EdgeInsets.all(22),
               decoration: BoxDecoration(
                 color:  Colors.white,
                 borderRadius: BorderRadius.circular(0),
@@ -52,8 +52,8 @@ class TermsConditionsScreen extends StatelessWidget {
               ),
             ),
 
-            // const SizedBox(height: 25),
-            Spacer(),
+            const SizedBox(height: 29),
+            // Spacer(),
 
             // Bottom Tagline
             Padding(
@@ -62,7 +62,7 @@ class TermsConditionsScreen extends StatelessWidget {
                 'Connecting Women,\nCreating Community',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  fontSize: 28,
+                  fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF2C2C2C),
                   height: 1.3,

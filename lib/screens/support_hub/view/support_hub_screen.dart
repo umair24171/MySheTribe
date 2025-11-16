@@ -86,7 +86,7 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                     
                     // Main Content Container - FIXED HEIGHT 360
                     Container(
-                      height: 500,
+                      height: 400,
                       margin: const EdgeInsets.symmetric(horizontal: 19),
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
@@ -97,59 +97,29 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                         // color: Colors.white,
                        margin: const EdgeInsets.symmetric(horizontal: 22),
                         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0).copyWith(top: 22,bottom: 2),
-                        child: Column(
-                          children: [
-                            // Grid of Menu Items
-                            Expanded(
-                              child: GridView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 15,
-                                  mainAxisSpacing: 15,
-                                    mainAxisExtent: 110,
-                                ),
-                                itemCount: _menuItems.length,
-                                itemBuilder: (context, index) {
-                                  return _buildMenuCard(
-                                    _menuItems[index]['title'],
-                                    _menuItems[index]['image'],
-                                    _menuItems[index]['route'],
-                                  );
-                                },
+                        child:   // Grid of Menu Items
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                  mainAxisExtent: 110,
                               ),
+                              itemCount: _menuItems.length,
+                              itemBuilder: (context, index) {
+                                return _buildMenuCard(
+                                  _menuItems[index]['title'],
+                                  _menuItems[index]['image'],
+                                  _menuItems[index]['route'],
+                                );
+                              },
                             ),
-                            
-                            const SizedBox(height: 22),
-                            
-                            // Partnership Banner
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFD4A574),
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Top Partnership\nOffers & Discounts',
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: const Color(0xFF2C2C2C),
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ),
-                            ),
-                              const SizedBox(height: 20),
-                          ],
-                        ),
                       ),
                     ),
                     
-                    const SizedBox(height: 40),
+                    // const SizedBox(height: 40),
                   ],
                 ),
               ),

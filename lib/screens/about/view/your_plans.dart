@@ -154,22 +154,23 @@ class _YourPlansState extends State<YourPlans> {
                       ),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: Color(0xff3A3A3A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  child: Text(
-                    'Submit',
-                    style: GoogleFonts.poppins(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                     style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.all(0),
+                                elevation: 0,
+                                backgroundColor: Color(0xff3A3A3A),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
+                              ),
+                              child: Text(
+                                'Submit',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
               ),
               const SizedBox(height: 20),
             ],

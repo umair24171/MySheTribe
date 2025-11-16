@@ -20,7 +20,7 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeVideo();
+   
   }
 
   void _initializeVideo() {
@@ -95,32 +95,34 @@ Widget build(BuildContext context) {
                         ),
                         const SizedBox(height: 29),
                           // Welcome Video
-            SizedBox(
-              height: 246,
-              width: double.infinity,
-              child: _isVideoInitialized
-                  ? FittedBox(
-                      fit: BoxFit.cover,
-                      child: SizedBox(
-                        width: _controller.value.size.width,
-                        height: _controller.value.size.height,
-                        child: VideoPlayer(_controller),
-                      ),
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 246,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFCCD9),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      // child: const Center(
-                      //   child: CircularProgressIndicator(
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
-                    ),
-            ),
+
+                          Image.asset('assets/icons/match_pic.png',height: 246,fit: BoxFit.cover,)
+            // SizedBox(
+            //   height: 246,
+            //   width: double.infinity,
+            //   child: _isVideoInitialized
+            //       ? FittedBox(
+            //           fit: BoxFit.cover,
+            //           child: SizedBox(
+            //             width: _controller.value.size.width,
+            //             height: _controller.value.size.height,
+            //             child: VideoPlayer(_controller),
+            //           ),
+            //         )
+            //       : Container(
+            //           width: double.infinity,
+            //           height: 246,
+            //           decoration: BoxDecoration(
+            //             color: const Color(0xFFFFCCD9),
+            //             borderRadius: BorderRadius.circular(0),
+            //           ),
+            //           // child: const Center(
+            //           //   child: CircularProgressIndicator(
+            //           //     color: Colors.white,
+            //           //   ),
+            //           // ),
+            //         ),
+            // ),
             // SizedBox(height: MediaQuery.of(context).size.width * 0.25),
                       ],
                     ),
@@ -149,7 +151,7 @@ Widget build(BuildContext context) {
 Widget _buildMatchCard(Map<String, dynamic> match) {
   return GestureDetector(
     onTap: () {
-          _controller.pause();
+          // _controller.pause();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -166,12 +168,13 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                                   ],
                                 ),
                               ),
-                            ).then((_) {
-                      // Resume video when coming back
-                      if (_isVideoInitialized) {
-                        _controller.play();
-                      }
-                    });
+                            );
+                    //         .then((_) {
+                    //   // Resume video when coming back
+                    //   if (_isVideoInitialized) {
+                    //     _controller.play();
+                    //   }
+                    // });
     },
     child: Container(
       height: 55,
@@ -252,23 +255,23 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                 //         child: ElevatedButton(
                 //           onPressed: () {
                     //          _controller.pause();
-                    //         Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //             builder: (context) => MatchDetailScreen(
-                    //               name: 'Sarah M.',
-                    //               imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                    //               matchPercentage: 82,
-                    //               bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
-                    //               interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
-                    //               events: [
-                    //                 {'name': 'MyShe Brunch', 'date': 'Nov 20'},
-                    //                 {'name': 'Yoga in the Park', 'date': 'Nov 26'},
-                    //                 {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ).then((_) {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => MatchDetailScreen(
+                            //       name: 'Sarah M.',
+                            //       imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                            //       matchPercentage: 82,
+                            //       bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
+                            //       interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
+                            //       events: [
+                            //         {'name': 'MyShe Brunch', 'date': 'Nov 20'},
+                            //         {'name': 'Yoga in the Park', 'date': 'Nov 26'},
+                            //         {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ).then((_) {
                     //   // Resume video when coming back
                     //   if (_isVideoInitialized) {
                     //     _controller.play();
