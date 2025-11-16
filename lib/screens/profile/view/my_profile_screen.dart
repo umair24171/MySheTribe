@@ -9,6 +9,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 import 'package:myshetribe/providers/user_provider.dart';
 import 'package:myshetribe/providers/auth_provider.dart';
+import 'package:myshetribe/screens/about_shetribe/view/about_shetribe.dart';
+import 'package:myshetribe/screens/sidebar_screens/view/help_support_screen.dart';
+import 'package:myshetribe/screens/sidebar_screens/view/privacy_policy.dart';
+import 'package:myshetribe/screens/terms_condition/view/terms_condition.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -248,29 +252,51 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
+      drawer: _buildDrawer(context),
       body: SafeArea(
         child: Consumer<UserProvider>(
           builder: (context, userProvider, child) {
             final user = userProvider.user;
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                 const SizedBox(height: 10),
-              LogoHeader(),
-                  const SizedBox(height: 29),
-
-                  // Title
-                  Text(
-                    'My Profile',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF2C2C2C),
-                    ),
+            return Column(
+              children: [
+                // Top Bar with Menu Icon
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Menu Icon
+                      Builder(
+                        builder: (context) => GestureDetector(
+                          onTap: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.menu,
+                              color: Color(0xFF3A3A3A),
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                ),
 
-                  const SizedBox(height: 29),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        LogoHeader(),
+                        const SizedBox(height: 20),
 
                   // Profile Picture
                   Stack(
@@ -344,13 +370,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     ],
                   ),
 
-                  const SizedBox(height: 29),
+                  const SizedBox(height: 22),
 
                   // Form Fields
                   Container(
-                      height: 400,
                           margin: const EdgeInsets.symmetric(horizontal: 19),
-                          padding: const EdgeInsets.all(22),
+                          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFE9CB4),
                             borderRadius: BorderRadius.circular(0),
@@ -412,11 +437,189 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   ),
 
                   const SizedBox(height: 30),
-                ],
-              ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final user = userProvider.user;
+
+    return Drawer(
+      backgroundColor: const Color(0xFFFFB6C8),
+      child: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            // Profile Picture in Drawer
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: user?.profileImageUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: user!.profileImageUrl!,
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          height: 100,
+                          width: 100,
+                          color: const Color(0xFFD4A574),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: const Color(0xFF2C2C2C),
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: 100,
+                          width: 100,
+                          color: const Color(0xFFD4A574),
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: const Color(0xFF2C2C2C),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        height: 100,
+                        width: 100,
+                        color: const Color(0xFFD4A574),
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: const Color(0xFF2C2C2C),
+                        ),
+                      ),
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Divider
+            Container(
+              height: 2,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFE9CB4),
+                borderRadius: BorderRadius.circular(0),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Menu Items
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  _buildDrawerItem(
+                    context,
+                    icon: Icons.info_outline,
+                    title: 'About MySheTribe',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AboutMySheTribeScreen()));
+                    },
+                  ),
+                  _buildDrawerItem(
+                    context,
+                    icon: Icons.description_outlined,
+                    title: 'Terms & Conditions',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TermsConditionsScreen()));
+                    },
+                  ),
+                  _buildDrawerItem(
+                    context,
+                    icon: Icons.privacy_tip_outlined,
+                    title: 'Privacy Policy',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicyScreen()));
+                    },
+                  ),
+                  _buildDrawerItem(
+                    context,
+                    icon: Icons.help_outline,
+                    title: 'Help & Support',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HelpSupportScreen()));
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            // Logout at Bottom
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFE9CB4),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.logout,
+                    color: Color(0xFF3A3A3A),
+                  ),
+                  title: Text(
+                    'Logout',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF3A3A3A),
+                    ),
+                  ),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await _logout();
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: const Color(0xFF3A3A3A),
+        ),
+        title: Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF3A3A3A),
+          ),
+        ),
+        onTap: onTap,
       ),
     );
   }
