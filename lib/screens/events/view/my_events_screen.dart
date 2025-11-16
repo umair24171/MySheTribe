@@ -35,9 +35,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
-       bottomNavigationBar: CustomBottomNavBar(selectedIndex:1 ,onItemTapped: (p0) {
-
-      },),
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: 1,
+        onItemTapped: (p0) {},
+      ),
       body: SafeArea(
         child: Consumer<EventProvider>(
           builder: (context, eventProvider, child) {
@@ -55,10 +56,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   LogoHeader(),
-
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 29),
 
                   // MyEvents Title
                   Text(
@@ -70,7 +70,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 29),
 
                   // Events List
                   if (upcomingEvents.isEmpty)
@@ -86,21 +86,18 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                       ),
                     )
                   else
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: upcomingEvents.map((event) => _buildUpcomingEventCard(event)).toList(),
-                        ),
-                      ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: upcomingEvents.length,
+                      itemBuilder: (context, index) {
+                        return Center(
+                          child: _buildUpcomingEventCard(upcomingEvents[index]),
+                        );
+                      },
                     ),
+
+                  const SizedBox(height: 30),
                 ],
               ),
             );
@@ -120,73 +117,65 @@ Widget _buildUpcomingEventCard(EventModel event) {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        height: 90,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(0),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(0),
-          child: Row(
-            children: [
-              // Left side - Image (45% width)
-              Expanded(
-                flex: 45,
-                child: Container(
-                  height: 130,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFD4A574),
-                  ),
-                  child: event.imageUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: event.imageUrl!,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(
-                              color: const Color(0xFF2C2C2C),
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => Image.asset(
-                            'assets/icons/my_brunch_party.png',
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : Image.asset(
-                          'assets/icons/my_brunch_party.png',
-                          fit: BoxFit.cover,
-                        ),
-                ),
+        margin: const EdgeInsets.only(bottom: 22),
+        height: 59,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Left side - Image
+            Container(
+              height: 59,
+              width: 98,
+              decoration: BoxDecoration(
+                color: const Color(0xFFD4A574),
               ),
-              // Right side - Gold section with label (55% width)
-              Expanded(
-                flex: 55,
-                child: Container(
-                  height: 130,
-                  color: const Color(0xFFD4A574),
-                  child: Align(
-                    alignment: Alignment(0, -0.99),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF000000),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: Text(
-                        event.title,
-                        style: GoogleFonts.poppins(
-                          fontSize: MediaQuery.of(context).size.width * 0.037,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFFD5A472),
+              child: event.imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: event.imageUrl!,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(
+                          color: const Color(0xFF2C2C2C),
+                          strokeWidth: 2,
                         ),
-                        textAlign: TextAlign.center,
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/icons/my_brunch_party.png',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      'assets/icons/my_brunch_party.png',
+                      fit: BoxFit.cover,
+                    ),
+            ),
+            // Right side - Gold section
+            Container(
+              height: 98,
+              width: MediaQuery.of(context).size.width * 0.5,
+              color: const Color(0xFFD4A574),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 28,
+                    width: 154,
+                    color: const Color(0xFF000000),
+                    alignment: Alignment.center,
+                    child: Text(
+                      event.title,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFFD5A472),
                       ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 8),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
