@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:myshetribe/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:myshetribe/screens/splash_screen.dart';
 import 'package:myshetribe/screens/verifications/view/welcome_screen.dart';
@@ -26,15 +27,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await Firebase.initializeApp();
+ await Firebase.initializeApp();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+
 
   // Initialize Stripe
   // TODO: Replace with your Stripe publishable key
   // Get from: https://dashboard.stripe.com/apikeys
-  await StripeService().initialize(
-    'pk_test_YOUR_PUBLISHABLE_KEY_HERE', // Replace with actual key
-  );
+  // await StripeService().initialize(
+  //   'pk_test_YOUR_PUBLISHABLE_KEY_HERE', // Replace with actual key
+  // );
 
   // Set up background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
