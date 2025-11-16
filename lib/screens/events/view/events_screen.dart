@@ -62,36 +62,62 @@ class _EventsScreenState extends State<EventsScreen> {
                   ),
                   const SizedBox(height: 29),
                   // Featured Event Card
-                  if (featuredEvent != null) ...[
-                    _buildFeaturedEventCard(featuredEvent),
-                    const SizedBox(height: 30),
-                    Container(
-                       margin: const EdgeInsets.symmetric(horizontal: 19),
-                        decoration: BoxDecoration(
-                                color: const Color(0xFFFE9CB4),
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                      child: _buildDescriptionCard(featuredEvent)),
-                  ],
-                  // const SizedBox(height: 20),
-                  // Upcoming Events Section
-                  if (upcomingEvents.isNotEmpty)
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
-                        borderRadius: BorderRadius.circular(0),
+                  if (featuredEvent != null) _buildFeaturedEventCard(featuredEvent),
+                  const SizedBox(height: 209),
+                  // Register for Event Button
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width*0.75,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (featuredEvent != null) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>EventDetailScreen(event: featuredEvent)));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: const Color(0xFF3A3A3A),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: upcomingEvents.map((event) => _buildUpcomingEventCard(event)).toList(),
+                      child: Text(
+                        'Register for Event',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  const SizedBox(height: 30),
+                  ),
+
+            // Container(
+            //    margin: const EdgeInsets.symmetric(horizontal: 19),
+            //     decoration: BoxDecoration(
+            //             // color: const Color(0xFFFE9CB4),
+            //             borderRadius: BorderRadius.circular(0),
+            //           ),
+            //   child: _buildDescriptionCard(featuredEvent)),
+                  // const SizedBox(height: 20),
+                  // Upcoming Events Section - Commented out to match main branch
+                  // if (upcomingEvents.isNotEmpty)
+                  //   Container(
+                  //     margin: const EdgeInsets.symmetric(horizontal: 10),
+                  //     padding: const EdgeInsets.all(15),
+                  //     decoration: BoxDecoration(
+                  //       color: const Color(0xFFFE9CB4),
+                  //       borderRadius: BorderRadius.circular(0),
+                  //     ),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: upcomingEvents.map((event) => _buildUpcomingEventCard(event)).toList(),
+                  //       ),
+                  //     ),
+                  //   ),
+                  const SizedBox(height: 29),
                 ],
               ),
             );
@@ -103,8 +129,9 @@ class _EventsScreenState extends State<EventsScreen> {
 
   Widget _buildDescriptionCard(EventModel event) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      padding: const EdgeInsets.all(20),
+      height: 200,
+      margin: const EdgeInsets.symmetric(horizontal: 22),
+      padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
         color: const Color(0xFFD5A472),
         borderRadius: BorderRadius.circular(0),
@@ -128,68 +155,26 @@ class _EventsScreenState extends State<EventsScreen> {
         // Event Image
         Container(
           width: double.infinity,
-          height: 300,
+          height: 265,
           decoration: BoxDecoration(
-            color: const Color(0xFFD4A574),
-          ),
-          child: event.imageUrl != null
-              ? CachedNetworkImage(
-                  imageUrl: event.imageUrl!,
+            image: event.imageUrl != null
+              ? DecorationImage(
+                  image: NetworkImage(event.imageUrl!),
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Center(
-                    child: CircularProgressIndicator(
-                      color: const Color(0xFF2C2C2C),
-                      strokeWidth: 2,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/icons/my_events_header_pic.png',
-                    fit: BoxFit.cover,
-                  ),
                 )
-              : Image.asset(
-                  'assets/icons/my_events_header_pic.png',
+              : DecorationImage(
+                  image: AssetImage('assets/icons/my_events_header_pic.png'),
                   fit: BoxFit.cover,
                 ),
+          ),
         ),
-        // Overlapping Gold Box with Title and Date
+        // Overlapping Gold Box with Description - positioned below
         Positioned(
-           left: 0,
-        right: 0,
-          bottom: 0,
+          left: 0,
+          right: 0,
+          bottom: -180,
           child: Center(
-            child: Container(
-                alignment: Alignment.center,
-               width: MediaQuery.of(context).size.width*0.7,
-               height: 57,
-              decoration: BoxDecoration(
-                color: const Color(0xFFD5A472),
-                borderRadius: BorderRadius.circular(0),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    event.title,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2C2C2C),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    DateFormat('d MMMM yyyy').format(event.eventDate),
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF2C2C2C),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            child: _buildDescriptionCard(event)
           ),
         ),
       ],
