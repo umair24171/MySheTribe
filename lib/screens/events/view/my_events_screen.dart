@@ -51,7 +51,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               );
             }
 
-            final upcomingEvents = eventProvider.userEvents;
+            final upcomingEvents = eventProvider.myEvents;
 
             return SingleChildScrollView(
               child: Column(
