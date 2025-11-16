@@ -90,6 +90,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: upcomingEvents.length,
+                      padding: EdgeInsets.all(0),
                       itemBuilder: (context, index) {
                         return Center(
                           child: _buildUpcomingEventCard(upcomingEvents[index]),
@@ -117,7 +118,7 @@ Widget _buildUpcomingEventCard(EventModel event) {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 22),
+        margin: const EdgeInsets.only(bottom: 22, left: 22+19, right: 22+19),
         height: 59,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -152,7 +153,7 @@ Widget _buildUpcomingEventCard(EventModel event) {
             // Right side - Gold section
             Container(
               height: 98,
-              width: MediaQuery.of(context).size.width * 0.5,
+              width: MediaQuery.of(context).size.width -98-22-22-19-19,
               color: const Color(0xFFD4A574),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

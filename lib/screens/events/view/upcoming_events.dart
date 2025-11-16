@@ -31,7 +31,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
   }
 
   void _initializeVideo() {
-    _controller = VideoPlayerController.asset('assets/video/Events_video.mp4')
+    _controller = VideoPlayerController.asset('assets/video/new_upcoming_events.mp4')
       ..initialize().then((_) {
         setState(() {
           _isVideoInitialized = true;

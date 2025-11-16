@@ -19,14 +19,13 @@ class MyMatchesScreen extends StatefulWidget {
 class _MyMatchesScreenState extends State<MyMatchesScreen> {
   int _selectedIndex = 0; // My Match is selected
 
-  // Video player commented out - now using static image
-  // late VideoPlayerController _controller;
-  // bool _isVideoInitialized = false;
+  late VideoPlayerController _controller;
+  bool _isVideoInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    // _initializeVideo(); // Commented out - using static image now
+    _initializeVideo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -36,21 +35,20 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
     });
   }
 
-  // void _initializeVideo() {
-  //   _controller = VideoPlayerController.asset('assets/video/tribe_matching.mp4')
-  //     ..initialize().then((_) {
-  //       setState(() {
-  //         _isVideoInitialized = true;
-  //         _controller.play();
-  //         // _controller.setVolume(0);
-  //         _controller.setLooping(true);
-  //       });
-  //     });
-  // }
+  void _initializeVideo() {
+    _controller = VideoPlayerController.asset('assets/video/new_tribe_matches.mp4')
+      ..initialize().then((_) {
+        setState(() {
+          _isVideoInitialized = true;
+          _controller.play();
+          _controller.setLooping(true);
+        });
+      });
+  }
 
   @override
   void dispose() {
-    // _controller.dispose(); // Commented out - not using video anymore
+    _controller.dispose();
     super.dispose();
   }
 
@@ -90,40 +88,35 @@ Widget build(BuildContext context) {
                               ),
                             ),
                             const SizedBox(height: 29),
-                              // Welcome Video - Now using static image
-                          Image.asset('assets/icons/match_pic.png',height: 246,fit: BoxFit.cover,)
-            // SizedBox(
-            //   height: 246,
-            //   width: double.infinity,
-            //   child: _isVideoInitialized
-            //       ? FittedBox(
-            //           fit: BoxFit.cover,
-            //           child: SizedBox(
-            //             width: _controller.value.size.width,
-            //             height: _controller.value.size.height,
-            //             child: VideoPlayer(_controller),
-            //           ),
-            //         )
-            //       : Container(
-            //           width: double.infinity,
-            //           height: 246,
-            //           decoration: BoxDecoration(
-            //             color: const Color(0xFFFFCCD9),
-            //             borderRadius: BorderRadius.circular(0),
-            //           ),
-            //         ),
-            // ),
+                              // Welcome Video
+                          SizedBox(
+              height: 246,
+              width: double.infinity,
+              child: _isVideoInitialized
+                  ? FittedBox(
+                      fit: BoxFit.cover,
+                      child: SizedBox(
+                        width: _controller.value.size.width,
+                        height: _controller.value.size.height,
+                        child: VideoPlayer(_controller),
+                      ),
+                    )
+                  : Container(
+                      width: double.infinity,
+                      height: 246,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFCCD9),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    ),
+            ),
                           ],
                         ),
                       ),
                       // Cards Section (Lighter Pink Background)
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 19),
-                        padding: const EdgeInsets.all(22),
-                        decoration: BoxDecoration(
-                          color: Color(0xffFe9cb4),
-                          borderRadius: BorderRadius.circular(0),
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 22),
                         child: userProvider.isLoading
                             ? Padding(
                                 padding: const EdgeInsets.all(40.0),
@@ -170,158 +163,100 @@ Widget _buildMatchCard(dynamic recommendation, TribeProvider tribeProvider) {
   final matchReasons = recommendation.matchReasons;
   final tribeId = recommendation.tribeId;
 
-  return Container(
-    margin: const EdgeInsets.only(left: 0, right: 0, bottom: 22, top: 0),
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(0),
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Tribe Icon
-        CircleAvatar(
-          radius: 35,
-          backgroundColor: const Color(0xFFFFB6C8),
-          child: Icon(
-            Icons.groups,
-            size: 35,
-            color: const Color(0xFF3A3A3A),
+  return GestureDetector(
+    onTap: () async {
+      _controller.pause();
+      // Load tribe details
+      final tribe = await tribeProvider.getTribeById(tribeId);
+      if (tribe != null && context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MatchDetailScreen(
+              name: tribe.name,
+              imageUrl: tribe.imageUrl ?? '',
+              matchPercentage: (score * 100).toInt(),
+              bio: tribe.description,
+              interests: tribe.interests,
+              events: [], // Could load tribe events here
+            ),
           ),
-        ),
-        const SizedBox(width: 12),
+        ).then((_) {
+          if (_isVideoInitialized) {
+            _controller.play();
+          }
+        });
+      } else {
+        _controller.play();
+      }
+    },
+    child: Container(
+      height: 55,
+      margin: const EdgeInsets.only(left: 0, right: 0, bottom: 22, top: 0),
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(0),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Tribe Icon
+          CircleAvatar(
+            radius: 35,
+            backgroundColor: const Color(0xFFFFB6C8),
+            child: Icon(
+              Icons.groups,
+              size: 35,
+              color: const Color(0xFF3A3A3A),
+            ),
+          ),
+          const SizedBox(width: 12),
 
-        // Match Info
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Tribe Name
-              Text(
-                tribeName,
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2C2C2C),
-                ),
-              ),
-              const SizedBox(height: 2),
-
-              // Match Score
-              Text(
-                '${(score * 100).toInt()}% Match',
-                style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF2C2C2C),
-                ),
-              ),
-              const SizedBox(height: 4),
-
-              // Match Reasons
-              Text(
-                matchReasons.isNotEmpty ? matchReasons.first : 'Great match!',
-                style: GoogleFonts.poppins(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF2C2C2C),
-                  height: 1.4,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 12),
-
-              // Buttons Row
-              Row(
-                children: [
-                  // View Details Button
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          _controller.pause();
-                          // Load tribe details
-                          final tribe = await tribeProvider.getTribeById(tribeId);
-                          if (tribe != null && context.mounted) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MatchDetailScreen(
-                                  name: tribe.name,
-                                  imageUrl: tribe.imageUrl ?? '',
-                                  matchPercentage: (score * 100).toInt(),
-                                  bio: tribe.description,
-                                  interests: tribe.interests,
-                                  events: [], // Could load tribe events here
-                                ),
-                              ),
-                            ).then((_) {
-                              if (_isVideoInitialized) {
-                                _controller.play();
-                              }
-                            });
-                          } else {
-                            _controller.play();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: const Color(0xFF3A3A3A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          'View',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
+          // Match Info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Category and Name
+                Row(
+                  children: [
+                    Text(
+                      tribeName,
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF2C2C2C),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-
-                  // Pass Button
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          // Could implement pass functionality here
-                        },
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          side: const BorderSide(
-                            color: Color(0xFF3A3A3A),
-                            width: 2,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                        ),
-                        child: Text(
-                          'Pass',
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xFF2C2C2C),
-                          ),
-                        ),
+                    Text(
+                      ' - ${(score * 100).toInt()}%',
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF3A3A3A),
                       ),
                     ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+
+                // Bio/Reason
+                Text(
+                  matchReasons.isNotEmpty ? matchReasons.first : 'Great match!',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF2C2C2C),
                   ),
-                ],
-              ),
-            ],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
