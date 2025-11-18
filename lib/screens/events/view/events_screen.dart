@@ -130,7 +130,7 @@ class _EventsScreenState extends State<EventsScreen> {
   }
   Widget _buildDescriptionCard() {
     return Container(
-      height: 200,
+      height: 200, // Keep your fixed height
       margin: const EdgeInsets.symmetric(horizontal: 22),
       padding: const EdgeInsets.all(7),
       decoration: BoxDecoration(
@@ -145,6 +145,8 @@ class _EventsScreenState extends State<EventsScreen> {
           color: const Color(0xFF2C2C2C),
         ),
         textAlign: TextAlign.center,
+        maxLines: 6, // Prevent text overflow
+        overflow: TextOverflow.ellipsis, // Add ellipsis if text is too long
       ),
     );
   }
@@ -156,14 +158,14 @@ class _EventsScreenState extends State<EventsScreen> {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        // Event Image
+        // Event Image - Keep fixed height, but use BoxFit.cover to prevent distortion
         Container(
           width: double.infinity,
           height: 265,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(featuredEvent['image']),
-              fit: BoxFit.cover,
+              fit: BoxFit.cover, // This prevents stretching/distortion
             ),
           ),
         ),
@@ -171,10 +173,8 @@ class _EventsScreenState extends State<EventsScreen> {
         Positioned(
            left: 0,
         right: 0,
-          bottom: -180  ,
-          // top: 100,
+          bottom: -180,
 
-          // top: 10,
           child: Center(
             child:
             _buildDescriptionCard()
@@ -183,5 +183,5 @@ class _EventsScreenState extends State<EventsScreen> {
       ],
     );
   }
-  
+
 }
