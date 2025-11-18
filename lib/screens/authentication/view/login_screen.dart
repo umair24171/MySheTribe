@@ -105,7 +105,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                      const SizedBox(height: 12),
-                    Image.asset("assets/icons/login_image.png",height: 164,),
+                    // Keep fixed height, add proper scaling to prevent distortion
+                    Image.asset(
+                      "assets/icons/login_image.png",
+                      height: 164,
+                      fit: BoxFit.contain, // Prevents stretching/distortion
+                    ),
                      const SizedBox(height: 12),
                     // const SizedBox(height: 30),
                     // // Partnership Banner
