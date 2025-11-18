@@ -78,6 +78,8 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                         children: [
                           // Profile Row - Photo, Name, Badge
                           Row(
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            // mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               // Profile Photo
                               CircleAvatar(
@@ -87,17 +89,31 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                               const SizedBox(width: 10),
                               
                               // Name
-                              Expanded(
-                                child: Text(
-                                  widget.name,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xFF2C2C2C),
-                                  ),
-                                ),
-                              ),
-                              
+                      Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text(
+        '${widget.name}',
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xFF2C2C2C),
+        ),
+      ),
+      Text(
+        '${' ' * ((widget.name.length)/2).floor()}Sarah M.',
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xFF2C2C2C),
+        ),
+      ),
+    ],
+  ),
+),
+                              // Spacer(),
                               // Percentage Badge
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -113,7 +129,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                                   style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,
-                                    color: const Color(0xFF2C2C2C),
+                                    color:  Colors.white,
                                   ),
                                 ),
                               ),
@@ -219,7 +235,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                             ),
                           ),
                           
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 22),
                           
                           // Three buttons row
                           Row(
@@ -234,7 +250,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MatchDetailTwo(
-                                  name: 'Umair B.',
+                                  name: widget.name,
                                   imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
                                   matchPercentage: 82,
                                   bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',

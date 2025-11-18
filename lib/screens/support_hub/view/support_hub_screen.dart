@@ -32,12 +32,12 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
       'route': 'employment',
     },
     {
-      'title': 'Health',
+      'title': 'Enterpreneurship',
       'image': 'assets/icons/health.png',
       'route': 'health',
     },
     {
-      'title': 'Immigration',
+      'title': 'Health',
       'image': 'assets/icons/immegration.png',
       'route': 'immigration',
     },
@@ -82,7 +82,7 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 29),
+                    const SizedBox(height: 19),
                     
                     // Main Content Container - FIXED HEIGHT 360
                     Container(
@@ -90,12 +90,12 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 19),
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFE9CB4),
+                        // color: const Color(0xFFFE9CB4),
                         borderRadius: BorderRadius.circular(0),
                       ),
                       child: Container(
                         // color: Colors.white,
-                       margin: const EdgeInsets.symmetric(horizontal: 22),
+                       margin: const EdgeInsets.symmetric(horizontal: 0),
                         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0).copyWith(top: 22,bottom: 2),
                         child:   // Grid of Menu Items
                             GridView.builder(
@@ -206,13 +206,13 @@ class _SupportHubScreenState extends State<SupportHubScreen> {
       case 'health':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HealthScreen()),
+          MaterialPageRoute(builder: (context) => ImmigrationScreen()),
         );
         break;
       case 'immigration':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => LegalScreen()),
+          MaterialPageRoute(builder: (context) => HealthScreen()),
         );
         break;
       case 'legal':

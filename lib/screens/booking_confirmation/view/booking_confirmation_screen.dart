@@ -110,13 +110,13 @@ class BookingConfirmationScreen extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF2C2C2C),
+                        color: const Color(0xFF3A3A3A),
                       ),
                     ),
                     const SizedBox(height: 29),
                     
                  Container(
-                  // height: 400,
+                  height: 447,
                     margin: const EdgeInsets.symmetric(horizontal: 19),
                     padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
@@ -126,19 +126,16 @@ class BookingConfirmationScreen extends StatelessWidget {
                   child: Column(children: [
                      // Checkmark Circle
                     Container(
-                      width: 70,
-                      height: 62,
+                      // width: 70,
+                      // height: 62,
+                      padding: EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFF8FA3),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 50,
-                      ),
+                      child: Image.asset('assets/icons/checkmark_icon.png',height: 34,width: 35,fit: BoxFit.contain,)
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 22),
                     
                     // Confirmation Text
                     Padding(
@@ -151,44 +148,11 @@ class BookingConfirmationScreen extends StatelessWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
                               height: 1.4,
-                              color: const Color(0xFF2C2C2C),
+                              color:  const Color(0xFF3A3A3A),
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          // RichText(
-                          //   textAlign: TextAlign.center,
-                          //   text: TextSpan(
-                          //     style: GoogleFonts.poppins(
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.w700,
-                          //       color: const Color(0xFF2C2C2C),
-                          //     ),
-                          //     children: [
-                          //       const TextSpan(text: 'for '),
-                          //       TextSpan(
-                          //         text: eventName,
-                          //         style: GoogleFonts.poppins(
-                          //           fontWeight: FontWeight.w700,
-                          //            fontSize: 16,
-                          //         ),
-                          //       ),
-                          //        TextSpan(text: ' is confirmed.',style: GoogleFonts.poppins(
-                          //           fontWeight: FontWeight.w700,
-                          //            fontSize: 16,
-                          //         ),),
-                          //     ],
-                          //   ),
-                          // ),
-                          // const SizedBox(height: 10),
-                          // Text(
-                          //   'THANK YOU',
-                          //   style: GoogleFonts.poppins(
-                          //     fontSize: 16,
-                          //     fontWeight: FontWeight.w700,
-                          //     color: const Color(0xFF2C2C2C),
-                          //     letterSpacing: 2,
-                          //   ),
-                          // ),
+                        
                         ],
                       ),
                     ),
@@ -252,13 +216,13 @@ class BookingConfirmationScreen extends StatelessWidget {
   required VoidCallback onPressed,
 }) {
   return Container(
-    width: 364,
+    // width: 364,
     height: 55,
     decoration: BoxDecoration(
       color: const Color(0xFFD5A472),
       borderRadius: BorderRadius.circular(0),
       border: Border.all(
-        color: const Color(0xFF2C2C2C),
+        color:  const Color(0xFF3A3A3A),
         width: 1,
       ),
     ),
@@ -284,7 +248,7 @@ class BookingConfirmationScreen extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: const Color(0xFF2C2C2C),
+                color:  const Color(0xFF3A3A3A),
                 height: 1.0, // Removes extra line height for perfect alignment
               ),
             ),

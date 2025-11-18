@@ -3,18 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/main.dart';
 import 'package:myshetribe/screens/accomodation_guide/view/accomodation_article_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
+import 'package:myshetribe/screens/immegration/view/legal_guide.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
 class LegalScreen extends StatelessWidget {
   const LegalScreen({Key? key}) : super(key: key);
 
   final List<String> _buttonTitles = const [
-    'Types of\nAccommodation',
-    'Top 5 Cities in UAE',
-    'Tenancy Agreements,\nEjari, Prices',
-    'Estate Agents',
-    'Top Suburbs to\nLive',
-    'Online Property\nFinders Top 3',
+    'How Immigration Works in UAE',
+    'Overview Visa Types',
+    'Sponsorship & Eligibility',
+    'Visa Application Journey',
+    'Red Flags',
+    'Helpful Links',
   ];
 
   @override
@@ -107,7 +108,7 @@ class LegalScreen extends StatelessWidget {
   Widget _buildActionButton(String title) {
     return InkWell(
       onTap: () {
-        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>AccommodationArticleScreen()));
+        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>LegalGuide()));
       },
       child: Container(
         decoration: BoxDecoration(

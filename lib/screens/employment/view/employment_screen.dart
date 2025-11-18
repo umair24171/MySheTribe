@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/main.dart';
-import 'package:myshetribe/screens/accomodation_guide/view/accomodation_article_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
+import 'package:myshetribe/screens/employment/view/employment_guide.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
 class EmploymentScreen extends StatelessWidget {
   const EmploymentScreen({Key? key}) : super(key: key);
 
   final List<String> _buttonTitles = const [
-    'Types of\nAccommodation',
-    'Top 5 Cities in UAE',
-    'Tenancy Agreements,\nEjari, Prices',
-    'Estate Agents',
-    'Top Suburbs to\nLive',
-    'Online Property\nFinders Top 3',
+    'Types of Employment ',
+    'Top 10 Free Zone Employers ',
+    'Employment Law contracts ',
+    'Top 10 Local Employers ',
+    'Attestations',
+    'Recruitment Agents',
   ];
 
   @override
@@ -107,7 +107,7 @@ class EmploymentScreen extends StatelessWidget {
   Widget _buildActionButton(String title) {
     return InkWell(
       onTap: () {
-        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>AccommodationArticleScreen()));
+        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>EmploymentGuide()));
       },
       child: Container(
         decoration: BoxDecoration(

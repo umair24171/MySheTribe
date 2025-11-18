@@ -22,8 +22,6 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   String? _selectedRelocatingWith;
   String? _selectedCountryFrom;
   String? _selectedUAEEmirate;
-  
-  final TextEditingController _otherCountryController = TextEditingController();
 
   final List<String> _relocatingReasons = [
     'Work/Career',
@@ -101,7 +99,6 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _otherCountryController.dispose();
     super.dispose();
   }
 
@@ -232,22 +229,9 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                                 onChanged: (value) {
                                   setState(() {
                                     _selectedCountryFrom = value;
-                                    // Clear the text field when switching from "Other"
-                                    if (value != 'Other') {
-                                      _otherCountryController.clear();
-                                    }
                                   });
                                 },
                               ),
-                              
-                              // Show text field if "Other" is selected
-                              if (_selectedCountryFrom == 'Other') ...[
-                                const SizedBox(height: 22),
-                                _buildTextField(
-                                  controller: _otherCountryController,
-                                  hintText: 'Enter your country',
-                                ),
-                              ],
                               
                               const SizedBox(height: 22),
                             ],
@@ -315,43 +299,6 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    TextInputType? keyboardType,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(0),
-      ),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        style: GoogleFonts.poppins(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: const Color(0xFF2C2C2C),
-        ),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: GoogleFonts.poppins(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xFF2C2C2C),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(0),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          constraints: BoxConstraints(maxHeight: 55, minHeight: 55),
-        ),
-      ),
-    );
-  }
-
   Widget _buildSingleSelectField({
     required String? selectedItem,
     required String hintText,
@@ -410,6 +357,7 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
     required Function(String?) onChanged,
   }) {
     String? tempSelected = selectedItem;
+    TextEditingController otherController = TextEditingController();
 
     showDialog(
       context: context,
@@ -450,14 +398,69 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           children: items.map((item) {
-                            return _buildDialogCheckboxItem(
-                              item: item,
-                              isSelected: tempSelected == item,
-                              onTap: () {
-                                setState(() {
-                                  tempSelected = item;
-                                });
-                              },
+                            return Column(
+                              children: [
+                                _buildDialogCheckboxItem(
+                                  item: item,
+                                  isSelected: tempSelected == item,
+                                  onTap: () {
+                                    setState(() {
+                                      tempSelected = item;
+                                    });
+                                  },
+                                ),
+                                // Show TextField next to "Other" when selected
+                                if (item == 'Other' && tempSelected == 'Other')
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                                    child: Container(
+                                      height: 55,
+                                      child: TextField(
+                                        controller: otherController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Please specify',
+                                          hintStyle: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xFF2C2C2C),
+                                              width: 1,
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xFF2C2C2C),
+                                              width: 1,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xFF2C2C2C),
+                                              width: 2,
+                                            ),
+                                          ),
+                                          contentPadding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 16,
+                                          ),
+                                        ),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF2C2C2C),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             );
                           }).toList(),
                         ),
@@ -488,7 +491,12 @@ class _RelocatingSignUpScreenState extends State<RelocatingSignUpScreen> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
-                                onChanged(tempSelected);
+                                // If "Other" is selected and text is entered, use the custom text
+                                if (tempSelected == 'Other' && otherController.text.isNotEmpty) {
+                                  onChanged(otherController.text);
+                                } else {
+                                  onChanged(tempSelected);
+                                }
                                 Navigator.of(context).pop();
                               },
                               style: ElevatedButton.styleFrom(

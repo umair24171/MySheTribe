@@ -16,12 +16,12 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
   final List<Map<String, dynamic>> _groupChats = [
     {
       'name': 'Main Lounge Chat',
-      'image': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+      'image': 'assets/icons/main_chat.png',
       'hasDropdown': false,
     },
     {
       'name': 'MyMatch Chats',
-      'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
+      'image': 'assets/icons/my_match_chat_two.png',
       'hasDropdown': true,
       'subChats': [
        'Sue Culture',
@@ -32,7 +32,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
     },
     {
       'name': 'MyGroup Chats',
-      'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+      'image': 'assets/icons/my_group_chats.png',
       'hasDropdown': true,
       'subChats': [
         'MyCareer Chat',
@@ -40,6 +40,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
         'MyEnterpreneur Chat',
         'MyFitness Chat',
         'MyLifeStyle Chat',
+        'MyTravel Chat'
       ],
     },
   ];
@@ -88,7 +89,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                     // Access Chats Here Section
                     Container(
                       width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 19),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
                       padding: const EdgeInsets.all(22),
                       child: Column(
                         children: [
@@ -148,7 +149,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
             // Left Side - Full Height Image
             ClipRRect(
               borderRadius: BorderRadius.circular(0),
-              child: Image.network(
+              child: Image.asset(
                 chat['image'],
                 width: 105,
                 height: 80,
@@ -169,16 +170,7 @@ class _MainChatLoungeScreenState extends State<MainChatLoungeScreen> {
                 ),
               ),
             ),
-            // Dropdown Icon
-            if (chat['hasDropdown'] == true)
-              Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: const Color(0xFF2C2C2C),
-                  size: 30,
-                ),
-              ),
+         
           ],
         ),
       ),

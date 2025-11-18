@@ -238,10 +238,19 @@ class VerificationScreen extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: ' by taking a selfie. Thank you.',
+                                text: ' by taking a selfie.',
                                 style: GoogleFonts.poppins(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
+                                  color: const Color(0xFF2C2C2C),
+                                  height: 1,
+                                ),
+                              ),
+                               TextSpan(
+                                text: ' Click on camera',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
                                   color: const Color(0xFF2C2C2C),
                                   height: 1,
                                 ),

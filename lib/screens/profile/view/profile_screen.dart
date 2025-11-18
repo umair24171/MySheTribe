@@ -13,8 +13,6 @@ class ProfileSetupScreen extends StatefulWidget {
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _countryController = TextEditingController();
-  final _otherLanguageController = TextEditingController();
-  final _otherProfessionController = TextEditingController();
 
   String? _selectedAge;
   List<String> _selectedLanguages = [];
@@ -61,22 +59,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     'Other',
   ];
 
-  double _getContainerHeight() {
-    double baseHeight = 400;
-    if (_selectedLanguages.contains('Other...')) {
-      baseHeight += 45; // 55 + 22
-    }
-    if (_selectedProfessions.contains('Other')) {
-      baseHeight += 45; // 55 + 22
-    }
-    return baseHeight;
-  }
-
   @override
   void dispose() {
     _countryController.dispose();
-    _otherLanguageController.dispose();
-    _otherProfessionController.dispose();
     super.dispose();
   }
 
@@ -105,7 +90,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ),
                   const SizedBox(height: 29),
                   Container(
-                    height: _getContainerHeight(),
+                    height: 400,
                     margin: const EdgeInsets.symmetric(horizontal: 19),
                     color: Color(0xffFe9cb4),
                     child: Padding(
@@ -117,6 +102,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             selectedItem: _selectedAge,
                             hintText: 'Age',
                             items: _ageRanges,
+                             showIcon: false, // Add this parameter
                             columns: 1,
                             onChanged: (value) {
                               setState(() {
@@ -139,19 +125,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             onChanged: (values) {
                               setState(() {
                                 _selectedLanguages = values;
-                                if (!values.contains('Other...')) {
-                                  _otherLanguageController.clear();
-                                }
                               });
                             },
                           ),
-                          if (_selectedLanguages.contains('Other...')) ...[
-                            const SizedBox(height: 22),
-                            _buildTextField(
-                              controller: _otherLanguageController,
-                              hintText: 'Enter your language',
-                            ),
-                          ],
                           const SizedBox(height: 22),
                           _buildMultiSelectField(
                             selectedItems: _selectedProfessions,
@@ -162,19 +138,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             onChanged: (values) {
                               setState(() {
                                 _selectedProfessions = values;
-                                if (!values.contains('Other')) {
-                                  _otherProfessionController.clear();
-                                }
                               });
                             },
                           ),
-                          if (_selectedProfessions.contains('Other')) ...[
-                            const SizedBox(height: 22),
-                            _buildTextField(
-                              controller: _otherProfessionController,
-                              hintText: 'Enter your profession',
-                            ),
-                          ],
                           const SizedBox(height: 22),
                         ],
                       ),
@@ -263,12 +229,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
   }
 
-  Widget _buildSingleSelectField({
+ Widget _buildSingleSelectField({
     required String? selectedItem,
     required String hintText,
     required List<String> items,
     required int columns,
     required Function(String?) onChanged,
+    bool showIcon = true, // Add this parameter
   }) {
     return Container(
       height: 55,
@@ -303,10 +270,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Icon(
-                Icons.arrow_drop_down,
-                color: const Color(0xFF2C2C2C),
-              ),
+              if (showIcon) // Only show icon if showIcon is true
+                Icon(
+                  Icons.arrow_drop_down,
+                  color: const Color(0xFF2C2C2C),
+                ),
             ],
           ),
         ),
@@ -507,6 +475,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     required Function(List<String>) onChanged,
   }) {
     List<String> tempSelected = List.from(selectedItems);
+    TextEditingController otherController = TextEditingController();
 
     showDialog(
       context: context,
@@ -545,13 +514,30 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     Flexible(
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: columns == 1
-                            ? Column(
-                                children: items.map((item) {
-                                  return _buildDialogCheckboxItem(
-                                    item: item,
-                                    isSelected: tempSelected.contains(item),
-                                    onTap: () {
+                        child: Column(
+                          children: [
+                            columns == 1
+                                ? Column(
+                                    children: items.map((item) {
+                                      return _buildDialogCheckboxItem(
+                                        item: item,
+                                        isSelected: tempSelected.contains(item),
+                                        onTap: () {
+                                          setState(() {
+                                            if (tempSelected.contains(item)) {
+                                              tempSelected.remove(item);
+                                            } else {
+                                              tempSelected.add(item);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    }).toList(),
+                                  )
+                                : _buildDialogTwoColumnLayoutMulti(
+                                    items: items,
+                                    selectedItems: tempSelected,
+                                    onTap: (item) {
                                       setState(() {
                                         if (tempSelected.contains(item)) {
                                           tempSelected.remove(item);
@@ -560,22 +546,60 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                                         }
                                       });
                                     },
-                                  );
-                                }).toList(),
-                              )
-                            : _buildDialogTwoColumnLayoutMulti(
-                                items: items,
-                                selectedItems: tempSelected,
-                                onTap: (item) {
-                                  setState(() {
-                                    if (tempSelected.contains(item)) {
-                                      tempSelected.remove(item);
-                                    } else {
-                                      tempSelected.add(item);
-                                    }
-                                  });
-                                },
+                                  ),
+                            // Show TextField when "Other..." or "Other" is selected
+                            if (tempSelected.contains('Other...') || tempSelected.contains('Other'))
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16, bottom: 8),
+                                child: Container(
+                                  height: 55,
+                                  child: TextField(
+                                    controller: otherController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Please specify',
+                                      hintStyle: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey,
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        borderSide: BorderSide(
+                                          color: const Color(0xFF2C2C2C),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        borderSide: BorderSide(
+                                          color: const Color(0xFF2C2C2C),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(0),
+                                        borderSide: BorderSide(
+                                          color: const Color(0xFF2C2C2C),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 16,
+                                      ),
+                                    ),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xFF2C2C2C),
+                                    ),
+                                  ),
+                                ),
                               ),
+                          ],
+                        ),
                       ),
                     ),
                     
@@ -603,6 +627,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
+                                // Replace "Other..." or "Other" with custom text if entered
+                                if (otherController.text.isNotEmpty) {
+                                  if (tempSelected.contains('Other...')) {
+                                    tempSelected.remove('Other...');
+                                    tempSelected.add(otherController.text);
+                                  } else if (tempSelected.contains('Other')) {
+                                    tempSelected.remove('Other');
+                                    tempSelected.add(otherController.text);
+                                  }
+                                }
                                 onChanged(tempSelected);
                                 Navigator.of(context).pop();
                               },

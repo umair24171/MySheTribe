@@ -16,6 +16,7 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
 
   late VideoPlayerController _controller;
   bool _isVideoInitialized = false;
+  bool _isPlaying = false;
 
   @override
   void initState() {
@@ -29,11 +30,30 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
       ..initialize().then((_) {
         setState(() {
           _isVideoInitialized = true;
-          _controller.play();
-          // _controller.setVolume(0);
           _controller.setLooping(true);
         });
       });
+    
+    // Listen to video state changes
+    _controller.addListener(() {
+      if (_controller.value.isPlaying != _isPlaying) {
+        setState(() {
+          _isPlaying = _controller.value.isPlaying;
+        });
+      }
+    });
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        _isPlaying = false;
+      } else {
+        _controller.play();
+        _isPlaying = true;
+      }
+    });
   }
 
   @override
@@ -52,8 +72,8 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
     },
     {
       'category': 'Entertainment Match',
-      'name': ' - Jane',
-      'bio': 'enjoys clubbing',
+      'name': '',
+      'bio': '- Jane enjoys clubbing',
       'image': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
     },
     {
@@ -62,18 +82,18 @@ class _MyMatchesScreenState extends State<MyMatchesScreen> {
       'bio': '- Sue started her own biz',
       'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
     },
-     {
-      'category': 'Fitness Match',
-      'name': ' - Jane',
-      'bio': 'started her own biz',
-      'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-    },
-     {
-      'category': 'Lifestyle Match',
-      'name': ' - Jane',
-      'bio': 'started her own biz',
-      'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-    },
+    //  {
+    //   'category': 'Fitness Match',
+    //   'name': ' - Jane',
+    //   'bio': 'started her own biz',
+    //   'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    // },
+    //  {
+    //   'category': 'Lifestyle Match',
+    //   'name': ' - Jane',
+    //   'bio': 'started her own biz',
+    //   'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+    // },
   ];
 
  @override
@@ -107,36 +127,61 @@ Widget build(BuildContext context) {
                           ),
                         ),
                         const SizedBox(height: 29),
-                          // Welcome Video
-
-                          // Image.asset('assets/icons/match_pic.png',height: 246,fit: BoxFit.cover,)
-            SizedBox(
-              height: 246,
-              width: double.infinity,
-              child: _isVideoInitialized
-                  ? FittedBox(
-                      fit: BoxFit.cover,
-                      child: SizedBox(
-                        width: _controller.value.size.width,
-                        height: _controller.value.size.height,
-                        child: VideoPlayer(_controller),
-                      ),
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 246,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFCCD9),
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      // child: const Center(
-                      //   child: CircularProgressIndicator(
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
-                    ),
-            ),
-            // SizedBox(height: MediaQuery.of(context).size.width * 0.25),
+                        // Welcome Video with Play/Pause Button
+                        SizedBox(
+                          height: 246,
+                          width: double.infinity,
+                          child: _isVideoInitialized
+                              ? GestureDetector(
+                                  onTap: _togglePlayPause,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      ClipRect(
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          height: 246,
+                                          child: FittedBox(
+                                            fit: BoxFit.cover,
+                                            child: SizedBox(
+                                              width: _controller.value.size.width,
+                                              height: _controller.value.size.height,
+                                              child: VideoPlayer(_controller),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // Play/Pause Button Overlay
+                                      AnimatedOpacity(
+                                        opacity: !_isPlaying ? 1.0 : 0.0,
+                                        duration: const Duration(milliseconds: 300),
+                                        child: Container(
+                                          width: 60,
+                                          height: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(0.6),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Icon(
+                                            _isPlaying ? Icons.pause : Icons.play_arrow,
+                                            color: Colors.white,
+                                            size: 40,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  height: 246,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFCCD9),
+                                    borderRadius: BorderRadius.circular(0),
+                                  ),
+                                
+                                ),
+                        ),
                       ],
                     ),
                   ),
@@ -169,7 +214,7 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MatchDetailScreen(
-                                  name: 'Sarah M.',
+                                  name: match['category'],
                                   imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
                                   matchPercentage: 82,
                                   bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
@@ -239,133 +284,11 @@ Widget _buildMatchCard(Map<String, dynamic> match) {
                 Text(
                   match['bio'],
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF2C2C2C),
                   ),
                 ),
-                // const SizedBox(height: 4),
-                
-                // // Bio
-                // Text(
-                //   match['bio'],
-                //   style: GoogleFonts.poppins(
-                //     fontSize: 10,
-                //     fontWeight: FontWeight.w400,
-                //     color: const Color(0xFF2C2C2C),
-                //     height: 1.4,
-                //   ),
-                // ),
-                // const SizedBox(height: 12),
-                
-                // // Buttons Row
-                // Row(
-                //   children: [
-                //     // Yes Button
-                //     Expanded(
-                //       child: SizedBox(
-                //         height: 40,
-                //         child: ElevatedButton(
-                //           onPressed: () {
-                    //          _controller.pause();
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => MatchDetailScreen(
-                            //       name: 'Sarah M.',
-                            //       imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                            //       matchPercentage: 82,
-                            //       bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
-                            //       interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
-                            //       events: [
-                            //         {'name': 'MyShe Brunch', 'date': 'Nov 20'},
-                            //         {'name': 'Yoga in the Park', 'date': 'Nov 26'},
-                            //         {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ).then((_) {
-                    //   // Resume video when coming back
-                    //   if (_isVideoInitialized) {
-                    //     _controller.play();
-                    //   }
-                    // });
-                //           },
-                //           style: ElevatedButton.styleFrom(
-                //             elevation: 0,
-                //             backgroundColor: const Color(0xFF3A3A3A),
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(0),
-                //             ),
-                //           ),
-                //           child: Text(
-                //             'Yes',
-                //             style: GoogleFonts.poppins(
-                //               fontSize: 14,
-                //               fontWeight: FontWeight.w500,
-                //               color: Colors.white,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     const SizedBox(width: 10),
-                    
-                //     // Pass Button
-                //     Expanded(
-                //       child: SizedBox(
-                //         height: 40,
-                //         child: OutlinedButton(
-                //           onPressed: () {
-                //              _controller.pause();
-                //             Navigator.push(
-                //               context,
-                //               MaterialPageRoute(
-                //                 builder: (context) => MatchDetailScreen(
-                //                   name: 'Sarah M.',
-                //                   imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                //                   matchPercentage: 82,
-                //                   bio: 'Friendly and adventurous, LOves meeting new people and trying new activities.',
-                //                   interests: ['Culture', 'Fitness', 'Travel', 'Entertainment'],
-                //                   events: [
-                //                     {'name': 'MyShe Brunch', 'date': 'Nov 20'},
-                //                     {'name': 'Yoga in the Park', 'date': 'Nov 26'},
-                //                     {'name': 'Dubai Art Festival', 'date': 'Dec 1'},
-                //                   ],
-                //                 ),
-                //               ),
-                //             ).then((_) {
-                //       // Resume video when coming back
-                //       if (_isVideoInitialized) {
-                //         _controller.play();
-                //       }
-                //     });
-                //           },
-                //           style: OutlinedButton.styleFrom(
-                //             backgroundColor: Colors.white,
-                //             side: const BorderSide(
-                //               color: Color(0xFF3A3A3A),
-                //               width: 2,
-                //             ),
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(0),
-                //             ),
-                //           ),
-                //           child: Text(
-                //             'Pass',
-                //             style: GoogleFonts.poppins(
-                //               fontSize: 14,
-                //               fontWeight: FontWeight.w500,
-                //               color: const Color(0xFF2C2C2C),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-             
-             
               ],
             ),
           ),

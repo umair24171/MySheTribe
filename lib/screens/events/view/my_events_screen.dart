@@ -20,13 +20,14 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       'image': 'assets/icons/my_brunch_party.png',
     },
     {
-      'title': 'MyDinnerParty',
-      'image': 'assets/icons/my_dinner_party.png',
-    },
-    {
       'title': 'MyBusiness Forum',
       'image': 'assets/icons/my_dinner_party.png',
     },
+    {
+      'title': 'MyDinnerParty',
+      'image': 'assets/icons/my_dinner_party.png',
+    },
+    
     {
       'title': 'MyHighTea',
       'image': 'assets/icons/my_dinner_party.png',
@@ -35,10 +36,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       'title': 'MyLadies Lunch',
       'image': 'assets/icons/my_dinner_party.png',
     },
-    {
-      'title': 'MyWealthSummit',
-      'image': 'assets/icons/my_dinner_party.png',
-    },
+    // {
+    //   'title': 'MyWealthSummit',
+    //   'image': 'assets/icons/my_dinner_party.png',
+    // },
   ];
 
   @override

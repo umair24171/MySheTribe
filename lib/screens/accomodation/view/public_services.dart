@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/main.dart';
+import 'package:myshetribe/screens/accomodation/view/public_guide.dart';
 import 'package:myshetribe/screens/accomodation_guide/view/accomodation_article_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
@@ -9,12 +10,12 @@ class PublicServices extends StatelessWidget {
   const PublicServices({Key? key}) : super(key: key);
 
   final List<String> _buttonTitles = const [
-    'Types of\nAccommodation',
-    'Top 5 Cities in UAE',
-    'Tenancy Agreements,\nEjari, Prices',
-    'Estate Agents',
-    'Top Suburbs to\nLive',
-    'Online Property\nFinders Top 3',
+    'Schools & Education',
+    'Shopping & Everyday Essentials',
+    'Transport & getting around',
+    'Driving Licences ',
+    'Budgeting ',
+    'Common FAQs',
   ];
 
   @override
@@ -107,7 +108,7 @@ class PublicServices extends StatelessWidget {
   Widget _buildActionButton(String title) {
     return InkWell(
       onTap: () {
-        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>AccommodationArticleScreen()));
+        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>PublicGuide()));
       },
       child: Container(
         decoration: BoxDecoration(

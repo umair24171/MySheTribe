@@ -3,18 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/main.dart';
 import 'package:myshetribe/screens/accomodation_guide/view/accomodation_article_screen.dart';
 import 'package:myshetribe/screens/custom_bottom_bar.dart';
+import 'package:myshetribe/screens/health/view/health_guide.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
 class HealthScreen extends StatelessWidget {
   const HealthScreen({Key? key}) : super(key: key);
 
   final List<String> _buttonTitles = const [
-    'Types of\nAccommodation',
-    'Top 5 Cities in UAE',
-    'Tenancy Agreements,\nEjari, Prices',
-    'Estate Agents',
-    'Top Suburbs to\nLive',
-    'Online Property\nFinders Top 3',
+    'Health System',
+    'Top Hospitals ',
+    'Insurance Providers',
+    'Top Clinics',
+    'Health Checks',
+    'Doctors',
   ];
 
   @override
@@ -107,7 +108,7 @@ class HealthScreen extends StatelessWidget {
   Widget _buildActionButton(String title) {
     return InkWell(
       onTap: () {
-        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>AccommodationArticleScreen()));
+        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>HealthGuide()));
       },
       child: Container(
         decoration: BoxDecoration(

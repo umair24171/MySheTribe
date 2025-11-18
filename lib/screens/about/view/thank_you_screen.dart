@@ -110,16 +110,7 @@ class ThankYouScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    const SizedBox(height: 22),
-                    _buildButton(
-                      'View Suggested resources',
-                      () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainNavigationScreen()),
-                      );
-                      },
-                    ),
+                  
                     const SizedBox(height: 22),
                     _buildButton(
                       'Explore Support Hub',
@@ -127,6 +118,16 @@ class ThankYouScreen extends StatelessWidget {
                           Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SupportHubScreen()),
+                      );
+                      },
+                    ),
+                      const SizedBox(height: 22),
+                    _buildButton(
+                      'View Suggested resources',
+                      () {
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainNavigationScreen()),
                       );
                       },
                     ),

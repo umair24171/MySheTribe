@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myshetribe/screens/custom_bottom_bar.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
 class PartnershipOffersScreen extends StatelessWidget {
@@ -11,6 +12,9 @@ class PartnershipOffersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
+      bottomNavigationBar: CustomBottomNavBar(selectedIndex: 2,onItemTapped: (p0) {
+        
+      },),
       body: SafeArea(
         child: Column(
           children: [
@@ -39,33 +43,33 @@ class PartnershipOffersScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(0),
                       ),
                 child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 19,vertical: 22),
+                  padding: const EdgeInsets.symmetric(horizontal: 19,vertical: 22).copyWith(bottom: 0),
                   children: [
                     // First Image - Grocery Shopping
                     ClipRRect(
                       borderRadius: BorderRadius.circular(0),
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800',
+                      child: Image.asset(
+                        'assets/icons/partner_1.png',
                         width: double.infinity,
-                        height: 280,
+                        height: 224,
                         fit: BoxFit.cover,
                       ),
                     ),
                 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
                 
                     // Second Image - Clothing Store
                     ClipRRect(
                       borderRadius: BorderRadius.circular(0),
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
+                      child: Image.asset(
+                        'assets/icons/partner_2.png',
                         width: double.infinity,
-                        height: 280,
+                        height: 224,
                         fit: BoxFit.cover,
                       ),
                     ),
                 
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 29),
                   ],
                 ),
               ),

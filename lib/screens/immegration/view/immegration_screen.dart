@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:myshetribe/main.dart';
 import 'package:myshetribe/screens/accomodation_guide/view/accomodation_article_screen.dart';
 import 'package:myshetribe/screens/accomodation_guide/view/accomodation_guide_screen.dart';
+import 'package:myshetribe/screens/custom_bottom_bar.dart';
+import 'package:myshetribe/screens/employment/view/enterprenaurship_guide.dart';
 import 'package:myshetribe/widgets/logo_header.dart';
 
 class ImmigrationScreen extends StatelessWidget {
@@ -15,15 +17,16 @@ class ImmigrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> _buttonTitles = const [
-    'Types of\nAccommodation',
-    'Top 5 Cities in UAE',
-    'Tenancy Agreements,\nEjari, Prices',
-    'Estate Agents',
-    'Top Suburbs to\nLive',
-    'Online Property\nFinders Top 3',
+    'Starting a business in UAE',
+    'Types of Business Set Ups',
+    'Key Questions',
+    'Business Set Up Journey',
+    'Visas for Enterpreneurs',
+    'Common FAQs',
   ];
     return Scaffold(
       backgroundColor: const Color(0xFFFFB6C8),
+      bottomNavigationBar: CustomBottomNavBar(selectedIndex: 2, onItemTapped: (i){}),
       body: SafeArea(
         child: Column(
           children: [
@@ -95,7 +98,7 @@ class ImmigrationScreen extends StatelessWidget {
 
             // Title
             Text(
-              'Immigration',
+              'Enterpreneurship',
               style: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -169,7 +172,7 @@ class ImmigrationScreen extends StatelessWidget {
   Widget _buildActionButton(String title) {
     return InkWell(
       onTap: () {
-        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>AccommodationArticleScreen()));
+        Navigator.push(navigatorKey!.currentContext!, MaterialPageRoute(builder: (context)=>EnterprenaurshipGuide()));
       },
       child: Container(
         decoration: BoxDecoration(

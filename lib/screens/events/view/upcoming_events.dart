@@ -30,26 +30,30 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
       'title': 'MyBrunchParty',
       'image': 'assets/icons/my_brunch_party.png',
     },
-    {
-      'title': 'MyBusinessForum',
+    // {
+    //   'title': 'MyBusinessForum',
+    //   'image': 'assets/icons/my_dinner_party.png',
+    // },
+     {
+      'title': 'MyDinnerParty',
       'image': 'assets/icons/my_dinner_party.png',
     },
      {
       'title': 'MyDinnerParty',
       'image': 'assets/icons/my_dinner_party.png',
     },
-     {
-      'title': 'MyHighTea',
-      'image': 'assets/icons/my_dinner_party.png',
-    },
-     {
-      'title': 'MyLadiesLunch',
-      'image': 'assets/icons/my_dinner_party.png',
-    },
-     {
-      'title': 'MyWealthSummit',
-      'image': 'assets/icons/my_dinner_party.png',
-    },
+    //  {
+    //   'title': 'MyHighTea',
+    //   'image': 'assets/icons/my_dinner_party.png',
+    // },
+    //  {
+    //   'title': 'MyLadiesLunch',
+    //   'image': 'assets/icons/my_dinner_party.png',
+    // },
+    //  {
+    //   'title': 'MyWealthSummit',
+    //   'image': 'assets/icons/my_dinner_party.png',
+    // },
   ];
 
   @override
@@ -122,21 +126,18 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
               const SizedBox(height: 0),
           
               // Upcoming Events Section
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 19),
-                padding: const EdgeInsets.all(22),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ...upcomingEvents.map((event) => _buildUpcomingEventCard(event)).toList(),
-                    ],
-                  ),
-                ),
+              // Events List with ListView.builder
+                const SizedBox(height: 29),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: upcomingEvents.length,
+                padding: EdgeInsets.all(0),
+                itemBuilder: (context, index) {
+                  return Center(
+                    child: _buildUpcomingEventCard(upcomingEvents[index]),
+                  );
+                },
               ),
               const SizedBox(height: 30),
             ],
@@ -214,7 +215,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 22),
+       margin: const EdgeInsets.only(bottom: 22,left: 22+19,right: 22+19),
         height: 55,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(0),
@@ -237,7 +238,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
               // Right side - Gold section with label (55% width)
               Container(
                 height: 98,
-                width: MediaQuery.of(context).size.width * 0.55,
+                 width: MediaQuery.of(context).size.width -98-22-22-19-19 ,
                 color: const Color(0xFFD4A574),
                 child: Align(
                   alignment: Alignment(0.7, -0.99),

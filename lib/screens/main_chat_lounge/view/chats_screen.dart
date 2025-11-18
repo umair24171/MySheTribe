@@ -66,7 +66,7 @@ class _ChatLoungeScreenState extends State<ChatLoungeScreen> {
                         shape: BoxShape.circle,
                         color: const Color(0xFFFFCC66),
                         image: DecorationImage(
-                          image: NetworkImage(widget.profileImage),
+                          image: AssetImage('assets/icons/chat_image.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -86,7 +86,7 @@ class _ChatLoungeScreenState extends State<ChatLoungeScreen> {
                             ),
                           ),
                           Text(
-                            'Chat Lounge',
+                            widget.chatName,
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,

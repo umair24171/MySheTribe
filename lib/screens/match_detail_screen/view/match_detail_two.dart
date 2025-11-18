@@ -85,18 +85,31 @@ class _MatchDetailTwoState extends State<MatchDetailTwo> {
                               ),
                               const SizedBox(width: 10),
                               
-                              // Name
-                              Expanded(
-                                child: Text(
-                                  widget.name,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: const Color(0xFF2C2C2C),
-                                  ),
-                                ),
-                              ),
-                              
+                          Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text(
+        '${widget.name}',
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xFF2C2C2C),
+        ),
+      ),
+      Text(
+        '${' ' * ((widget.name.length)/2).floor()}Jane',
+        style: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xFF2C2C2C),
+        ),
+      ),
+    ],
+  ),
+),
+                                const SizedBox(width: 10),
                               // Percentage Badge
                               Container(
                                 padding: const EdgeInsets.symmetric(

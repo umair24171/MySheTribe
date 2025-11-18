@@ -33,12 +33,13 @@ class _YourPlansState extends State<YourPlans> {
   ];
 
   final List<String> _supportOptions = [
-    'Housing/Accommodation',
-    'Job Search',
-    'School/Education',
-    'Legal/Documentation',
-    'Community/Networking',
-    'All of the above',
+    'Accommodation',
+    'Employment & Career',
+    'Budgeting/Cost of Living',
+    'Schools for Children',
+    'Shopping groceries & clothing',
+    'Recreation & Leisure Activities',
+    'Starting a Business',
   ];
 
   @override
@@ -71,6 +72,7 @@ class _YourPlansState extends State<YourPlans> {
 
               // Main Content Container
               Container(
+                height: 400,
                 margin: const EdgeInsets.symmetric(horizontal: 19),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFE9CB4),
@@ -230,7 +232,7 @@ class _YourPlansState extends State<YourPlans> {
     );
   }
 
-  void _showSingleSelectDialog({
+ void _showSingleSelectDialog({
     required BuildContext context,
     required String title,
     required List<String> items,
@@ -238,6 +240,7 @@ class _YourPlansState extends State<YourPlans> {
     required Function(String?) onChanged,
   }) {
     String? tempSelected = selectedItem;
+    TextEditingController otherController = TextEditingController();
 
     showDialog(
       context: context,
@@ -278,14 +281,69 @@ class _YourPlansState extends State<YourPlans> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           children: items.map((item) {
-                            return _buildDialogCheckboxItem(
-                              item: item,
-                              isSelected: tempSelected == item,
-                              onTap: () {
-                                setState(() {
-                                  tempSelected = item;
-                                });
-                              },
+                            return Column(
+                              children: [
+                                _buildDialogCheckboxItem(
+                                  item: item,
+                                  isSelected: tempSelected == item,
+                                  onTap: () {
+                                    setState(() {
+                                      tempSelected = item;
+                                    });
+                                  },
+                                ),
+                                // Show TextField next to "Other" when selected
+                                if (item == 'Other' && tempSelected == 'Other')
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                                    child: Container(
+                                      height: 55,
+                                      child: TextField(
+                                        controller: otherController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Please specify',
+                                          hintStyle: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey,
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xFF2C2C2C),
+                                              width: 1,
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xFF2C2C2C),
+                                              width: 1,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xFF2C2C2C),
+                                              width: 2,
+                                            ),
+                                          ),
+                                          contentPadding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 16,
+                                          ),
+                                        ),
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF2C2C2C),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             );
                           }).toList(),
                         ),
@@ -316,7 +374,12 @@ class _YourPlansState extends State<YourPlans> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
-                                onChanged(tempSelected);
+                                // If "Other" is selected and text is entered, use the custom text
+                                if (tempSelected == 'Other' && otherController.text.isNotEmpty) {
+                                  onChanged(otherController.text);
+                                } else {
+                                  onChanged(tempSelected);
+                                }
                                 Navigator.of(context).pop();
                               },
                               style: ElevatedButton.styleFrom(
@@ -348,7 +411,6 @@ class _YourPlansState extends State<YourPlans> {
       },
     );
   }
-
   Widget _buildDialogCheckboxItem({
     required String item,
     required bool isSelected,
